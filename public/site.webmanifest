@@ -1,0 +1,14 @@
+{
+  "name": "SP Tech",
+  "short_name": "SP Tech",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

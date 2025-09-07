@@ -1,0 +1,20 @@
+{
+  "branch": "feat/vercel-config",
+  "timestamp": "2025-07-07T07:23:48.612Z",
+  "tests": {
+    "build": true,
+    "lint": true,
+    "endpoints": {
+      "http://localhost:3000/api/redirects?pathname=/test": {
+        "error": "fetch failed"
+      },
+      "http://localhost:3000/se": {
+        "error": "fetch failed"
+      },
+      "http://localhost:3000/se/isr-demo": {
+        "error": "fetch failed"
+      }
+    },
+    "performance": null
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "maptz.regionfolder",
+    "streetsidesoftware.code-spell-checker",
+    "hyoretsu.code-spell-checker-language-pack",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "ms-vscode.vscode-typescript-next",
+    "codeandstuff.package-json-upgrade",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "gruntfuggly.todo-tree",
+    "orta.vscode-jest",
+    "lokalise.i18n-ally"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "totalBranches": 4,
+  "duration": "214s",
+  "results": {
+    "feat/edge-runtime-optimization": {
+      "build": true,
+      "lint": true,
+      "endpoints": true,
+      "hasError": false
+    },
+    "feat/regional-optimization": {
+      "build": true,
+      "lint": true,
+      "endpoints": false,
+      "hasError": true
+    },
+    "feat/vercel-config": {
+      "build": true,
+      "lint": true,
+      "endpoints": true,
+      "hasError": false
+    },
+    "feat/isr-enhancement": {
+      "build": false,
+      "lint": true,
+      "endpoints": false,
+      "hasError": false
+    }
+  },
+  "timestamp": "2025-07-07T07:24:56.860Z"
+}

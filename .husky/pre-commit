@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Run checks in parallel for speed
+echo "🚀 Running pre-commit checks..."
+
+# Run lint-staged and secret detection in parallel
+(
+  echo "🔍 Linting staged files..."
+  npx lint-staged
+) &
+LINT_PID=$!
+
+(
+  echo "🔒 Running security checks..."
+  ./scripts/check-secrets.sh
+) &
+SECURITY_PID=$!
+
+# Wait for both processes to complete
+LINT_FAILED=0
+SECURITY_FAILED=0
+
+wait $LINT_PID || LINT_FAILED=1
+wait $SECURITY_PID || SECURITY_FAILED=1
+
+# Check results
+if [ $LINT_FAILED -eq 1 ]; then
+  echo "❌ Commit blocked due to lint errors. Please fix them before committing."
+  echo "💡 Tip: Run 'yarn lint:fix' to automatically fix some issues."
+  exit 1
+fi
+
+if [ $SECURITY_FAILED -eq 1 ]; then
+  echo "❌ Commit blocked due to security issues."
+  exit 1
+fi
+
+echo "✅ All pre-commit checks passed!"

@@ -1,0 +1,57 @@
+{
+  "tabnine.experimentalAutoImports": true,
+  "files.autoSave": "off",
+  "explorer.confirmDragAndDrop": false,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnSave": true,
+  "editor.formatOnType": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.tabCompletion": "on",
+  "editor.wordBasedSuggestions": "currentDocument",
+  "editor.snippetSuggestions": "inline",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "explorer.confirmDelete": false,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "i18n-ally.localesPaths": ["translations"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.extract.keyMaxLength": 64,
+  "i18n-ally.extract.keygenStyle": "kebab-case",
+  "i18n-ally.keepFulfilled": true,
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.extract.ignored": ["/"],
+  "i18n-ally.extract.ignoredByFiles": {
+    "src/components/footer/Footer.tsx": [" SP Tech "]
+  },
+  "i18n-ally.sourceLanguage": "en"
+}

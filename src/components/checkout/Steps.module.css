@@ -1,0 +1,77 @@
+.checkoutStepsContainer {
+  width: calc(100% - 5rem);
+  max-width: 70rem;
+  display: flex;
+  justify-content: space-between;
+  margin: 3.5rem auto 3rem;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .checkoutStepsContainer {
+    margin: 4.5rem auto 2rem;
+    padding: 0 2.5rem;
+  }
+}
+
+.checkoutStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  color: var(--colors-black);
+  fill: var(--colors-black);
+  font-size: 1.1rem;
+}
+
+.checkoutStep.completed {
+  color: var(--colors-turquoise-dark);
+  fill: var(--colors-turquoise-dark);
+}
+
+@media (min-width: 568px) {
+  .checkoutStep {
+    font-size: 1.3rem;
+  }
+}
+
+.checkoutStepIconContainer {
+  width: 5rem;
+  background: var(--colors-background);
+  display: flex;
+  justify-content: center;
+}
+
+.checkoutStepIconContainer svg {
+  height: 2.4rem;
+}
+
+.checkoutStepLine {
+  position: absolute;
+  height: 0.2rem;
+  width: calc(50% - 3rem);
+  z-index: 1;
+  background: var(--colors-black);
+  top: 1.4rem;
+}
+
+.checkoutStepLine:after {
+  content: '';
+  height: 0.2rem;
+  display: block;
+  transition: all 0.5s;
+  width: 0;
+  background: var(--colors-turquoise-dark);
+}
+
+.checkoutStepLine.completed:after {
+  width: 100%;
+}
+
+.checkoutStepLineLeft {
+  left: 4rem;
+}
+
+.checkoutStepLineRight {
+  right: 3rem;
+}

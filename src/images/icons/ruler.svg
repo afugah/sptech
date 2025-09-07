@@ -1,0 +1,15 @@
+ <svg width="1em" height="1em" fill="none" viewBox="0 0 16 16">
+                  <path
+                    stroke="#727272"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M1.04 12.709a1 1 0 010-1.414L11.292 1.042a1.002 1.002 0 011.415 0l2.253 2.253a1 1 0 010 1.414L4.707 14.962a1 1 0 01-1.414 0L1.04 12.709z"
+                    clipRule="evenodd"
+                  ></path>
+                  <path
+                    stroke="#727272"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.677 9.658l1.666 1.667M4.01 8.324l1.343 1.323m.152-2.817l1.667 1.667m-.328-3.005L8.01 6.66M8.333 4L10 5.667m-.333-2.999l1.343 1.324"
+                  ></path>
+                </svg>

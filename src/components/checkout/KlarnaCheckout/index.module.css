@@ -1,0 +1,4 @@
+.klarnaContainer iframe {
+  border: 0.1rem solid var(--colors-border);
+  border-radius: 0.6rem;
+}

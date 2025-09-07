@@ -1,0 +1,45 @@
+.voucherContainer {
+  position: relative;
+  border-top: 0.1rem solid var(--colors-border-light);
+}
+
+.voucherContainer svg {
+  height: 2rem;
+}
+
+.appliedVouchersContainer {
+  transition: margin 0.3s ease-out;
+  margin: 0 2.5rem 2rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .appliedVouchersContainer {
+    margin: 0 2.5rem 2rem;
+  }
+}
+
+.appliedVoucherContainer {
+  padding: 0.4rem 1rem;
+  margin: 0 0 0.6rem;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.appliedVoucherContainer span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.appliedVoucherContainer svg {
+  height: 1.5rem;
+}
+
+.appliedVoucherContainer:last-of-type {
+  margin: 0;
+}

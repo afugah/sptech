@@ -1,0 +1,19 @@
+.badge {
+  background: var(--colors-turquoise-dark);
+  color: var(--colors-white);
+  position: absolute;
+  z-index: 1;
+  padding: 0.3rem 1.5rem;
+  top: 1.5rem;
+  font-size: 1.3rem;
+  border-radius: 0 0.3rem 0.3rem 0;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .badge {
+    padding: 0.5rem 2rem;
+    top: 2rem;
+    font-size: 1.5rem;
+  }
+}

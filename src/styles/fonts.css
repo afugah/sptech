@@ -1,0 +1,41 @@
+/* Fonts */
+
+/* Lato Font Family */
+@font-face {
+  font-family: 'Lato';
+  src: url('../fonts/Lato-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Didot Font Family */
+@font-face {
+  font-family: 'Didot';
+  src: url('../fonts/didot-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+
+
+@font-face {
+  font-family: 'Didot';
+  src: url('../fonts/didot-24-bold-ital.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HTFDidot';
+  src: url('../fonts/HTFDidot-Light42.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+

@@ -1,0 +1,37 @@
+# Gitleaks Configuration for Secret Detection
+# This file configures gitleaks to scan for secrets before commits
+
+title = "SP Tech Secret Detection Rules"
+
+# Add custom rules for project-specific secrets
+[[rules]]
+description = "Hardcoded webhook secret"
+id = "webhook-secret"
+regex = '''e4ccfe7f807b6616b393ad0008a4a93acf22f8b3da1aa4bc7a842d77f5f2cb66'''
+tags = ["secret", "webhook"]
+
+[[rules]]
+description = "Generic API Key"
+id = "generic-api-key"
+regex = '''(?i)(api[_\-\s]?key|apikey|api_token)[\s]*[:=][\s]*['"][a-zA-Z0-9\-_]{20,}['"]'''
+tags = ["key", "api"]
+
+[[rules]]
+description = "Generic Secret"
+id = "generic-secret"
+regex = '''(?i)(secret|password|passwd|pwd|token)[\s]*[:=][\s]*['"][^'"]{8,}['"]'''
+tags = ["secret", "generic"]
+
+# Allow certain test patterns
+[allowlist]
+description = "Allowlisted patterns"
+paths = [
+    '''.env.example''',
+    '''documentation/.*\.md''',
+]
+regexes = [
+    '''XXXXXXX''',
+    '''your[_\-]?secret[_\-]?here''',
+    '''test[_\-]?secret''',
+    '''example[_\-]?key''',
+]

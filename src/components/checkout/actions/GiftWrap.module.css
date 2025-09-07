@@ -1,0 +1,46 @@
+.giftwrapContainer {
+  position: relative;
+  border-bottom: 0.1rem solid var(--colors-border);
+}
+
+.giftwrapContainer svg {
+  height: 2rem;
+}
+
+.arrowWrapper svg {
+  transition: all 0.3s;
+  height: 1.4rem;
+  transform: rotate(0deg);
+}
+
+.arrowWrapper.expanded svg {
+  transform: rotate(180deg);
+}
+
+.inputWrapper {
+  background: var(--colors-background);
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+}
+
+.inputWrapper.expanded {
+  max-height: 20rem;
+}
+
+.inputWrapper > div {
+  padding: 1.5rem;
+}
+
+.inputWrapper p {
+  margin: 0;
+}
+
+.inputWrapper input {
+  padding: 0;
+}
+
+.inputWrapper button {
+  height: 5rem;
+  margin-bottom: 2rem;
+}

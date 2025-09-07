@@ -1,0 +1,110 @@
+.giftCardContainer {
+  position: relative;
+  border-bottom: 0.1rem solid var(--colors-border-light);
+}
+
+.giftCardContainer svg {
+  height: 2rem;
+}
+
+.arrowWrapper svg {
+  transition: all 0.3s;
+  height: 1.4rem;
+  transform: rotate(0deg);
+}
+
+.arrowWrapper.expanded svg {
+  transform: rotate(180deg);
+}
+
+.inputWrapper {
+  background: var(--colors-background);
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+}
+
+.inputWrapper.expanded {
+  max-height: 30rem;
+}
+
+.inputWrapper div {
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .inputWrapper div {
+    padding: 2.5rem;
+  }
+}
+
+.inputWrapper button {
+  width: 100%;
+}
+
+.inputWrapper input {
+  margin-bottom: 1rem;
+  height: 4.5rem;
+}
+
+.appliedGiftCards {
+  transition: margin 0.3s ease-out;
+  margin: 0 1.5rem 1.5rem;
+}
+
+.appliedGiftCards.expanded {
+  margin: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .appliedGiftCards {
+    margin: 0 2.5rem 1.5rem;
+  }
+  
+  .appliedGiftCards.expanded {
+    margin: 1.5rem 2.5rem;
+  }
+}
+
+.appliedGiftCard {
+  padding: 0.4rem 1rem;
+  margin: 0 0 0.6rem;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.appliedGiftCard span {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.appliedGiftCard span > span {
+  font-weight: 400;
+}
+
+.appliedGiftCard svg {
+  height: 1.5rem;
+  width: 1.5rem;
+  cursor: pointer;
+}
+
+.appliedGiftCard:last-of-type {
+  margin: 0;
+}
+
+.errorMessage {
+  margin: -1rem 1.5rem 1.5rem;
+  font-size: 1.3rem;
+  color: red;
+}
+
+@media (min-width: 768px) {
+  .errorMessage {
+    margin: -1.5rem 2.5rem 1.5rem;
+  }
+}

@@ -1,0 +1,350 @@
+/* Global Styles - Replacing styled-components GlobalStyle */
+
+/* Import theme system first */
+@import './theme.css';
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Focus management */
+:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+
+
+
+
+
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Forms */
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  outline: none;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* Embla Carousel Styles (from GlobalStyle.ts) */
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+/* Utility Classes */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Badge Component (from Global.styled.ts) */
+.badge {
+  background: var(--color-turquoise);
+  color: white;
+  position: absolute;
+  z-index: var(--z-10);
+  padding: 0.3rem 1.5rem;
+  top: 1.5rem;
+  font-size: 1.3rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+}
+
+@media (min-width: 1024px) {
+  .badge {
+    padding: 0.5rem 2rem;
+    top: 2rem;
+    font-size: 1.5rem;
+  }
+}
+
+/* Container Classes */
+.container-custom {
+  margin-right: auto;
+  margin-left: auto;
+  width: var(--container-max-width);
+  max-width: calc(100vw - var(--container-padding-mobile));
+}
+
+.custom-shape {
+  width: 300px;
+  height: 150px;
+  background-color: #3498db;
+  clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
+}
+@media (min-width: 768px) {
+  .container-custom {
+    max-width: calc(100vw - var(--container-padding-tablet));
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    max-width: calc(100vw - var(--container-padding-desktop));
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-custom {
+    max-width: calc(100vw - var(--container-padding-wide));
+  }
+}
+
+/* Form Base Styles */
+.form-input {
+  height: var(--input-height);
+  padding: var(--input-padding);
+  border: var(--input-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-family-primary);
+  transition: var(--transition-fast);
+  width: 100%;
+}
+
+.form-input:focus {
+  border: var(--input-border-focus);
+}
+
+.form-input.error {
+  border: var(--input-border-error);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Button Base Styles */
+
+/* 
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--button-height);
+  padding: var(--button-padding);
+  border-radius: var(--radius);
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  line-height: 1;
+  transition: var(--transition-fast);
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-primary {
+  background: var(--color-primary);
+  color: var(--color-background);
+}
+
+.button-primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.button-secondary:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: var(--color-background);
+}
+
+.button-sm {
+  height: var(--button-height-sm);
+  padding: var(--button-padding-sm);
+  font-size: var(--font-size-sm);
+}
+
+.button-lg {
+  height: var(--button-height-lg);
+  padding: var(--button-padding-lg);
+  font-size: var(--font-size-lg);
+} */
+
+.flag {
+  width: auto;
+  height: 32px;
+  padding-left: 12px;
+  padding-right: 30px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-items: center;
+  text-align: center;
+  position: absolute;
+  color: white;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+}
+.flag:after {
+  content: ' ';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-right: 15px solid white;
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+}
+
+/* Loading States */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+
+/* Print Styles */
+@media print {
+  * {
+    print-color-adjust: exact;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  .button {
+    border: 2px solid currentColor;
+  }
+
+  .form-input {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .spinner {
+    animation: none;
+  }
+}
+
+/* Banner overlay content styling */
+.banner-overlay-content h1,
+.banner-overlay-content h2, 
+.banner-overlay-content h3,
+.banner-overlay-content h4,
+.banner-overlay-content h5,
+.banner-overlay-content h6,
+.banner-overlay-content p,
+.banner-overlay-content span {
+  color: #000 !important;
+}

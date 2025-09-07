@@ -1,0 +1,55 @@
+.rangeInput {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  pointer-events: none;
+  appearance: none;
+  background: transparent;
+  padding: 0;
+  border: none;
+}
+
+.rangeInput.left {
+  z-index: 4;
+}
+
+.rangeInput.right {
+  z-index: 3;
+}
+
+.rangeInput:focus {
+  border: unset !important;
+}
+
+.rangeInput:hover {
+  border: unset !important;
+}
+
+.rangeInput::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgb(0, 0, 0);
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.rangeInput::-moz-range-thumb {
+  pointer-events: all;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgb(0, 0, 0);
+  cursor: pointer;
+  border: none;
+}
+
+.rangeInput::-ms-thumb {
+  pointer-events: all;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgb(0, 0, 0);
+  cursor: pointer;
+}

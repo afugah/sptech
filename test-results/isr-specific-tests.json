@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-07-07T07:33:39.050Z",
+  "tests": {
+    "isrDemoLocation": {
+      "oldPathRemoved": true,
+      "newPathExists": true,
+      "success": true
+    },
+    "viewportParameterRemoval": {
+      "viewportLogicRemoved": true,
+      "userAgentImportRemoved": true,
+      "success": true
+    },
+    "isrConfiguration": {
+      "files": {
+        "./src/lib/isr/isr-config.ts": true,
+        "./src/lib/isr/static-generation-service.ts": true,
+        "./src/app/api/webhooks/revalidate/route.ts": true
+      },
+      "success": true
+    }
+  },
+  "overallSuccess": true
+}

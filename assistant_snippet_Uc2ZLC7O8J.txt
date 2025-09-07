@@ -1,0 +1,4 @@
+1|1|1|        style={{
+2|2|2|          ...(colorPickerBackground?.color ? { backgroundColor: colorPickerBackground.color } : {}),
+3|3|3|          ...(colorPickerBorder?.color ? { borderColor: colorPickerBorder.color } : {}),
+4|4|4|        }} 

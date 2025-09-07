@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Banner",
+    "id": 538014,
+    "uuid": "07b504ee-6608-4d2b-b9a1-c2bdccae7e18",
+    "parent_id": null,
+    "parent_uuid": null
+  },
+  {
+    "name": "UI",
+    "id": 538015,
+    "uuid": "a6c556de-a16a-43c3-87c3-84d5c89bd36a",
+    "parent_id": null,
+    "parent_uuid": null
+  }
+]

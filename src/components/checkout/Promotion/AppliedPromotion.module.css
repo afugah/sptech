@@ -1,0 +1,45 @@
+.promotionContainer {
+  position: relative;
+  border-top: 0.1rem solid var(--colors-border-light);
+}
+
+.promotionContainer svg {
+  height: 2rem;
+}
+
+.appliedPromotionsContainer {
+  transition: margin 0.3s ease-out;
+  margin: 0 2.5rem 2rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .appliedPromotionsContainer {
+    margin: 0 2.5rem 2rem;
+  }
+}
+
+.appliedPromotionContainer {
+  padding: 0.4rem 1rem;
+  margin: 0 0 0.6rem;
+  background: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.appliedPromotionContainer span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.appliedPromotionContainer svg {
+  height: 1.5rem;
+}
+
+.appliedPromotionContainer:last-of-type {
+  margin: 0;
+}

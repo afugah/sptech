@@ -1,0 +1,17 @@
+# Ignore shadcn components
+components/shadcn/
+
+# Ignore build output
+.next/
+out/
+build/
+
+# Ignore node_modules
+node_modules/
+
+# Ignore coverage reports
+coverage/
+
+# Ignore package files
+package-lock.json
+yarn.lock
