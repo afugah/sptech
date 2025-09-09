@@ -9,6 +9,7 @@ interface ProductSourceLabelProps {
 const sourceLabels: Record<ProductDataSource, { text: string; color: string }> = {
   findify: { text: 'Findify', color: 'bg-green-100 text-green-800 border-green-200' },
   elastic: { text: 'Elastic', color: 'bg-blue-100 text-blue-800 border-blue-200' },
+  typesense: { text: 'Typesense', color: 'bg-orange-100 text-orange-800 border-orange-200' },
   storyblok: { text: 'Storyblok', color: 'bg-purple-100 text-purple-800 border-purple-200' },
   none: { text: 'No Data', color: 'bg-gray-100 text-gray-800 border-gray-200' },
 };

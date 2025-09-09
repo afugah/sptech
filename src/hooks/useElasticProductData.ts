@@ -58,9 +58,19 @@ export function useElasticProductData(productId: string | null): UseElasticProdu
       // Get the selected country from localStorage
       const country = getCurrentCountry();
 
+      // Determine which endpoint to use based on feature flag
+      const useDirectApi = process.env.NEXT_PUBLIC_USE_DIRECT_ELASTIC_API === 'true';
+
+      // Support gradual rollout with percentage
+      const rolloutPercentage = parseInt(process.env.NEXT_PUBLIC_ELASTIC_DIRECT_ROLLOUT || '0');
+      const shouldUseDirectApi = useDirectApi || (rolloutPercentage > 0 && Math.random() * 100 < rolloutPercentage);
+
+      // Choose endpoint based on configuration
+      const endpoint = shouldUseDirectApi ? 'elasticsearch' : 'elastic';
+
       // Fetch from API with country parameter for correct currency
       // Use minimal fields for StoryblokProductCard to reduce data transfer
-      const apiUrl = `/api/product/elastic/${id}?locale=${loc}&country=${encodeURIComponent(country)}&fields=minimal`;
+      const apiUrl = `/api/product/${endpoint}/${id}?locale=${loc}&country=${encodeURIComponent(country)}&fields=minimal`;
       const response = await fetch(apiUrl);
 
       if (!response.ok) {

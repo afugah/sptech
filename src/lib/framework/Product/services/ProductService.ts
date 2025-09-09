@@ -1,11 +1,11 @@
 import { inject, singleton } from 'tsyringe';
+import { Tokens } from '@/src/lib/diTokens';
 import { CommerceService } from '@/src/lib/framework/Commerce/services/CommerceService';
 import { type LoggerService } from '@/src/lib/framework/Logger/services/LoggerService';
 import { injectLogger } from '@/src/lib/framework/Logger/shared/InjectLogger';
 import { type IProduct } from '@/src/lib/framework/Product/domain/entities/IProduct';
 import { type IProductRepository } from '@/src/lib/framework/Product/domain/IProductRepository';
 import { type IProductService } from '@/src/lib/framework/Product/domain/IProductService';
-import { ElasticSearchRepository } from '@/src/lib/framework/Product/repositories/ElasticSearchRepository';
 import { type IReviewService } from '@/src/lib/framework/Reviews/domain/IReviewService';
 import { ReviewService } from '@/src/lib/framework/Reviews/services/ReviewService';
 import { getMarketCode } from '@/src/util/locale';
@@ -14,7 +14,7 @@ import { getMarketCode } from '@/src/util/locale';
 export class ProductService implements IProductService {
   public constructor(
     @injectLogger('ProductService') private readonly _logger: LoggerService,
-    @inject(ElasticSearchRepository) private readonly _item: IProductRepository,
+    @inject(Tokens.ProductRepository) private readonly _item: IProductRepository,
     @inject(CommerceService) private readonly _commerceService: CommerceService,
     @inject(ReviewService) private readonly _reviewsService: IReviewService,
   ) {}

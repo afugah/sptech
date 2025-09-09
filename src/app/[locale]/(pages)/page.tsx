@@ -30,13 +30,19 @@ const Home: React.FC<IProps> = async ({ params }) => {
   const { locale } = await params;
   try {
     const config = di.resolve(di.Tokens.Configuration);
-    const language = config.getLanguage(locale);
+    const language = config.getLanguage(locale) || 'en'; // Default to 'en' if undefined
 
     const storyblokApi = getStoryblokApi();
     // Force draft version in development for immediate updates
     const version = process.env.NODE_ENV === 'development' ? 'draft' : isPreviewEnvironment() ? 'draft' : 'published';
 
-    const sbConfig: ISbStoriesParams = { version, language, resolve_links: 'url' };
+    const sbConfig: ISbStoriesParams = {
+      version,
+      language: language === 'en' ? 'default' : language, // Use 'default' for English
+      resolve_links: 'url',
+    };
+
+    // Debug logging removed - production ready
     try {
       const { data } = await storyblokApi.get(`cdn/stories/home`, sbConfig);
       if (!data || !data.story) {
@@ -78,6 +84,7 @@ const Home: React.FC<IProps> = async ({ params }) => {
         'Error fetching story from Storyblok:',
         storyblokError instanceof Error ? storyblokError.message : storyblokError,
       );
+      console.error('[Home] Full error details:', JSON.stringify(storyblokError, null, 2));
       // Return a fallback UI instead of null
       return (
         <>

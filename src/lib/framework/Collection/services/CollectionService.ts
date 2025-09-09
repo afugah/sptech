@@ -1,18 +1,16 @@
-import { singleton } from 'tsyringe';
-import { di } from '@/src/lib/di';
+import { inject, singleton } from 'tsyringe';
+import { Tokens } from '@/src/lib/diTokens';
 import { type ICollectionRepository } from '@/src/lib/framework/Collection/domain/ICollectionRepository';
 import { type ICollectionService } from '@/src/lib/framework/Collection/domain/ICollectionService';
-import { collectionRepositoryFactory } from '@/src/lib/framework/Collection/repositories/CollectionRepositoryFactory';
 import { type LoggerService } from '@/src/lib/framework/Logger/services/LoggerService';
 import { injectLogger } from '@/src/lib/framework/Logger/shared/InjectLogger';
 
 @singleton()
 export class CollectionService implements ICollectionService {
-  private readonly _repository: ICollectionRepository;
-
-  public constructor(@injectLogger('CollectionService') private readonly _logger: LoggerService) {
-    this._repository = collectionRepositoryFactory.useFactory(di);
-  }
+  public constructor(
+    @injectLogger('CollectionService') private readonly _logger: LoggerService,
+    @inject(Tokens.CollectionRepository) private readonly _repository: ICollectionRepository,
+  ) {}
 
   public getItemsByQuery: ICollectionRepository['getItemsByQuery'] = (
     ...args: Parameters<ICollectionRepository['getItemsByQuery']>

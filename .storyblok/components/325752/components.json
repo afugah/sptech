@@ -4,7 +4,7 @@
     "display_name": null,
     "description": null,
     "created_at": "2025-04-10T08:29:19.553Z",
-    "updated_at": "2025-08-28T18:21:51.552Z",
+    "updated_at": "2025-09-05T12:31:01.050Z",
     "id": 7197469,
     "schema": {
       "memberLevel": {
@@ -92,7 +92,7 @@
           },
           {
             "name": "colors",
-            "value": "[\"#FFFFFF\",\"#cec0b3\", \"#ECDFDB\",\"#ddcfbd\", \"#e2d6c7\", \"#D9C2B6\", \"#e8dcca\", \"#efe9de\", \"#f2ede9\",\"#E9ECE3\"]",
+            "value": "[\"#111111\", \"#4a4a4a\", \"#ffffff\", \"#d9c2b6\", \"#cCc0db\", \"#f5f0ed\", \"#b1a7a2\", \"#d8d3d0\", \"#ebc9e8\", \"#4a4a4a\", \"#d9c2b6\", \"#cCc0db\", \"#111111\", \"#b2b695\", \"#d8dac8\", \"#eeacc3\"]",
             "_uid": "81c4d94e-eb44-471c-8dc9-c0dca219d7bb"
           }
         ]
@@ -413,7 +413,7 @@
     "display_name": null,
     "description": null,
     "created_at": "2025-04-10T08:29:20.430Z",
-    "updated_at": "2025-04-10T08:29:20.430Z",
+    "updated_at": "2025-09-05T12:40:40.699Z",
     "id": 7197470,
     "schema": {
       "memberLevel": {
@@ -953,6 +953,16 @@
             "_uid": "2c30ed4b-645a-40fe-8860-0bad25a7d1d9",
             "value": "9-16",
             "name": "9:16"
+          },
+          {
+            "_uid": "89f0361a-5990-48ec-bb13-f56860f50319",
+            "value": "16-8",
+            "name": "16:8"
+          },
+          {
+            "_uid": "e0f43403-0484-4d8d-8459-80cf4c83d0db",
+            "value": "16-7",
+            "name": "16:7"
           }
         ],
         "default_value": "16-9",
@@ -1095,7 +1105,7 @@
     "display_name": null,
     "description": null,
     "created_at": "2025-04-10T08:29:21.299Z",
-    "updated_at": "2025-09-04T03:41:01.395Z",
+    "updated_at": "2025-09-05T12:37:05.439Z",
     "id": 7197471,
     "schema": {
       "text": {
@@ -1230,10 +1240,11 @@
           },
           {
             "name": "colors",
-            "value": "[\"#ffffff\",\"#111111\", \"#eCe0db\"]",
+            "value": "[\"#111111\", \"#4a4a4a\", \"#ffffff\", \"#d9c2b6\", \"#cCc0db\", \"#f5f0ed\", \"#b1a7a2\", \"#d8d3d0\", \"#ebc9e8\", \"#4a4a4a\", \"#d9c2b6\", \"#cCc0db\", \"#111111\", \"#b2b695\", \"#d8dac8\", \"#eeacc3\"]",
             "_uid": "cc10ed66-386d-44ee-aa36-7a088579e7ff"
           }
-        ]
+        ],
+        "display_name": "Button text"
       },
       "colorPickerBackground": {
         "type": "custom",
@@ -1253,10 +1264,11 @@
           },
           {
             "name": "colors",
-            "value": "[\"#4a4a4a\",\"#000000\",\"#D9C2B6\"]",
+            "value": "[\"#111111\", \"#4a4a4a\", \"#ffffff\", \"#d9c2b6\", \"#cCc0db\", \"#f5f0ed\", \"#b1a7a2\", \"#d8d3d0\", \"#ebc9e8\", \"#4a4a4a\", \"#d9c2b6\", \"#cCc0db\", \"#111111\", \"#b2b695\", \"#d8dac8\", \"#eeacc3\"]",
             "_uid": "cbb5f056-f9d5-4dd4-a7c7-9012e3b90fa2"
           }
-        ]
+        ],
+        "display_name": "Background Color"
       },
       "opacity": {
         "type": "custom",
@@ -1894,7 +1906,7 @@
     "display_name": null,
     "description": "",
     "created_at": "2025-05-15T12:40:46.469Z",
-    "updated_at": "2025-08-21T13:43:06.589Z",
+    "updated_at": "2025-09-05T09:20:15.674Z",
     "id": 7344313,
     "schema": {
       "image": {
@@ -1913,6 +1925,29 @@
         "pos": 2,
         "id": "GPGeAvapTXWDnbpvlfiLFA",
         "translatable": true
+      },
+      "collectionTitleColor": {
+        "type": "custom",
+        "pos": 3,
+        "field_type": "storyblok-palette",
+        "options": [
+          {
+            "name": "size",
+            "value": "medium",
+            "_uid": "021bdf60-16d3-429e-a032-7885207540b5"
+          },
+          {
+            "name": "defaultValue",
+            "value": "#FFFFFF",
+            "_uid": "7bc1a88b-73c8-4419-8ee8-1d6742b45510"
+          },
+          {
+            "name": "colors",
+            "value": "[\"#FFFFFF\",\"#000000\"]",
+            "_uid": "217d37cb-10f5-404c-ab02-388eebe53af6"
+          }
+        ],
+        "id": "yHKTcSKwRcu4lkbkk7rwbA"
       }
     },
     "image": null,
@@ -2321,7 +2356,7 @@
     "display_name": null,
     "description": "",
     "created_at": "2025-08-02T18:21:11.036Z",
-    "updated_at": "2025-08-28T20:54:45.435Z",
+    "updated_at": "2025-09-04T19:46:04.032Z",
     "id": 75650134168828,
     "schema": {
       "title": {
@@ -2391,7 +2426,7 @@
           },
           {
             "name": "colors",
-            "value": "[\"#FFFFFF\",\"#cec0b3\", \"#ECDFDB\",\"#ddcfbd\", \"#e2d6c7\", \"#D9C2B6\", \"#e8dcca\", \"#efe9de\", \"#f2ede9\",\"#E9ECE3\"]",
+            "value": "[\"#111111\", \"#4a4a4a\", \"#ffffff\", \"#d9c2b6\", \"#cCc0db\", \"#f5f0ed\", \"#b1a7a2\", \"#d8d3d0\", \"#ebc9e8\", \"#4a4a4a\", \"#d9c2b6\", \"#cCc0db\", \"#111111\", \"#b2b695\", \"#d8dac8\", \"#eeacc3\"]",
             "_uid": "a8bd2b8d-9301-4ac9-bcc0-8da99c34b1c9"
           }
         ]
@@ -3792,7 +3827,7 @@
           },
           {
             "name": "apiBaseUrl",
-            "value": "https://sp-tech-staging.shoplab.io/api",
+            "value": "https://efvaattling-staging2.shoplab.io/api",
             "_uid": "4e51439b-03ce-4f8a-880c-f3bbf47b254e"
           }
         ],
@@ -5461,7 +5496,7 @@
         "options": [
           {
             "name": "apiBaseUrl",
-            "value": "https://sp-tech-staging.shoplab.io/api",
+            "value": "https://efvaattling-staging2.shoplab.io/api",
             "_uid": "07a272ca-08aa-46bd-abef-e89758b78df7"
           },
           {
@@ -6233,7 +6268,7 @@
     "display_name": null,
     "description": "",
     "created_at": "2025-05-15T08:02:55.676Z",
-    "updated_at": "2025-09-02T02:22:57.163Z",
+    "updated_at": "2025-09-04T19:50:34.273Z",
     "id": 7342748,
     "schema": {
       "title": {
@@ -6284,7 +6319,7 @@
           },
           {
             "name": "colors",
-            "value": "[\"#FFFFFF\",\"#cec0b3\", \"#ECDFDB\",\"#ddcfbd\", \"#e2d6c7\", \"#D9C2B6\", \"#e8dcca\", \"#efe9de\", \"#f2ede9\",\"#E9ECE3\"]",
+            "value": "[\"#111111\", \"#4a4a4a\", \"#ffffff\", \"#d9c2b6\", \"#cCc0db\", \"#f5f0ed\", \"#b1a7a2\", \"#d8d3d0\", \"#ebc9e8\", \"#4a4a4a\", \"#d9c2b6\", \"#cCc0db\", \"#111111\", \"#b2b695\", \"#d8dac8\", \"#eeacc3\"]",
             "_uid": "aa86f2bf-247b-4927-b0b7-f172e2340907"
           }
         ],
@@ -6307,7 +6342,7 @@
           },
           {
             "name": "colors",
-            "value": "[\"#000000\",\"#FFFFFF\",\"#cec0b3\", \"#ECDFDB\",\"#ddcfbd\", \"#e2d6c7\", \"#D9C2B6\", \"#e8dcca\", \"#efe9de\", \"#f2ede9\",\"#E9ECE3\"]",
+            "value": "[\"#111111\", \"#4a4a4a\", \"#ffffff\", \"#d9c2b6\", \"#cCc0db\", \"#f5f0ed\", \"#b1a7a2\", \"#d8d3d0\", \"#ebc9e8\", \"#4a4a4a\", \"#d9c2b6\", \"#cCc0db\", \"#111111\", \"#b2b695\", \"#d8dac8\", \"#eeacc3\"]",
             "_uid": "9cf19e08-719b-4e33-a787-77b084530ed3"
           }
         ],
@@ -6330,7 +6365,7 @@
           },
           {
             "name": "colors",
-            "value": "[\"#FFFFFF\",\"#cec0b3\", \"#ECDFDB\",\"#ddcfbd\", \"#e2d6c7\", \"#D9C2B6\", \"#e8dcca\", \"#efe9de\", \"#f2ede9\",\"#E9ECE3\"]",
+            "value": "[\"#111111\", \"#4a4a4a\", \"#ffffff\", \"#d9c2b6\", \"#cCc0db\", \"#f5f0ed\", \"#b1a7a2\", \"#d8d3d0\", \"#ebc9e8\", \"#4a4a4a\", \"#d9c2b6\", \"#cCc0db\", \"#111111\", \"#b2b695\", \"#d8dac8\", \"#eeacc3\"]",
             "_uid": "71a276e0-556f-4aed-8e00-fecb39dd5982"
           }
         ],
@@ -6559,7 +6594,7 @@
           },
           {
             "_uid": "02c2a94a-4e51-42d6-9a48-5f1a1ea132d8",
-            "value": "https://sp-tech-staging.shoplab.io/api",
+            "value": "https://efvaattling-staging2.shoplab.io/api",
             "name": "apiBaseUrl"
           }
         ],
@@ -7212,7 +7247,7 @@
     "display_name": null,
     "description": null,
     "created_at": "2025-04-10T08:29:52.329Z",
-    "updated_at": "2025-09-03T08:18:06.006Z",
+    "updated_at": "2025-09-05T12:48:32.563Z",
     "id": 7197513,
     "schema": {
       "title": {
@@ -7354,6 +7389,11 @@
             "_uid": "6c38cd3a-fc81-4772-923c-8ad1206e7376",
             "value": "900",
             "name": "Black"
+          },
+          {
+            "_uid": "828e526f-4349-4877-bea2-2a44ae176420",
+            "value": "italic",
+            "name": "Italic"
           }
         ],
         "default_value": "300",
@@ -7396,9 +7436,26 @@
       "colorPicker": {
         "type": "custom",
         "pos": 6,
-        "field_type": "native-color-picker",
-        "options": [],
-        "id": "5TZf-ZnoTKGpiRO-bEsh8Q"
+        "field_type": "storyblok-palette",
+        "options": [
+          {
+            "name": "size",
+            "value": "medium",
+            "_uid": "8c286dda-0413-4124-85f3-ecbdef640c6c"
+          },
+          {
+            "name": "defaultValue",
+            "value": "#ffffff",
+            "_uid": "836c657f-9d2f-4c93-af55-5b7cfb6cec7a"
+          },
+          {
+            "name": "colors",
+            "value": "[\"#111111\", \"#4a4a4a\", \"#ffffff\", \"#d9c2b6\", \"#cCc0db\", \"#f5f0ed\", \"#b1a7a2\", \"#d8d3d0\", \"#ebc9e8\", \"#4a4a4a\", \"#d9c2b6\", \"#cCc0db\", \"#111111\", \"#b2b695\", \"#d8dac8\", \"#eeacc3\"]",
+            "_uid": "08c73b62-047b-44b9-aeb5-14c4da87e254"
+          }
+        ],
+        "id": "5TZf-ZnoTKGpiRO-bEsh8Q",
+        "display_name": "Subtitle color"
       },
       "opacity": {
         "type": "custom",
@@ -7578,7 +7635,7 @@
     "display_name": null,
     "description": null,
     "created_at": "2025-04-10T08:29:54.506Z",
-    "updated_at": "2025-08-07T14:13:06.104Z",
+    "updated_at": "2025-09-05T12:33:52.314Z",
     "id": 7197515,
     "schema": {
       "title": {
@@ -7826,9 +7883,26 @@
       "colorPicker": {
         "type": "custom",
         "pos": 7,
-        "field_type": "native-color-picker",
-        "options": [],
-        "id": "l0pOxy0YQL2M2aVWh2-Urg"
+        "field_type": "storyblok-palette",
+        "options": [
+          {
+            "name": "size",
+            "value": "medium",
+            "_uid": "a3492862-d515-4fc8-ae78-432618a5a64e"
+          },
+          {
+            "name": "defaultValue",
+            "value": "#111111",
+            "_uid": "6771a1b1-b39f-455f-9b34-fc05f0f15970"
+          },
+          {
+            "name": "colors",
+            "value": "[\"#111111\", \"#4a4a4a\", \"#ffffff\", \"#d9c2b6\", \"#cCc0db\", \"#f5f0ed\", \"#b1a7a2\", \"#d8d3d0\", \"#ebc9e8\", \"#4a4a4a\", \"#d9c2b6\", \"#cCc0db\", \"#111111\", \"#b2b695\", \"#d8dac8\", \"#eeacc3\"]",
+            "_uid": "5808c4af-576d-43df-a16c-847eb06589dd"
+          }
+        ],
+        "id": "l0pOxy0YQL2M2aVWh2-Urg",
+        "display_name": "Title color"
       },
       "opacity": {
         "type": "custom",

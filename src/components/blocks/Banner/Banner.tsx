@@ -124,15 +124,16 @@ const BannerComponent: React.FC<BannerProps> = ({ blok, numberOfBlocks, format }
   };
 
   const bannerClasses = classNames(
-    'w-screen',
+    // 'w-screen',
+    'w-full',
     mobileBannerWidthConst[(mobileBannerWidth as { value?: number })?.value ?? 1],
     desktopBannerWidthConst[(desktopBannerWidth as { value?: number })?.value ?? 1],
     isMobile && mobileOverlay ? '' : getAspectRatioClass(),
     !isMobile && format ? '' : 'min-h-[50vh] md:min-h-0',
     !format && bannerHeightConst[mobileBannerHeight as string],
     !format && bannerHeightConst[desktopBannerHeight as string],
-    numberOfBlocks >= 2 ? 'md:aspect-square' : 'md:aspect-auto',
-    getAspectRatioClass(),
+    // numberOfBlocks >= 2 ? 'md:aspect-square' : 'md:aspect-auto',
+    // getAspectRatioClass(),
     !bannerHeightConst[desktopBannerHeight as string] && !format ? 'aspect-[4/5] lg:min-h-[500px]' : '',
   );
 

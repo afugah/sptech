@@ -1,156 +1,106 @@
-// Maps countries to their URL locale (se, fi, or en)
-// This only affects URL routing, not currency
+// Maps countries to their URL locale - all use 'en' for single language setup
+// All countries use English market (root URL with no prefix)
 export const countryToMarketMapping: Record<string, string> = {
-  // Swedish market (gets /sv/ URL prefix)
-  Sweden: 'sv',
-
-  // Finnish market (gets /fi/ URL prefix)
-  Finland: 'fi',
-
-  // All other countries use English market (root URL with no prefix)
-  Denmark: 'en',
-  Norway: 'en',
-  Estonia: 'en',
-  Latvia: 'en',
-  Lithuania: 'en',
-  'Åland Islands': 'en',
-  Australia: 'en',
+  // Target markets - 24 EU countries + Philippines
   Austria: 'en',
-  Bahamas: 'en',
-  Barbados: 'en',
   Belgium: 'en',
-  Brazil: 'en',
-  Canada: 'en',
-  'Cayman Islands': 'en',
-  China: 'en',
-  'Costa Rica': 'en',
-  Croatia: 'en',
-  Cyprus: 'en',
+  Bulgaria: 'en',
   'Czech Republic': 'en',
-  France: 'en',
   Germany: 'en',
-  Greece: 'en',
-  'Holy See (Vatican City State)': 'en',
-  'Hong Kong': 'en',
-  Iceland: 'en',
-  India: 'en',
-  Ireland: 'en',
-  Israel: 'en',
+  Denmark: 'en',
+  Estonia: 'en',
+  Finland: 'en',
+  France: 'en',
+  Croatia: 'en',
+  Hungary: 'en',
   Italy: 'en',
-  Japan: 'en',
-  Liechtenstein: 'en',
+  Lithuania: 'en',
   Luxembourg: 'en',
-  Macao: 'en',
-  Malaysia: 'en',
-  Malta: 'en',
-  Martinique: 'en',
-  Mexico: 'en',
-  Monaco: 'en',
+  Latvia: 'en',
   Netherlands: 'en',
-  'New Zealand': 'en',
+  Philippines: 'en',
   Poland: 'en',
   Portugal: 'en',
-  'Puerto Rico': 'en',
-  'San Marino': 'en',
-  Singapore: 'en',
-  'South Africa': 'en',
-  'South Korea': 'en',
+  Romania: 'en',
+  Sweden: 'en',
+  Slovenia: 'en',
+  Slovakia: 'en',
   Spain: 'en',
-  Switzerland: 'en',
-  Turkey: 'en',
+
+  // Additional markets for future expansion
+  Norway: 'en',
   'United Kingdom': 'en',
-  'United States of America': 'en',
+  Switzerland: 'en',
 };
 
 export const availableCountries = Object.keys(countryToMarketMapping);
 
-// URL locale configuration (for routing only)
+// URL locale configuration (for routing only) - simplified for single language
 export const marketConfigMapping = {
-  sv: { label: 'SV', countryCode: 'sv', currency: 'SEK' },
-  fi: { label: 'FI', countryCode: 'fi', currency: 'EUR' },
-  en: { label: 'EN', countryCode: 'gb', currency: 'USD' },
+  en: { label: 'EN', countryCode: 'gb', currency: 'EUR' }, // Default to EUR for most markets
 } as const;
 
 export const supportedMarkets = Object.keys(marketConfigMapping) as Array<keyof typeof marketConfigMapping>;
 
 // Currency mapping by country (independent of URL routing)
 // This determines which currency to use for each country
+// Supports: EUR, SEK, DKK, NOK, GBP
 export const countryToCurrencyMapping: Record<string, string> = {
   // SEK countries
   Sweden: 'SEK',
 
+  // DKK countries
+  Denmark: 'DKK',
+
   // NOK countries
   Norway: 'NOK',
 
-  // EUR countries (EU members)
-  Denmark: 'EUR',
-  Finland: 'EUR',
-  Estonia: 'EUR',
-  Latvia: 'EUR',
-  Lithuania: 'EUR',
-  'Åland Islands': 'EUR',
+  // GBP countries
+  'United Kingdom': 'GBP',
+
+  // EUR countries (24 EU target markets + Philippines)
+  // Target EU countries
   Austria: 'EUR',
   Belgium: 'EUR',
-  Croatia: 'EUR',
-  Cyprus: 'EUR',
+  Bulgaria: 'EUR',
   'Czech Republic': 'EUR',
-  France: 'EUR',
   Germany: 'EUR',
-  Greece: 'EUR',
-  'Holy See (Vatican City State)': 'EUR',
-  Ireland: 'EUR',
+  Estonia: 'EUR',
+  Finland: 'EUR',
+  France: 'EUR',
+  Croatia: 'EUR',
+  Hungary: 'EUR',
   Italy: 'EUR',
+  Lithuania: 'EUR',
   Luxembourg: 'EUR',
-  Malta: 'EUR',
-  Monaco: 'EUR',
+  Latvia: 'EUR',
   Netherlands: 'EUR',
   Poland: 'EUR',
   Portugal: 'EUR',
-  'San Marino': 'EUR',
+  Romania: 'EUR',
+  Slovenia: 'EUR',
+  Slovakia: 'EUR',
   Spain: 'EUR',
 
-  // USD countries (non-EU)
-  Australia: 'USD',
-  Bahamas: 'USD',
-  Barbados: 'USD',
-  Brazil: 'USD',
-  Canada: 'USD',
-  'Cayman Islands': 'USD',
-  China: 'USD',
-  'Costa Rica': 'USD',
-  'Hong Kong': 'USD',
-  Iceland: 'USD',
-  India: 'USD',
-  Israel: 'USD',
-  Japan: 'USD',
-  Liechtenstein: 'USD',
-  Macao: 'USD',
-  Malaysia: 'USD',
-  Martinique: 'USD',
-  Mexico: 'USD',
-  'New Zealand': 'USD',
-  'Puerto Rico': 'USD',
-  Singapore: 'USD',
-  'South Africa': 'USD',
-  'South Korea': 'USD',
-  Switzerland: 'USD',
-  Turkey: 'USD',
-  'United Kingdom': 'USD',
-  'United States of America': 'USD',
+  // Philippines (target market)
+  Philippines: 'EUR',
+
+  // Additional markets for future expansion
+  Switzerland: 'EUR',
 };
 
 // Helper function to get currency for a country
 export const getCurrencyForCountry = (country: string): string => {
-  return countryToCurrencyMapping[country] || 'USD';
+  return countryToCurrencyMapping[country] || 'EUR';
 };
 
-// Helper function to get the currency key for Findify pricing (e.g., 'price_sek', 'price_eur')
+// Helper function to get the currency key for pricing (e.g., 'price_sek', 'price_eur')
 export const getCurrencyPriceKey = (country: string): string => {
   const currency = getCurrencyForCountry(country);
   return `price_${currency.toLowerCase()}`;
 };
 
-// Helper function to get the discount key for Findify pricing (e.g., 'discount_sek', 'discount_eur')
+// Helper function to get the discount key for pricing (e.g., 'discount_sek', 'discount_eur')
 export const getCurrencyDiscountKey = (country: string): string => {
   const currency = getCurrencyForCountry(country);
   return `discount_${currency.toLowerCase()}`;

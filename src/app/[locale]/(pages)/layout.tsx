@@ -15,11 +15,17 @@ type IProps = PropsWithChildren<{
 
 const layout: React.FC<IProps> = async ({ params, children }) => {
   const { locale } = await params;
-  const config = await getStoryblokConfig(locale);
-  if (!config) return null;
+
+  let config = null;
+  try {
+    config = await getStoryblokConfig(locale);
+  } catch {
+    console.warn('[Pages Layout] Failed to fetch Storyblok config, using default layout');
+    // Continue without config - the DefaultLayout should handle missing config
+  }
 
   return (
-    <DefaultLayout config={config.story} locale={locale}>
+    <DefaultLayout config={config?.story} locale={locale}>
       {children}
       {/* <ZendeskChat /> */}
     </DefaultLayout>

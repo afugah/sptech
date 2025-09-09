@@ -14,14 +14,14 @@ interface IProps {
   children: ReactNode;
   isCtaNewsletterShow?: boolean;
   locale?: string;
-  config: {
+  config?: {
     name: string;
     content: Config;
-  };
+  } | null;
 }
 
 const DefaultLayout: React.FC<IProps> = async ({ children, config, locale, isCtaNewsletterShow = true }) => {
-  if (!config) return null;
+  // Allow layout to render even without config - just skip config-dependent features
 
   // Fetch footer data from PayloadCMS
   let footerData = null;
@@ -48,21 +48,21 @@ const DefaultLayout: React.FC<IProps> = async ({ children, config, locale, isCta
 
   return (
     <div>
-      {!!config.content.infoBar?.length && showInfobar && (
+      {config && !!config.content.infoBar?.length && showInfobar && (
         <div className={'relative'}>
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <InfoBar blok={config.content.infoBar[0] as any} />
         </div>
       )}
 
-      {!!config.content.intro_modal?.[0] && showInfobar && (
+      {config && !!config.content.intro_modal?.[0] && showInfobar && (
         <div className={'relative'}>
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <IntroModalBlock blok={config.content.intro_modal[0] as any} />
         </div>
       )}
 
-      {!!config.content.infoBarUnder?.length && showInfobar && (
+      {config && !!config.content.infoBarUnder?.length && showInfobar && (
         <div className={'relative'}>
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <InfoBar blok={config.content.infoBarUnder[0] as any} />
@@ -73,7 +73,7 @@ const DefaultLayout: React.FC<IProps> = async ({ children, config, locale, isCta
       <LoginForm />
       {children}
       <div className={'relative'}>
-        {!!config.content.usp && config.content.usp.length > 0 && (
+        {config && !!config.content.usp && config.content.usp.length > 0 && (
           <StoryblokComponent blok={config.content.usp[0]} key={config.content.usp[0]._uid} />
         )}
       </div>
@@ -81,7 +81,7 @@ const DefaultLayout: React.FC<IProps> = async ({ children, config, locale, isCta
         isCtaNewsletterShow={isCtaNewsletterShow}
         footerData={footerData}
         socialMediaLinks={socialMediaLinks ?? undefined}
-        logos={config.content.logos}
+        logos={config?.content.logos}
       />
     </div>
   );

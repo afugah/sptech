@@ -3,7 +3,9 @@ import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { initConfig } from '@/src/lib/configuration';
 import { Tokens } from '@/src/lib/diTokens';
+import { collectionRepositoryFactory } from '@/src/lib/framework/Collection/repositories/CollectionRepositoryFactory';
 import { loggerServiceFactory } from '@/src/lib/framework/Logger/services/LoggerServiceFactory';
+import { productRepositoryFactory } from '@/src/lib/framework/Product/repositories/ProductRepositoryFactory';
 
 /**
  * Only global containers are registered here.
@@ -26,5 +28,7 @@ import { loggerServiceFactory } from '@/src/lib/framework/Logger/services/Logger
 
 container.register(Tokens.Configuration, { useValue: initConfig() });
 container.register(Tokens.LoggerService, loggerServiceFactory);
+container.register(Tokens.ProductRepository, productRepositoryFactory);
+container.register(Tokens.CollectionRepository, collectionRepositoryFactory);
 
 export const di = Object.assign(container, { Tokens });

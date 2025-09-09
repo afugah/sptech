@@ -6,16 +6,22 @@ initStoryblok();
 
 export const getStoryblokConfig = async (locale: string) => {
   const config = di.resolve(di.Tokens.Configuration);
-  const language = config.getLanguage(locale);
+  const _language = config.getLanguage(locale) || locale || 'en'; // Default to locale or 'en' if undefined
 
   const storyblokApi = getStoryblokApi();
 
   const sbParams: ISbStoriesParams = {
     version: process.env.NODE_ENV === 'development' ? 'draft' : 'published',
-    language,
+    language: 'default', // Always use 'default' language for config as it's language-agnostic
   };
 
-  const { data } = await storyblokApi.get('cdn/stories/config/config-general', sbParams);
+  // Config logging removed - production ready
 
-  return data;
+  try {
+    const { data } = await storyblokApi.get('cdn/stories/config/config-general', sbParams);
+    return data;
+  } catch (error) {
+    console.error('[getStoryblokConfig] Error fetching config:', error);
+    throw error;
+  }
 };

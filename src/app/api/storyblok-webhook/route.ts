@@ -49,22 +49,10 @@ function getWebhookConfig(): WebhookConfig {
   const locales: string[] = [];
   const marketLanguageMap: Record<string, string> = {};
 
-  // Main market locales
+  // Main market locales - simplified for single language setup
   supportedMarkets.forEach((market) => {
     locales.push(market);
-
-    // Map market to its default language
-    switch (market) {
-      case 'sv':
-        marketLanguageMap[market] = 'sv'; // Swedish market uses Swedish language
-        break;
-      case 'fi':
-        marketLanguageMap[market] = 'fi'; // Finnish market uses Finnish language
-        break;
-      case 'en':
-        marketLanguageMap[market] = 'en'; // English market uses English language
-        break;
-    }
+    marketLanguageMap[market] = 'en'; // All markets use English language
   });
 
   // Combined market-language locales (from routing.ts)

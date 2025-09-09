@@ -2,7 +2,7 @@ import { useLocale } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { getCurrentCountry } from '@/src/lib/constants/markets';
 
-export type ProductDataSource = 'findify' | 'elastic' | 'storyblok' | 'none';
+export type ProductDataSource = 'findify' | 'elastic' | 'typesense' | 'storyblok' | 'none';
 
 interface ProductData {
   id: string;
@@ -55,9 +55,19 @@ export function useProductDataWithFallback(id: string | null): UseProductDataRes
         // Get the selected country from localStorage
         const country = getCurrentCountry();
 
+        // Determine which endpoint to use based on feature flag
+        const useDirectApi = process.env.NEXT_PUBLIC_USE_DIRECT_ELASTIC_API === 'true';
+
+        // Support gradual rollout with percentage
+        const rolloutPercentage = parseInt(process.env.NEXT_PUBLIC_ELASTIC_DIRECT_ROLLOUT || '0');
+        const shouldUseDirectApi = useDirectApi || (rolloutPercentage > 0 && Math.random() * 100 < rolloutPercentage);
+
+        // Choose endpoint based on configuration
+        const endpoint = shouldUseDirectApi ? 'elasticsearch' : 'elastic';
+
         // Only use Elastic search for individual products
         const elasticResponse = await fetch(
-          `/api/product/elastic/${id}?locale=${locale}&country=${encodeURIComponent(country)}`,
+          `/api/product/${endpoint}/${id}?locale=${locale}&country=${encodeURIComponent(country)}`,
         );
 
         if (elasticResponse.ok) {

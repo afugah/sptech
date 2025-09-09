@@ -1,3 +1,4 @@
+export { ColorVariants } from './ColorVariants';
 export { ProductCardBase } from './ProductCardBase';
 export { ProductImage } from './ProductImage';
 export { ProductPrice } from './ProductPrice';

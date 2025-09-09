@@ -5,6 +5,7 @@ import { type ISearchConfigurationWithMarket } from '@/src/lib/configuration/sea
 import { SearchEngineEnum } from '@/src/lib/configuration/search/constants';
 import { SearchConfigurationElasticSearch } from '@/src/lib/configuration/search/ElasticSearch';
 import { SearchConfigurationFindify } from '@/src/lib/configuration/search/Findify';
+import { SearchConfigurationTypesense } from '@/src/lib/configuration/search/Typesense';
 
 export class SearchConfiguration {
   @Expose({ name: 'engine' })
@@ -49,8 +50,26 @@ export class SearchConfiguration {
   @IsNotEmpty()
   public ElasticSearch!: SearchConfigurationElasticSearch;
 
+  @Expose({ name: 'typesense' })
+  @Type(() => SearchConfigurationTypesense)
+  @ValidateNested()
+  @ValidateIf((o: SearchConfiguration) => o.Engine === SearchEngineEnum.TYPESENSE)
+  @IsNotEmpty()
+  public Typesense!: SearchConfigurationTypesense;
+
   @Expose()
   public get Markets(): { code: string; defaultLanguage: string; shoplabId: number }[] {
+    // For Typesense, we don't use the market-based system like Algolia/Findify
+    if (this.Engine === SearchEngineEnum.TYPESENSE) {
+      return [
+        {
+          code: 'en', // Single English market
+          defaultLanguage: this.Typesense.Language,
+          shoplabId: 1, // Default shoplab ID
+        },
+      ];
+    }
+
     return Array.from(this.ActiveSearchEngine)
       .sort(([code]) => (this.DefaultMarket ? (code === this.DefaultMarket ? -1 : 0) : 0))
       .map(([code, { Language, ShoplabId }]) => ({

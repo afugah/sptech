@@ -45,6 +45,11 @@ export type CheckoutContext = {
   syncKlarnaOrder: () => void;
   klarnaOrder: KlarnaCheckoutResponse | undefined;
 
+  // Walley payment provider functions
+  createWalleyCheckout: (merchantTermsUri: string, redirectPageUri: string) => Promise<void>;
+  syncWalleyCheckout: () => Promise<void>;
+  walleyCheckoutToken: string | undefined;
+
   // When restoring other payment providers, add their properties here
   // Example for Adyen:
   // startAdyenSession?: (adyenOptions: AdyenSessionsRequest) => void;
@@ -64,6 +69,10 @@ const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   const [ingridHtmlSnippet, setIngridHtmlSnippet] = useState<string>();
   const [klarnaOrder, setKlarnaOrder] = useState<KlarnaCheckoutResponse | undefined>(undefined);
   const [klarnaUrl, setKlarnaUrl] = useState<{ checkoutUrl: string; confirmationUrl: string }>();
+  const [walleyCheckoutToken, setWalleyCheckoutToken] = useLocalStorage<string | undefined>(
+    'walley-checkout-token',
+    undefined,
+  );
 
   const [postalCode, setPostalCode] = useState<string>('');
   const [checkoutLoaded, setCheckoutLoaded] = useState<boolean>(false);
@@ -78,6 +87,7 @@ const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
     setShopperCheckout(undefined);
     setPostalCode('');
     setCheckoutToken(undefined);
+    setWalleyCheckoutToken(undefined);
     setStep('');
     setIsAllowedDespiteStock(false);
   };
@@ -392,6 +402,58 @@ const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
     }
   };
 
+  const createWalleyCheckout = async (merchantTermsUri: string, redirectPageUri: string) => {
+    await fetch('/api/checkout/walley/create-checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${shopperCheckout?.token}`,
+      },
+      body: JSON.stringify({
+        walley: {
+          merchantTermsUri: merchantTermsUri,
+          redirectPageUri: redirectPageUri,
+        },
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      })
+      .then((res) => {
+        if (res.error) {
+          throw new Error(res.error);
+        }
+        setWalleyCheckoutToken(res.walley.publicToken);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const syncWalleyCheckout = async () => {
+    if (walleyCheckoutToken) {
+      await fetch('/api/checkout/walley/sync-checkout', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${shopperCheckout?.token}`,
+        },
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(res.statusText);
+          }
+          return res.json();
+        })
+        .then((res) => {
+          setWalleyCheckoutToken(res.walley.publicToken);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
   const addRetain24GiftCard = async (body: IRetain24.GiftCartUseRequest, token = shopperCheckout?.token) =>
     await fetch('/api/checkout/retain24/gift-card', {
       method: 'PUT',
@@ -462,6 +524,11 @@ const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
         createKlarnaOrder,
         syncKlarnaOrder,
         klarnaOrder,
+
+        // Walley payment provider functions
+        createWalleyCheckout,
+        syncWalleyCheckout,
+        walleyCheckoutToken,
       }}
     >
       {children}

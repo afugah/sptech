@@ -10,11 +10,11 @@
 
 export const PAYMENT_FEATURES = {
   // Currently active payment providers
-  KLARNA: true,
+  WALLEY: true,
 
-  // Disabled payment providers - enable as needed
+  // Disabled payment providers
+  KLARNA: false,
   ADYEN: false,
-  WALLEY: false,
   QLIRO: false,
   SVEA: false,
 };

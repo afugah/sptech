@@ -15,6 +15,17 @@ interface IConfigurationRaw {
     findify: { [key: string]: IConfigurationRawSearchEngineWithMarket } | null | undefined;
     algolia: { [key: string]: IConfigurationRawSearchEngineWithMarket } | null | undefined;
     elasticSearch: IConfigurationRawSearchEngine | null | undefined;
+    typesense:
+      | {
+          host: string | null | undefined;
+          port: number | null | undefined;
+          protocol: string | null | undefined;
+          apiKey: string | null | undefined;
+          collection: string | null | undefined;
+          defaultLanguage: string | null | undefined;
+        }
+      | null
+      | undefined;
   };
   reviews: {
     apiUrl: string | null | undefined;
@@ -42,6 +53,14 @@ export const appConfig: IConfigurationRaw = {
       apiKey: process.env.SEARCH_ELASTIC_API_KEY,
       apiWarehouseUrl: process.env.SEARCH_ELASTIC_WAREHOUSE_API_URL,
       defaultLanguage: process.env.SEARCH_ELASTIC_DEFAULT_LANGUAGE,
+    },
+    typesense: {
+      host: process.env.SEARCH_TYPESENSE_HOST,
+      port: process.env.SEARCH_TYPESENSE_PORT ? parseInt(process.env.SEARCH_TYPESENSE_PORT, 10) : null,
+      protocol: process.env.SEARCH_TYPESENSE_PROTOCOL,
+      apiKey: process.env.SEARCH_TYPESENSE_API_KEY,
+      collection: process.env.SEARCH_TYPESENSE_COLLECTION,
+      defaultLanguage: process.env.SEARCH_TYPESENSE_DEFAULT_LANGUAGE,
     },
   },
   reviews: process.env.REVIEWS_PROVIDER
@@ -99,6 +118,13 @@ searchEngineEnvs.forEach(([key, value]) => {
  * Doesn't have any validation.
  */
 export const getMarketAndLanguageListDangerously = (): [string[], string] => {
+  // Handle Typesense separately as it uses a single language configuration
+  if (appConfig.search.engine === 'TYPESENSE') {
+    const locales = ['en']; // Single English locale for Typesense
+    const defaultLocale = 'en';
+    return [locales, defaultLocale];
+  }
+
   const activeMarket = appConfig.search.engine === 'FINDIFY' ? appConfig.search.findify : appConfig.search.algolia;
 
   const languages: string[] = appConfig.languages!;

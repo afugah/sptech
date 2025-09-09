@@ -20,7 +20,7 @@ export interface IMarketSelectorProps {
   bgColor?: boolean;
 }
 
-export type MarketCode = 'sv' | 'fi' | 'en';
+export type MarketCode = 'en';
 
 export type SupportedMarkets = {
   [K in MarketCode]: IMarketConfig;

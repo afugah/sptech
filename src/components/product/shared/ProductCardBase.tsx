@@ -6,6 +6,7 @@ import React from 'react';
 import { useFindifyAnalytics } from '@/src/context/findifyAnalytics/findifyAnalyticsContext';
 import { Link } from '@/src/i18n/navigation';
 import { type IFindify } from '@/src/lib/framework/Collection/types/IFindify';
+import { ColorVariants } from './ColorVariants';
 import { ProductImage } from './ProductImage';
 import { ProductPrice } from './ProductPrice';
 import { ProductTags } from './ProductTags';
@@ -49,10 +50,10 @@ export const ProductCardBase: React.FC<ProductCardBaseProps> = ({
   showDate = false,
   showSalePrice = true,
   wishlistCheckBy = 'sku',
-  cardClassName = 'relative h-full shadow-lg w-full min-w-0',
-  contentClassName = 'relative flex flex-1 flex-col justify-center bg-white px-2 py-2 text-center sm:px-3 sm:py-3 lg:py-4',
-  titleClassName = 'mb-1 truncate px-1 font-sans text-xs font-bold uppercase tracking-wider sm:mb-2 lg:mb-3 lg:px-3 lg:text-md',
-  priceClassName,
+  cardClassName = 'relative h-full w-full min-w-0 group',
+  contentClassName = 'relative flex flex-1 flex-col bg-white px-0 py-3 text-left',
+  titleClassName = 'mb-2 text-sm font-normal text-gray-900 leading-tight',
+  priceClassName = 'text-sm font-medium text-gray-900',
   children,
 }) => {
   const { emitFeedback } = useFindifyAnalytics();
@@ -83,15 +84,9 @@ export const ProductCardBase: React.FC<ProductCardBaseProps> = ({
         <ProductImage src={thumbnail?.url || ''} hoverSrc={thumbnail?.hoverUrl || undefined} alt={title} priority />
 
         <div className={contentClassName}>
-          <hr
-            className={
-              'absolute left-1/2 top-0 mx-auto mb-3 w-3/5 -translate-x-1/2 transform border-gray-300 sm:mb-4 lg:mb-5 lg:w-2/5'
-            }
-          />
-
-          <div className={'mb-2 flex flex-col tracking-wide'}>
+          <div className={'flex flex-col'}>
             {showDate && created_at && (
-              <span className={'mb-1 text-xs text-secondary opacity-50'}>
+              <span className={'mb-1 text-xs text-gray-500'}>
                 {format.dateTime(new Date(created_at), {
                   year: 'numeric',
                   month: 'short',
@@ -112,6 +107,9 @@ export const ProductCardBase: React.FC<ProductCardBaseProps> = ({
                   className={priceClassName}
                 />
               ))}
+
+            {/* Color Variant Indicators */}
+            <ColorVariants />
           </div>
         </div>
       </Link>

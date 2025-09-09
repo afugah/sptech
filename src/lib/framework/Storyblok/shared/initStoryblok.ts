@@ -3,8 +3,11 @@ import { storyblokComponents } from '@/src/components/blocks';
 
 export const initStoryblok = (): void => {
   try {
+    const token = process.env.NEXT_PUBLIC_STORYBLOK_TOKEN;
+    // Initialization logging removed - production ready
+
     storyblokInit({
-      accessToken: process.env.NEXT_PUBLIC_STORYBLOK_TOKEN,
+      accessToken: token,
       use: [apiPlugin],
       components: storyblokComponents,
     });

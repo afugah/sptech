@@ -3,6 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense } from 'react';
 import { useElasticProductData } from '@/src/hooks/useElasticProductData';
+import { useTypesenseProductData } from '@/src/hooks/useTypesenseProductData';
 import { type IFindify } from '@/src/lib/framework/Collection/types/IFindify';
 import { ProductCardBase, ProductPrice, ProductSourceLabel } from './shared';
 
@@ -23,15 +24,33 @@ const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
   const { name, image, id } = product;
   const showDates = useSearchParams().get('showDates') === 'true';
 
-  const { product: elasticProduct, loading: elasticLoading, error } = useElasticProductData(id); // Get product data from Elastic using product ID
+  // Check if Typesense is enabled
+  const useTypesense = process.env.NEXT_PUBLIC_USE_DIRECT_TYPESENSE_API === 'true';
+
+  // Use Typesense or Elastic based on configuration
+  const {
+    product: elasticProduct,
+    loading: elasticLoading,
+    error: elasticError,
+  } = useElasticProductData(useTypesense ? null : id);
+  const {
+    product: typesenseProduct,
+    loading: typesenseLoading,
+    error: typesenseError,
+  } = useTypesenseProductData(useTypesense ? id : null);
+
+  // Determine which product data to use
+  const dataProduct = useTypesense ? typesenseProduct : elasticProduct;
+  const loading = useTypesense ? typesenseLoading : elasticLoading;
+  const error = useTypesense ? typesenseError : elasticError;
 
   // Show loading state while fetching product data
-  if (elasticLoading) {
+  if (loading) {
     return <div className={'bg-gray-100 h-96 animate-pulse rounded'} />;
   }
 
-  // If no product found in Elastic, return null in production or show debug info in development
-  if (error && !elasticProduct) {
+  // If no product found, return null in production or show debug info in development
+  if (error && !dataProduct) {
     // Only show debug information in non-production environments
     if (process.env.NODE_ENV === 'development' || process.env.NEXT_PUBLIC_ENVIRONMENT === 'staging') {
       return (
@@ -40,7 +59,9 @@ const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
             <h3 className={'text-sm font-bold'}>Product Not Found</h3>
             <p className={'mt-2 text-xs'}>Product ID: {id}</p>
             <p className={'mt-2 text-xs text-gray-600'}>Product: {name}</p>
-            <p className={'mt-1 text-xs text-red-600'}>No product found in Elastic search</p>
+            <p className={'mt-1 text-xs text-red-600'}>
+              No product found in {useTypesense ? 'Typesense' : 'Elastic'} search
+            </p>
           </div>
         </div>
       );
@@ -51,22 +72,22 @@ const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
 
   // Determine source and data
   let baseProduct;
-  let dataSource: 'elastic' | 'storyblok' = 'elastic';
+  let dataSource: 'elastic' | 'typesense' | 'storyblok' = useTypesense ? 'typesense' : 'elastic';
 
-  if (elasticProduct) {
-    // We have data from Elastic search
+  if (dataProduct) {
+    // We have data from search engine (Typesense or Elastic)
     baseProduct = {
-      id: elasticProduct.id,
-      sku: elasticProduct.sku,
-      slug: elasticProduct.slug,
-      title: elasticProduct.title,
-      price: elasticProduct.price,
-      thumbnail: elasticProduct.thumbnail,
-      tags: elasticProduct.tags,
-      compareAt: elasticProduct.compareAt,
-      pricing: elasticProduct.pricing as IFindify.PricingStructure | undefined,
-      created_at: typeof elasticProduct.created_at === 'string' ? elasticProduct.created_at : undefined,
-      custom_fields: elasticProduct.custom_fields,
+      id: dataProduct.id,
+      sku: dataProduct.sku,
+      slug: dataProduct.slug,
+      title: dataProduct.title,
+      price: dataProduct.price,
+      thumbnail: dataProduct.thumbnail,
+      tags: dataProduct.tags,
+      compareAt: dataProduct.compareAt,
+      pricing: dataProduct.pricing as IFindify.PricingStructure | undefined,
+      created_at: typeof dataProduct.created_at === 'string' ? dataProduct.created_at : undefined,
+      custom_fields: dataProduct.custom_fields,
     };
   } else {
     // Fallback to Storyblok data only
@@ -99,10 +120,10 @@ const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
     >
       <div className={'flex flex-col gap-1'}>
         <ProductSourceLabel source={dataSource} className={'mb-1 self-start'} />
-        {/* Only show price if we have data from Elastic (not Storyblok only) */}
-        {dataSource === 'elastic' && (
+        {/* Only show price if we have data from search engine (not Storyblok only) */}
+        {(dataSource === 'elastic' || dataSource === 'typesense') && (
           <ProductPrice
-            price={0} // Don't use the base price from Elastic as it's hardcoded to SEK
+            price={0} // Don't use the base price as it's hardcoded to SEK
             compareAt={baseProduct.compareAt}
             pricing={baseProduct.pricing}
             customFields={baseProduct.custom_fields}
