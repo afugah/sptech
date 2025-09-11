@@ -2,31 +2,31 @@
 @layer base {
   b,
   strong {
-    @apply font-serif font-bold leading-relaxed;
+    @apply font-sans font-bold leading-relaxed;
   }
 
   h1 {
-    @apply font-serif text-4xl leading-relaxed;
+    @apply font-sans text-4xl leading-relaxed;
   }
 
   h2 {
-    @apply font-serif text-3xl leading-tight;
+    @apply font-sans text-3xl leading-tight;
   }
 
   h3 {
-    @apply font-serif text-2xl leading-tight;
+    @apply font-sans text-2xl leading-tight;
   }
 
   h4 {
-    @apply font-serif text-xl leading-tight;
+    @apply font-sans text-xl leading-tight;
   }
 
   h5 {
-    @apply font-serif text-lg leading-tight;
+    @apply font-sans text-lg leading-tight;
   }
 
   h6 {
-    @apply font-serif text-base leading-tight;
+    @apply font-sans text-base leading-tight;
   }
   :root {
     --background: 0 0% 100%;
