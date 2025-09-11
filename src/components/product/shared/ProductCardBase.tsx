@@ -51,7 +51,7 @@ export const ProductCardBase: React.FC<ProductCardBaseProps> = ({
   showSalePrice = true,
   wishlistCheckBy = 'sku',
   cardClassName = 'relative h-full w-full min-w-0 group',
-  contentClassName = 'relative flex flex-1 flex-col bg-white px-0 py-3 text-left',
+  contentClassName = 'absolute bottom-4 left-4 flex flex-col',
   titleClassName = 'mb-2 text-sm font-normal text-gray-900 leading-tight',
   priceClassName = 'text-sm font-medium text-gray-900',
   children,
@@ -81,6 +81,7 @@ export const ProductCardBase: React.FC<ProductCardBaseProps> = ({
           'hover:[&_.thumbnail>.thumbnail-hover]:opacity-100': !!thumbnail?.hoverUrl,
         })}
       >
+        <ColorVariants />
         <ProductImage src={thumbnail?.url || ''} hoverSrc={thumbnail?.hoverUrl || undefined} alt={title} priority />
 
         <div className={contentClassName}>
@@ -94,7 +95,6 @@ export const ProductCardBase: React.FC<ProductCardBaseProps> = ({
                 })}
               </span>
             )}
-
             <h2 className={titleClassName}>{title}</h2>
 
             {children ||
@@ -107,9 +107,6 @@ export const ProductCardBase: React.FC<ProductCardBaseProps> = ({
                   className={priceClassName}
                 />
               ))}
-
-            {/* Color Variant Indicators */}
-            <ColorVariants />
           </div>
         </div>
       </Link>

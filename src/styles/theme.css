@@ -40,12 +40,11 @@
   --color-seashell-dark: #f0efe9;
 
   /* Typography */
-  --font-family-primary: 'Recline', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-family-secondary: 'HTFDidot', 'Didot', Georgia, 'Times New Roman', serif;
-  --font-family-lato: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-family-didot: 'Didot', 'HTFDidot', Georgia, 'Times New Roman', serif;
+  --font-family-primary: 'Söhne', -apple-system, sans-serif;
+  --font-family-secondary: 'Söhne', -apple-system, sans-serif;
   --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-/* Example additional font */
+  --font-family-sohne: 'Söhne', -apple-system, sans-serif;
+  /* Example additional font */
 
   /* Font Sizes */
   --font-size-xxs: 0.7rem; /* 11.2px */

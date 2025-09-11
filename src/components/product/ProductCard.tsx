@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense } from 'react';
 import { type ICollectionItem } from '@/src/lib/framework/Collection/domain/entities/ICollectionItem';
-import { ProductCardBase, ProductPrice, ProductSourceLabel } from './shared';
+import { ProductCardBase, ProductPrice } from './shared';
 
 interface ICardProps {
   product: ICollectionItem;
@@ -36,7 +36,6 @@ const CardComponent: React.FC<ICardProps> = ({ product }) => {
       wishlistCheckBy={'id'}
     >
       <div className={'flex flex-col gap-1'}>
-        <ProductSourceLabel source={'findify'} className={'mb-1 self-start'} />
         <ProductPrice
           price={product.price}
           compareAt={product.compare_at ?? undefined}

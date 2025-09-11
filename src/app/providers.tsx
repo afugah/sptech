@@ -3,7 +3,6 @@
 import 'reflect-metadata';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { Amplify } from 'aws-amplify';
-import { Lato } from 'next/font/google';
 import localFont from 'next/font/local';
 import { SessionProvider } from 'next-auth/react';
 import React, { type PropsWithChildren } from 'react';
@@ -24,25 +23,35 @@ import SizeGuideDrawerProvider from '../context/sizeGuideDrawer';
 import UserDrawerProvider from '../context/userDrawerContext';
 import { WishlistProvider } from '../context/wishlistContext';
 
-const lato = Lato({
-  subsets: ['latin'],
-  weight: ['100', '300', '400', '700'],
-  variable: '--font-lato',
-});
-const didot = localFont({
+const sohne = localFont({
   src: [
     {
-      path: '../fonts/HTFDidot-Light42.otf',
+      path: '../fonts/sohnebuchLeicht.otf',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/sohnebuch.ttf',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../fonts/HTFDidot-LightIta42.otf',
-      weight: '400',
-      style: 'italic',
+      path: '../fonts/sohnebuchKraftig.ttf',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/sohnebuchHalbfett.otf',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/sohnebuchDreiviertelfett.otf',
+      weight: '700',
+      style: 'normal',
     },
   ],
-  variable: '--font-didot',
+  variable: '--font-sohne',
 });
 
 const queryClient = new QueryClient();
@@ -65,7 +74,7 @@ export function Providers({ children }: PropsWithChildren) {
   // This ensures consistent rendering between server and client
   React.useEffect(() => {
     // Add font variables to document after client-side hydration
-    document.documentElement.classList.add(lato.variable, didot.variable);
+    document.documentElement.classList.add(sohne.variable);
   }, []);
 
   return (

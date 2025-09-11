@@ -19,7 +19,7 @@ const TitleSubtitle = ({ title, subtitle, titleColor, subtitleColor, titleSize, 
             color: titleColor,
           }}
           className={cn(
-            'md:text-x relative z-10 pb-8 pt-11 text-center font-lato text-sm font-bold uppercase sm:pt-14 md:pb-16 md:pt-16',
+            'md:text-x relative z-10 pb-8 pt-11 text-center text-sm font-bold uppercase sm:pt-14 md:pb-16 md:pt-16',
           )}
         >
           {title}
@@ -28,7 +28,7 @@ const TitleSubtitle = ({ title, subtitle, titleColor, subtitleColor, titleSize, 
       {!!subtitle && (
         <h4
           className={cn(
-            `absolute left-0 right-0 top-0 z-0 pb-6 pt-9 text-center  font-didot font-medium uppercase  text-opacity-60 lg:pt-5`,
+            `absolute left-0 right-0 top-0 z-0 pb-6 pt-9 text-center font-medium uppercase  text-opacity-60 lg:pt-5`,
             titleSize,
             hideTitleOnMobile && 'hidden sm:block',
           )}

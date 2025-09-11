@@ -37,7 +37,7 @@ const defaultVariants: ColorVariant[] = [
 
 export const ColorVariants: React.FC<ColorVariantsProps> = ({
   variants = defaultVariants,
-  className = 'flex gap-1 mt-3',
+  className = 'flex gap-2 absolute top-6 left-6 z-10',
   onColorHover,
   onColorClick,
 }) => {
@@ -71,10 +71,10 @@ export const ColorVariants: React.FC<ColorVariantsProps> = ({
         <div
           key={`${variant.color}-${index}`}
           className={`
-            h-4 w-4 cursor-pointer rounded-full border border-gray-300 
+            h-2 w-7 cursor-pointer border
             transition-transform duration-200 ease-in-out hover:scale-110
             ${variant.bgColor}
-            ${hoveredVariant?.color === variant.color ? 'ring-2 ring-gray-400 ring-offset-1' : ''}
+            ${hoveredVariant?.color === variant.color ? '' : ''}
           `}
           title={variant.title}
           onMouseEnter={() => handleMouseEnter(variant)}
