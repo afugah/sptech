@@ -27,9 +27,7 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
     newTitleColor,
     titleSize,
     backgroundColor,
-    subtitleColor,
     itemsPerView,
-    subtitle,
     products,
     findifyProducts,
     layoutMode,
@@ -51,10 +49,6 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
     isColorPicker(newTitleColor) && (newTitleColor as StoryblokColorPicker)?.color
       ? (newTitleColor as StoryblokColorPicker)?.color
       : '#000000';
-  const getSubtitleColor =
-    isColorPicker(subtitleColor) && (subtitleColor as StoryblokColorPicker)?.color
-      ? (subtitleColor as StoryblokColorPicker)?.color
-      : '#ffffff';
 
   const titleSizeClass = (titleSize && sizeConst[titleSize]) || 'text-4xl sm:text-6xl  md:text-8xl lg:text-9xl';
   const checLayoutMode = itemsPerView && (Number(itemsPerView) as number) < 4 ? 'grid' : layoutMode || 'grid';
@@ -90,14 +84,8 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
 
   if (checLayoutMode === 'carousel') {
     return (
-      <div style={backgroundStyle} className={cn('relative w-full py-8', finalBackgroundClass || 'bg-seashell')}>
-        <TitleSubtitle
-          title={title}
-          subtitle={subtitle}
-          titleColor={getTitleColor}
-          subtitleColor={getSubtitleColor}
-          titleSize={titleSizeClass}
-        />
+      <div style={backgroundStyle} className={cn('relative w-full py-2', finalBackgroundClass || 'bg-seashell')}>
+        <TitleSubtitle title={title} titleColor={getTitleColor} titleSize={titleSizeClass} />
         {(shouldUseFindifyProducts || (defaultProducts && defaultProducts.length > 0)) && !isLoadingFindify && (
           <Carousel
             className={cn('w-full bg-transparent px-9 md:px-14')}
@@ -151,20 +139,11 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
   }
 
   return (
-    <div
-      style={backgroundStyle}
-      className={cn('relative w-full px-2 py-8 lg:px-10', finalBackgroundClass || 'bg-seashell')}
-    >
-      <TitleSubtitle
-        title={title}
-        subtitle={subtitle}
-        titleColor={getTitleColor}
-        subtitleColor={getSubtitleColor}
-        titleSize={titleSizeClass}
-      />
+    <div style={backgroundStyle} className={cn('relative w-full py-2', finalBackgroundClass || 'bg-seashell')}>
+      <TitleSubtitle title={title} titleColor={getTitleColor} titleSize={titleSizeClass} />
       {(shouldUseFindifyProducts || (defaultProducts && defaultProducts.length > 0)) && !isLoadingFindify && (
-        <div className={`hidden w-full px-2 lg:block lg:px-2`}>
-          <div className={cn('grid gap-7 gap-y-14', getGridColsClass(Number(itemsPerView)))}>
+        <div className={`hidden w-full lg:block`}>
+          <div className={cn('grid gap-2 gap-y-2', getGridColsClass(Number(itemsPerView)))}>
             {shouldUseFindifyProducts
               ? findifyProductsData.map((product) => (
                   <div key={product.id} className={''}>
