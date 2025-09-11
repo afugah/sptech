@@ -1,9 +1,9 @@
 'use client';
 
-import { useLocale } from 'next-intl';
 import React, { useMemo } from 'react';
 import { useCart } from '@/src/context/cartContext';
-import { getCurrencyDiscountKey, getCurrencyPriceKey, getCurrentCountry } from '@/src/lib/constants/markets';
+import { useMarket } from '@/src/hooks/useMarket';
+import { getCurrencyDiscountKey, getCurrencyPriceKey } from '@/src/lib/constants/markets';
 import { useSimplePricing } from '@/src/lib/features';
 import { type IFindify } from '@/src/lib/framework/Collection/types/IFindify';
 
@@ -31,39 +31,19 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
   customFields,
 }) => {
   const { store } = useCart();
-  const locale = useLocale();
+  const { marketCode, country, currency } = useMarket();
   const { getStoreGroupIdFromLocalStorage } = useCart();
   const storeGroupId = useMemo(() => getStoreGroupIdFromLocalStorage(), [getStoreGroupIdFromLocalStorage]);
   const isSimplePricing = useSimplePricing();
 
-  // CRITICAL: Determine currency based on locale URL, NOT store/localStorage
-  // This ensures /fi always shows EUR, /se always shows SEK
-  const currencyCode = useMemo(() => {
-    if (locale === 'fi') return 'EUR';
-    if (locale === 'se') return 'SEK';
-    if (locale === 'no') return 'NOK';
-    // Default fallback (for 'en' or other locales)
-    return store?.currencyCode || 'USD';
-  }, [locale, store?.currencyCode]);
+  // Use currency from market hook
+  const currencyCode = currency || store?.currencyCode || 'EUR';
 
   const productPrice = useMemo(() => {
     try {
       // Use simple pricing structure if enabled
       if (isSimplePricing && customFields) {
-        // ALWAYS use locale-based pricing, NEVER localStorage for price selection
-        let country: string;
-
-        if (locale === 'fi') {
-          country = 'Finland';
-        } else if (locale === 'se') {
-          country = 'Sweden';
-        } else if (locale === 'no') {
-          country = 'Norway';
-        } else {
-          // Default for 'en' and other locales
-          country = getCurrentCountry();
-        }
-
+        // Use country from market hook for pricing
         const priceKey = getCurrencyPriceKey(country);
         const discountKey = getCurrencyDiscountKey(country);
 
@@ -92,9 +72,9 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
       }
 
       // Use complex pricing structure (existing logic)
-      if (!pricing || !locale || !storeGroupId) return null;
+      if (!pricing || !marketCode || !storeGroupId) return null;
       const membershipLevel = storeGroupId as IFindify.MembershipLevel;
-      const localeKey = locale.toLocaleUpperCase() as IFindify.Locale;
+      const localeKey = marketCode.toLocaleUpperCase() as IFindify.Locale;
 
       // Access pricing data with proper typing
       const membershipPricing = pricing[membershipLevel];
@@ -107,7 +87,7 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
       console.error('Error calculating product price:', error);
       return null;
     }
-  }, [pricing, storeGroupId, locale, isSimplePricing, customFields, price]);
+  }, [pricing, storeGroupId, marketCode, isSimplePricing, customFields, price, country]);
 
   const priceCalculation = useMemo<PriceCalculation>(() => {
     try {
@@ -132,7 +112,7 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
 
   // Format the price amount without currency symbol
   const formatPrice = (amount: number) => {
-    return new Intl.NumberFormat(locale === 'se' ? 'sv-SE' : locale === 'fi' ? 'fi-FI' : 'en-US', {
+    return new Intl.NumberFormat(marketCode === 'se' ? 'sv-SE' : marketCode === 'fi' ? 'fi-FI' : 'en-US', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);

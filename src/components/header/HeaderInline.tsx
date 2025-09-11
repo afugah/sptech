@@ -1,6 +1,5 @@
 'use client';
 
-import BarsIcon from '@images/icons/bars.svg';
 import StoreLogo from '@images/store-logo.svg';
 import debounce from 'lodash.debounce';
 import { Gift, Heart, Search } from 'lucide-react';
@@ -13,10 +12,8 @@ import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { Button } from '@/src/components/shadcn/button';
 import { Sheet, SheetTrigger } from '@/src/components/shadcn/sheet-custom';
 import { useCart } from '@/src/context/cartContext';
-import { useNavigationState } from '@/src/hooks/useNavigationState';
 import { useWishlist } from '@/src/hooks/useWishlist';
 import { Link, usePathname } from '@/src/i18n/navigation';
-import { useInlineHeaderMenu } from '@/src/lib/features';
 import { type MenuLink } from '@/src/types/framework/storyblok-components';
 import Newsletters from '../blocks/newsletters';
 import NewsletterModal from '../ui/NewsletterModal';
@@ -25,13 +22,9 @@ import { CartSheet } from '../ui/sheet/components/cart/Cart';
 import CartItems from '../ui/sheet/components/cart/CartItems';
 import WishListCount from '../ui/sheet/components/wishlist/components/WishListCount';
 import { WishListHeader } from '../ui/sheet/components/wishlist/components/WishlistHeader';
-import HeaderInline from './HeaderInline';
 import MarketSelector from './MarketSelector';
-// import UserSelector from '../ui/UserSelector';
-// Removed server action import - using API route instead
-import SlidingNav from './SidebarNav/sideNavIndex';
 import StaticMenu from './StaticMenu';
-// const SearchForm = dynamic(() => import('../search/Search'), { ssr: false });
+
 const SearchForm = dynamic(() => import('../search/dropdown-search/index'), { ssr: false });
 
 interface IProps {
@@ -41,8 +34,7 @@ interface IProps {
   hasHeaderFixed?: boolean;
 }
 
-const HeaderComponent = ({ header_menu, hasHeaderFixed = true }: IProps) => {
-  const { isOpen, setIsOpen } = useNavigationState();
+const HeaderInlineComponent = ({ header_menu, hasHeaderFixed = true }: IProps) => {
   const [openNewsletterModal, setOpenNewsletterModal] = useState(false);
   const [openCartSheet, setOpenCartSheet] = useState(false);
   const [openWishListSheet, setOpenWishListSheet] = useState(false);
@@ -83,6 +75,7 @@ const HeaderComponent = ({ header_menu, hasHeaderFixed = true }: IProps) => {
     setNavHide(true);
     setBgColor(true);
   }, []);
+
   useEffect(() => {
     setOpenSearchForm(false);
   }, [pathname, searchParams]);
@@ -121,8 +114,6 @@ const HeaderComponent = ({ header_menu, hasHeaderFixed = true }: IProps) => {
 
   return (
     <>
-      <SlidingNav direction={'left'} isOpen={isOpen} setIsOpen={setIsOpen} />
-
       <motion.header
         variants={{
           visible: { opacity: 1, y: 0 },
@@ -131,86 +122,54 @@ const HeaderComponent = ({ header_menu, hasHeaderFixed = true }: IProps) => {
         animate={navHide ? 'visible' : 'hidden'}
         transition={{ duration: 0.5, ease: 'easeInOut' }}
         role={'banner'}
-        className={`fixed top-0 z-40 w-full  py-0  lg:py-2 ${bgColor ? ' ' : 'bg-white'} `}
+        className={`fixed top-0 z-40 w-full py-2 lg:py-3 ${bgColor ? 'bg-transparent' : 'bg-white/90 shadow-sm backdrop-blur-sm'}`}
       >
-        <div
-          className={
-            'relative mx-auto flex w-full max-w-screen-2xl items-center px-2 py-2 sm:px-4 sm:py-4 lg:grid-cols-3'
-          }
-        >
-          <div className={'bottom-0 flex items-center lg:basis-2/5'}>
-            {isOpen ? null : (
-              <Button
-                aria-label={'Open side navigation'}
-                variant={'custom'}
-                className={'ml-1 px-0 py-0 sm:ml-7 [&_svg]:size-6'}
-                onClick={() => setIsOpen(true)}
-              >
-                <BarsIcon
-                  role={'button'}
-                  className={`pointer h-6 w-6  fill-${hasHeaderFixed && bgColor ? 'white' : 'black'}`}
-                />
-              </Button>
-            )}
-            <div className={'ml-5 hidden gap-5 text-xs uppercase lg:flex'}>
-              <StaticMenu headerMenu={header_menu} />
-            </div>
-          </div>
-
-          <div
-            className={
-              'absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transform lg:static lg:flex lg:grow-0 lg:basis-1/5 lg:translate-x-0 lg:translate-y-0 lg:justify-center'
-            }
-          >
-            <Link href={'/'} aria-label={'Home'} className={'flex items-center space-x-4 md:space-x-6'}>
-              <StoreLogo
-                className={`h-8 w-auto fill-${hasHeaderFixed && bgColor ? 'white' : 'black'} xs:h-10 sm:h-14 lg:h-16`}
-              />
+        <div className={'relative mx-auto flex w-full max-w-screen-2xl items-center px-4 sm:px-6 lg:px-8'}>
+          {/* Logo - Left aligned */}
+          <div className={'flex items-center lg:basis-1/4'}>
+            <Link href={'/'} aria-label={'Home'} className={'flex items-center'}>
+              <StoreLogo className={`h-8 w-auto fill-black xs:h-10 sm:h-12 lg:h-14`} />
             </Link>
           </div>
-          <div className={'ml-auto flex items-center justify-end space-x-1 sm:space-x-4 lg:grow lg:basis-1/5'}>
-            {/* <CurrencySelector showOnMobile={false} hasHeaderFixed={hasHeaderFixed} /> */}
-            {/* <div className={'hidden lg:flex lg:items-center lg:space-x-4'}>
-              <LanguageSelect />
-              <CountrySelector />
-            </div> */}
+
+          {/* Centered Menu - Hidden on mobile */}
+          <nav className={'hidden flex-1 justify-center lg:flex'}>
+            <div className={'flex items-center gap-8 text-sm font-medium uppercase tracking-wider'}>
+              <StaticMenu headerMenu={header_menu} />
+            </div>
+          </nav>
+
+          {/* Right side - Search, Wishlist, Cart */}
+          <div className={'ml-auto flex items-center justify-end space-x-2 sm:space-x-4 lg:basis-1/4'}>
+            {/* Market Selector - Hidden on mobile */}
             <div className={'hidden lg:flex lg:items-center lg:gap-2'}>
               <MarketSelector hasHeaderFixed={hasHeaderFixed} bgColor={bgColor} />
             </div>
-            <div className={'flex items-center space-x-1 sm:space-x-2 lg:space-x-5'}>
+
+            {/* Actions */}
+            <div className={'flex items-center space-x-2 sm:space-x-3'}>
+              {/* Search */}
               <Button
                 variant={'custom'}
                 aria-label={'Open search'}
-                className={'px-0 py-0  [&_svg]:size-7'}
+                className={'px-0 py-0 [&_svg]:size-6'}
                 onClick={() => {
                   setOpenSearchForm((prev) => !prev);
                 }}
               >
-                {/* <SearchIcon
-                className={`h-8 w-8 ${hasHeaderFixed && lastScrollY < 5 ? 'stroke-white' : 'stroke-black'}`}
-              /> */}
-                <Search
-                  size={34}
-                  strokeWidth={1}
-                  className={`h-6 w-6 sm:h-8 sm:w-8 ${hasHeaderFixed && bgColor ? 'stroke-white' : 'stroke-black'}`}
-                />
+                <Search size={24} strokeWidth={1.5} className={'h-5 w-5 stroke-black sm:h-6 sm:w-6'} />
               </Button>
-              {/* <SearchForm searchPanelRef={searchPanelRef} externalButton={true} /> */}
 
-              {/* <UserSelector /> */}
+              {/* Wishlist */}
               <div className={'relative flex cursor-pointer items-center'}>
                 <Sheet open={openWishListSheet} onOpenChange={setOpenWishListSheet}>
                   <SheetTrigger asChild>
-                    <Button variant={'custom'} className={'hidden px-0 py-0 sm:block [&_svg]:size-7'}>
+                    <Button variant={'custom'} className={'hidden px-0 py-0 sm:block [&_svg]:size-6'}>
                       <Heart
-                        size={40}
+                        size={24}
                         aria-label={'Toggle Wishlist'}
-                        strokeWidth={1}
-                        color={''}
-                        className={
-                          'inline-block h-6 w-6 bg-transparent sm:h-8 sm:w-8 ' +
-                          (hasHeaderFixed && bgColor ? ' stroke-white' : ' stroke-black')
-                        }
+                        strokeWidth={1.5}
+                        className={'h-5 w-5 stroke-black sm:h-6 sm:w-6'}
                       />
                       <WishListCount numberOfCartItems={wishlistCount ?? 0} style={'round'} />
                     </Button>
@@ -221,6 +180,7 @@ const HeaderComponent = ({ header_menu, hasHeaderFixed = true }: IProps) => {
                 </Sheet>
               </div>
 
+              {/* Cart */}
               {!isCheckoutPage && (
                 <div className={'relative flex cursor-pointer items-center'}>
                   <Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
@@ -228,14 +188,10 @@ const HeaderComponent = ({ header_menu, hasHeaderFixed = true }: IProps) => {
                       <Button
                         variant={'custom'}
                         aria-label={'Toggle Cart'}
-                        className={'px-0 py-0  [&_svg]:size-7'}
+                        className={'px-0 py-0 [&_svg]:size-6'}
                         tabIndex={0}
                       >
-                        <Gift
-                          size={36}
-                          strokeWidth={1}
-                          className={`h-6 w-6 sm:h-8 sm:w-8 ${hasHeaderFixed && bgColor ? 'stroke-white' : 'stroke-black'}`}
-                        />
+                        <Gift size={24} strokeWidth={1.5} className={'h-5 w-5 stroke-black sm:h-6 sm:w-6'} />
                         <CartItems numberOfCartItems={numberOfCartItems ?? 0} style={'round'} />
                       </Button>
                     </SheetTrigger>
@@ -249,11 +205,18 @@ const HeaderComponent = ({ header_menu, hasHeaderFixed = true }: IProps) => {
           </div>
         </div>
 
-        {/* <div ref={searchPanelRef} className={'w-full'} /> */}
-        {/* <AvailableOffers /> */}
+        {/* Mobile Menu - Simple horizontal scroll */}
+        <div className={`mt-2 border-t px-4 py-2 lg:hidden ${bgColor ? 'border-white/20' : 'border-gray-200'}`}>
+          <div className={'flex gap-4 overflow-x-auto text-xs font-medium uppercase tracking-wider'}>
+            <StaticMenu headerMenu={header_menu} />
+          </div>
+        </div>
       </motion.header>
-      {/* <Cart /> */}
+
+      {/* Search overlay */}
       <AnimatePresence>{openSearchForm && <SearchForm />}</AnimatePresence>
+
+      {/* Newsletter Modal */}
       {openNewsletterModal && (
         <NewsletterModal
           className={'max-w-[45rem]'}
@@ -267,20 +230,12 @@ const HeaderComponent = ({ header_menu, hasHeaderFixed = true }: IProps) => {
   );
 };
 
-const Header = ({ header_menu, hasHeaderFixed = true }: IProps) => {
-  const useInlineMenu = useInlineHeaderMenu();
-
-  // Use inline header menu if feature flag is enabled
-  if (useInlineMenu) {
-    return <HeaderInline header_menu={header_menu} hasHeaderFixed={hasHeaderFixed} />;
-  }
-
-  // Use traditional slide-in menu header
+const HeaderInline = ({ header_menu, hasHeaderFixed = true }: IProps) => {
   return (
     <Suspense fallback={<div className={'h-16 animate-pulse bg-white'} />}>
-      <HeaderComponent header_menu={header_menu} hasHeaderFixed={hasHeaderFixed} />
+      <HeaderInlineComponent header_menu={header_menu} hasHeaderFixed={hasHeaderFixed} />
     </Suspense>
   );
 };
 
-export default Header;
+export default HeaderInline;

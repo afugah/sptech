@@ -78,8 +78,10 @@ export class FooterRepository implements IFooterRepository {
     };
   }
 
-  async getFooterData(locale: string = 'en'): Promise<IFooter> {
-    const cachedData = this.getCachedData(locale);
+  async getFooterData(_marketCode: string = 'en'): Promise<IFooter> {
+    // Always use 'en' for caching since we only have English content
+    const cacheKey = 'en';
+    const cachedData = this.getCachedData(cacheKey);
     if (cachedData) {
       return cachedData;
     }
@@ -89,7 +91,8 @@ export class FooterRepository implements IFooterRepository {
     const url = new URL(`${this.baseUrl}/api/footer-navigation`);
     url.searchParams.set('limit', '10');
     url.searchParams.set('depth', '2');
-    url.searchParams.set('locale', 'sv');
+    // Always use 'en' locale since we only have English content
+    url.searchParams.set('locale', 'en');
 
     const response = await fetch(url.toString(), {
       headers: {
@@ -98,50 +101,50 @@ export class FooterRepository implements IFooterRepository {
     });
 
     if (!response.ok) {
-      throw new Error(`CMS API returned ${response.status}`);
+      console.warn(`Footer API returned ${response.status}, using empty footer`);
+      // Return empty footer structure instead of throwing
+      return {
+        id: 'empty',
+        title: 'Footer',
+        columns: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
     }
 
     const data: IPayloadResponse = await response.json();
 
-    const footerMenu = this.findFooterByLocale(data.docs, locale);
+    // Always fetch the English footer menu since we only have English content
+    const footerMenu = this.findEnglishFooter(data.docs);
 
     if (!footerMenu) {
-      throw new Error(`No footer menu found for locale: ${locale}`);
+      console.warn('No footer menu found in CMS, using empty footer');
+      // Return empty footer structure instead of throwing
+      return {
+        id: 'empty',
+        title: 'Footer',
+        columns: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
     }
 
     const transformedData = this.transformFooterData(footerMenu);
 
-    this.setCachedData(locale, transformedData);
+    this.setCachedData(cacheKey, transformedData);
 
     return transformedData;
   }
 
-  private findFooterByLocale(docs: ICMSFooterResponse[], locale: string): ICMSFooterResponse | undefined {
-    // First try to find exact match by title
-    const upperLocale = locale.toUpperCase();
-    const exactMatch = docs.find((doc) => doc.title && doc.title.toUpperCase().includes(`FOOTER MENU ${upperLocale}`));
+  private findEnglishFooter(docs: ICMSFooterResponse[]): ICMSFooterResponse | undefined {
+    // Look for the English footer menu
+    const enMatch = docs.find((doc) => doc.title && doc.title.toUpperCase().includes('FOOTER MENU EN'));
 
-    if (exactMatch) {
-      return exactMatch;
+    if (enMatch) {
+      return enMatch;
     }
 
-    // If no exact match, try to find by title pattern
-    const patternMatch = docs.find((doc) => doc.title && doc.title.toUpperCase().includes(upperLocale));
-
-    if (patternMatch) {
-      return patternMatch;
-    }
-
-    // Fallback: try to find EN version if current locale not found
-    if (locale !== 'en') {
-      const enMatch = docs.find((doc) => doc.title && doc.title.toUpperCase().includes('FOOTER MENU EN'));
-
-      if (enMatch) {
-        return enMatch;
-      }
-    }
-
-    // Final fallback: return first document with content
+    // Fallback: return first document with content
     return docs.find((doc) => doc.columns && doc.columns.length > 0);
   }
 

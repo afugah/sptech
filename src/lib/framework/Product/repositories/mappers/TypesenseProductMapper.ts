@@ -3,65 +3,110 @@ import { type IProduct } from '@/src/lib/framework/Product/domain/entities/IProd
 import { type ITypesense } from '@/src/lib/framework/Product/types/ITypesense';
 
 export class TypesenseProductMapper {
-  public static FromTypesense(document: ITypesense.ProductDocument, _language: string): IProduct {
-    // Map Typesense document to IProduct
-    const firstMedia = document.media?.[0];
-    const secondMedia = document.media?.[1];
+  public static FromTypesense(document: ITypesense.ProductDocument, language: string): IProduct {
+    // Extract title based on new structure (can be string or object)
+    const title =
+      typeof document.title === 'object' && document.title !== null
+        ? document.title[language] || document.title.en || Object.values(document.title)[0] || 'Unknown Product'
+        : String(document.title || 'Unknown Product');
 
-    return {
-      id: String(document.id),
-      key: String(document.id), // Using id as key
-      title: document.title,
-      display_name: document.title, // Using title as display_name
-      thumbnail: {
-        url: firstMedia?.imageSrc || '',
-        hoverUrl: secondMedia?.imageSrc || null,
-      },
-      color: Array.isArray(document.color) ? document.color : [document.color || ''],
-      status: document.status as ProductStatusEnum,
-      slug: document.slug,
-      slugSv: document.slug, // Using same slug for Swedish variant
-      compare_at: null,
-      discount: null,
+    // Extract description based on new structure
+    const description =
+      typeof document.description === 'object' && document.description !== null
+        ? document.description[language] || document.description.en || Object.values(document.description)[0] || ''
+        : String(document.description || '');
 
-      sku: document.product_sku,
-      mpn: document.mpn || '',
-      externalId: document.external_id,
-      cloneId: null,
-      productType: document.type,
-      productGroup: document.product_group_identifier || '',
-      description: document.description || '',
-      images:
-        document.media?.map((m) => ({
-          src: m.imageSrc,
-          alt: m.imageAlt,
-        })) || [],
-      brinkId: document.external_id,
-      variants:
-        document.productVariants?.map((variant, index) => ({
+    // Handle new image structure
+    const primaryImageUrl = document.image_url || document.media?.[0]?.imageSrc || '';
+    const hoverImageUrl = document.hover_image_url || document.media?.[1]?.imageSrc || null;
+
+    // Map all images if available
+    let images: Array<{ src: string; alt: string }> = [];
+    if (document.images && Array.isArray(document.images)) {
+      images = document.images.map((url, index) => ({
+        src: url,
+        alt: `${title} - Image ${index + 1}`,
+      }));
+    } else if (document.media) {
+      images = document.media.map((m) => ({
+        src: m.imageSrc,
+        alt: m.imageAlt,
+      }));
+    }
+
+    // Handle SKU - prefer direct sku field over product_sku
+    const sku = document.sku || document.product_sku || '';
+
+    // Handle variants - check both new and legacy structures
+    const variants = document.variants || document.productVariants;
+    const mappedVariants =
+      variants?.map((variant, index) => {
+        // Handle variant title
+        let variantTitle = `Variant ${variant.sku}`;
+        if (variant.title) {
+          if (Array.isArray(variant.title) && variant.title.length > 0) {
+            variantTitle = variant.title.join(' ');
+          } else if (typeof variant.title === 'string') {
+            variantTitle = variant.title;
+          }
+        }
+
+        // Get variant price if using legacy structure
+        let variantPrice = undefined;
+        if ('regularPrices' in variant && variant.regularPrices?.[0]) {
+          variantPrice = {
+            id: String(variant.id),
+            basePriceAmount: variant.regularPrices[0].price || 0,
+            salePriceAmount: variant.regularPrices[0].price || 0,
+            discountAmount: 0,
+          };
+        }
+
+        return {
           id: String(variant.id),
-          title: `Variant ${variant.sku}`,
+          title: variantTitle,
           sku: variant.sku,
-          variant: variant.sku, // Using sku as variant identifier
+          variant: variant.sku,
           ean: variant.ean || '',
           order: index,
-          size: undefined, // Would need size extraction from variant data
-          price: variant.regularPrices?.[0]
-            ? {
-                id: String(variant.id),
-                basePriceAmount: variant.regularPrices[0].price || 0,
-                salePriceAmount: variant.regularPrices[0].price || 0,
-                discountAmount: 0,
-              }
-            : undefined,
+          size: undefined,
+          price: variantPrice,
           stock: {
             id: String(variant.id),
             quantity: variant.stock || 0,
-            isAvailable: (variant.stock || 0) > 0,
+            isAvailable: variant.in_stock === true || (variant.stock || 0) > 0,
             validateStock: true,
             inventories: [],
           },
-        })) || [],
+        };
+      }) || [];
+
+    return {
+      id: String(document.id),
+      key: String(document.id),
+      title: title,
+      display_name: title,
+      thumbnail: {
+        url: primaryImageUrl,
+        hoverUrl: hoverImageUrl,
+      },
+      color: Array.isArray(document.color) ? document.color : [document.color || ''],
+      status: (document.status || (document.in_stock ? 'ACTIVE' : 'INACTIVE')) as ProductStatusEnum,
+      slug: document.slug || '',
+      slugSv: document.slug || '',
+      compare_at: null,
+      discount: null,
+
+      sku: sku,
+      mpn: document.mpn || '',
+      externalId: document.external_id || '',
+      cloneId: null,
+      productType: document.type || '',
+      productGroup: document.product_group_identifier || '',
+      description: description,
+      images: images,
+      brinkId: document.external_id || '',
+      variants: mappedVariants,
 
       baseColorCode: undefined,
       productColor: Array.isArray(document.color) ? document.color[0] || '' : document.color || '',
@@ -82,19 +127,22 @@ export class TypesenseProductMapper {
           full_slug: bc.full_slug,
         })) || [],
 
-      // Optional date fields
+      // Optional date fields - handle both naming conventions
       releaseDate: document.release_date,
       releaseDateTimestamp: document.releaseDateTimestamp,
       outOfStockAt: document.out_of_stock_at,
       outOfStockAtTimestamp: document.outOfStockAtTimestamp,
       updatedAt: document.updated_at,
-      updatedAtTimestamp: document.updatedAtTimestamp,
+      updatedAtTimestamp: document.updated_at_timestamp || document.updatedAtTimestamp,
       createdAt: document.created_at,
-      createdAtTimestamp: document.createdAtTimestamp,
+      createdAtTimestamp: document.created_at_timestamp || document.createdAtTimestamp,
 
-      // Attributes - only include known attribute fields
+      // Attributes - include custom attributes if available
       attributes: {
         materials: document.material,
+        ...(document.custom_attributes && Array.isArray(document.custom_attributes)
+          ? document.custom_attributes.reduce((acc, attr) => ({ ...acc, ...attr }), {})
+          : {}),
       },
 
       // Additional fields at root level

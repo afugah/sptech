@@ -2,8 +2,8 @@
 
 import { notFound } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useMarket } from '@/src/hooks/useMarket';
 import { useRouter } from '@/src/i18n/navigation';
-import { getCurrentCountry } from '@/src/lib/constants/markets';
 import { type IProduct } from '@/src/lib/framework/Product/domain/entities/IProduct';
 import { type IElasticSearch } from '@/src/lib/framework/Product/types/IElasticSearch';
 import ProductPage from '@/src/templates/product/productPage';
@@ -21,6 +21,7 @@ export default function ProductPageClient({ locale, slug }: ProductPageClientPro
   const [sizeGuideStory, setSizeGuideStory] = useState<{ content: CmsPage } | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { country } = useMarket();
 
   useEffect(() => {
     async function fetchAllData() {
@@ -44,7 +45,6 @@ export default function ProductPageClient({ locale, slug }: ProductPageClientPro
 
         // Fetch elastic data for MTO product support
         if (productData.product?.id) {
-          const country = getCurrentCountry();
           const elasticUrl = `/api/product/elastic/${productData.product.id}?locale=${locale}&country=${encodeURIComponent(country)}`;
 
           fetch(elasticUrl)
@@ -101,7 +101,7 @@ export default function ProductPageClient({ locale, slug }: ProductPageClientPro
     }
 
     fetchAllData();
-  }, [locale, slug, router]);
+  }, [locale, slug, router, country]);
 
   if (loading) {
     return (

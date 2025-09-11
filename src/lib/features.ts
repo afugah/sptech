@@ -41,3 +41,19 @@ export const PRICING_FEATURES = {
 export function useSimplePricing(): boolean {
   return PRICING_FEATURES.USE_STOREGROUP_MARKET_PRICING === false;
 }
+
+/**
+ * Feature flags for UI components
+ */
+export const UI_FEATURES = {
+  // When true, uses inline text menu with logo on left, menu in center, cart on right
+  // When false, uses traditional hamburger menu with slide-in navigation
+  USE_INLINE_HEADER_MENU: true,
+};
+
+/**
+ * Helper function to check if inline header menu is enabled
+ */
+export function useInlineHeaderMenu(): boolean {
+  return UI_FEATURES.USE_INLINE_HEADER_MENU === true;
+}

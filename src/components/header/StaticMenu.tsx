@@ -4,10 +4,15 @@ import StaticMenuLink from './StaticMenuLink';
 
 interface IProps {
   headerMenu: MenuLink[] | undefined;
+  className?: string;
 }
 
-const StaticMenu = ({ headerMenu }: IProps) => (
-  <>{headerMenu?.map((menuLink: MenuLink) => <StaticMenuLink menuLink={menuLink} key={menuLink._uid} />)}</>
+const StaticMenu = ({ headerMenu, className }: IProps) => (
+  <>
+    {headerMenu?.map((menuLink: MenuLink) => (
+      <StaticMenuLink menuLink={menuLink} className={className} key={menuLink._uid} />
+    ))}
+  </>
 );
 
 export default StaticMenu;

@@ -4,10 +4,15 @@ import { type MenuLink } from '@/src/types/framework/storyblok-components';
 
 interface IProps {
   menuLink: MenuLink;
+  className?: string;
 }
 
-const StaticMenuLink = ({ menuLink: { link, title } }: IProps) => {
-  return <Link href={`/${link}`}>{title}</Link>;
+const StaticMenuLink = ({ menuLink: { link, title }, className }: IProps) => {
+  return (
+    <Link href={`/${link}`} className={className}>
+      {title}
+    </Link>
+  );
 };
 
 export default StaticMenuLink;

@@ -33,7 +33,8 @@ export class TypesenseCollectionMapper {
   }
 
   private static mapProductHit(hit: unknown): ICollectionItem {
-    const document = hit.document as Record<string, unknown>;
+    const hitRecord = hit as Record<string, unknown>;
+    const document = hitRecord.document as Record<string, unknown>;
 
     // Safe property access with type guards
     const media = Array.isArray(document.media) ? document.media : [];
@@ -58,8 +59,8 @@ export class TypesenseCollectionMapper {
       status: (document.status as ProductStatusEnum) || ProductStatusEnum.Active,
       slug: String(document.slug || ''),
       slugSv: String(document.slug || ''), // Using same slug for sv as we're single language now
-      stock: Number(firstVariant.stock || 0),
-      price: Number(firstPrice?.price || 0),
+      stock: Number((firstVariant as Record<string, unknown>)?.stock || 0),
+      price: Number((firstPrice as Record<string, unknown>)?.price || 0),
       tags: Array.isArray(document.tags) ? document.tags.map(String) : [],
       salePrice: null, // Would need discount calculation
       compare_at: null, // Would need original price
@@ -72,9 +73,9 @@ export class TypesenseCollectionMapper {
       created_at: new Date(String(document.created_at || Date.now())),
       pricing: {
         // Basic pricing structure - would need full Findify structure
-        price: Number(firstPrice?.price || 0),
-        currency: String(firstPrice?.currency_code || 'EUR'),
-      } as ICollectionItem['pricing'],
+        price: Number((firstPrice as Record<string, unknown>)?.price || 0),
+        currency: String((firstPrice as Record<string, unknown>)?.currency_code || 'EUR'),
+      } as unknown as ICollectionItem['pricing'],
       custom_fields: {},
     };
   }

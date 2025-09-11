@@ -4,16 +4,16 @@ import classNames from 'classnames';
 import { Heart } from 'lucide-react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import { useLocale } from 'next-intl';
 import { useFormatter } from 'next-intl';
 import React, { useMemo } from 'react';
 import { ProductTag } from '@/src/components/product/ProductTag';
 import { useCart } from '@/src/context/cartContext';
 import { useFindifyAnalytics } from '@/src/context/findifyAnalytics/findifyAnalyticsContext';
 import { getAmount } from '@/src/helpers/money';
+import { useMarket } from '@/src/hooks/useMarket';
 import { useWishlist } from '@/src/hooks/useWishlist';
 import { Link } from '@/src/i18n/navigation';
-import { getCurrencyDiscountKey, getCurrencyPriceKey, getCurrentCountry } from '@/src/lib/constants/markets';
+import { getCurrencyDiscountKey, getCurrencyPriceKey } from '@/src/lib/constants/markets';
 import { useSimplePricing } from '@/src/lib/features';
 import { type ICollectionItem } from '@/src/lib/framework/Collection/domain/entities/ICollectionItem';
 import { type IFindify } from '@/src/lib/framework/Collection/types/IFindify';
@@ -28,7 +28,7 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
   const { slug, thumbnail, title, price, pricing, tags, compare_at, created_at, custom_fields } = product;
 
   const { store } = useCart();
-  const locale = useLocale();
+  const { marketCode, country, currency } = useMarket();
   const { getStoreGroupIdFromLocalStorage } = useCart();
   const storeGroupId = useMemo(() => getStoreGroupIdFromLocalStorage(), [getStoreGroupIdFromLocalStorage]);
   const format = useFormatter();
@@ -36,29 +36,14 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const isSimplePricing = useSimplePricing();
 
-  // CRITICAL: Determine currency based on locale URL, NOT store/localStorage
-  const currencyCode = useMemo(() => {
-    if (locale === 'fi') return 'EUR';
-    if (locale === 'se') return 'SEK';
-    if (locale === 'no') return 'NOK';
-    return store?.currencyCode || 'USD';
-  }, [locale, store?.currencyCode]);
+  // Use currency from market hook
+  const currencyCode = currency || store?.currencyCode || 'EUR';
 
   const productPrice = useMemo(() => {
     try {
       // Use simple pricing structure if enabled
       if (isSimplePricing && custom_fields) {
-        // ALWAYS use locale-based pricing, NEVER localStorage
-        let country: string;
-        if (locale === 'fi') {
-          country = 'Finland';
-        } else if (locale === 'se') {
-          country = 'Sweden';
-        } else if (locale === 'no') {
-          country = 'Norway';
-        } else {
-          country = getCurrentCountry();
-        }
+        // Use country from market hook for pricing
         const priceKey = getCurrencyPriceKey(country);
         const discountKey = getCurrencyDiscountKey(country);
 
@@ -86,9 +71,9 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
       }
 
       // Use complex pricing structure (existing logic)
-      if (!pricing || !locale || !storeGroupId) return null;
+      if (!pricing || !marketCode || !storeGroupId) return null;
       const membershipLevel = storeGroupId as IFindify.MembershipLevel;
-      const localeKey = locale.toLocaleUpperCase() as IFindify.Locale;
+      const localeKey = marketCode.toLocaleUpperCase() as IFindify.Locale;
       // Check if the pricing data exists for this membership level and locale
       if (!pricing[membershipLevel] || !pricing[membershipLevel][localeKey]) {
         console.warn(`Pricing data not found for membership level: ${membershipLevel} and locale: ${localeKey}`);
@@ -99,7 +84,7 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
       console.error('Error calculating product price:', error);
       return null;
     }
-  }, [pricing, storeGroupId, locale, isSimplePricing, custom_fields, price]);
+  }, [pricing, storeGroupId, marketCode, isSimplePricing, custom_fields, price, country]);
 
   const isSale = useMemo(() => {
     try {
@@ -217,12 +202,12 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
                 {getAmount(
                   isSale.sale_price !== null ? isSale.sale_price * 100 : isSale.price * 100,
                   currencyCode,
-                  locale,
+                  marketCode,
                 )}
               </span>
               {isSale.sale_price !== null && (
                 <span className={'ml-2 text-secondary line-through'}>
-                  {getAmount(isSale.price * 100, currencyCode, locale)}
+                  {getAmount(isSale.price * 100, currencyCode, marketCode)}
                 </span>
               )}
             </span>

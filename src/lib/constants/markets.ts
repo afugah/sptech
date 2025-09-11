@@ -1,46 +1,72 @@
-// Maps countries to their URL locale - all use 'en' for single language setup
-// All countries use English market (root URL with no prefix)
+// Maps countries to their market URL codes
+// Each country gets a specific market prefix in the URL (e.g., /se for Sweden)
 export const countryToMarketMapping: Record<string, string> = {
   // Target markets - 24 EU countries + Philippines
-  Austria: 'en',
-  Belgium: 'en',
-  Bulgaria: 'en',
-  'Czech Republic': 'en',
-  Germany: 'en',
-  Denmark: 'en',
-  Estonia: 'en',
-  Finland: 'en',
-  France: 'en',
-  Croatia: 'en',
-  Hungary: 'en',
-  Italy: 'en',
-  Lithuania: 'en',
-  Luxembourg: 'en',
-  Latvia: 'en',
-  Netherlands: 'en',
-  Philippines: 'en',
-  Poland: 'en',
-  Portugal: 'en',
-  Romania: 'en',
-  Sweden: 'en',
-  Slovenia: 'en',
-  Slovakia: 'en',
-  Spain: 'en',
+  Austria: 'at',
+  Belgium: 'be',
+  Bulgaria: 'bg',
+  'Czech Republic': 'cz',
+  Germany: 'de',
+  Denmark: 'dk',
+  Estonia: 'ee',
+  Finland: 'fi',
+  France: 'fr',
+  Croatia: 'hr',
+  Hungary: 'hu',
+  Italy: 'it',
+  Lithuania: 'lt',
+  Luxembourg: 'lu',
+  Latvia: 'lv',
+  Netherlands: 'nl',
+  Philippines: 'ph',
+  Poland: 'pl',
+  Portugal: 'pt',
+  Romania: 'ro',
+  Sweden: 'se',
+  Slovenia: 'si',
+  Slovakia: 'sk',
+  Spain: 'es',
 
   // Additional markets for future expansion
-  Norway: 'en',
-  'United Kingdom': 'en',
-  Switzerland: 'en',
+  Norway: 'no',
+  'United Kingdom': 'gb',
+  Switzerland: 'ch',
 };
 
 export const availableCountries = Object.keys(countryToMarketMapping);
 
-// URL locale configuration (for routing only) - simplified for single language
-export const marketConfigMapping = {
-  en: { label: 'EN', countryCode: 'gb', currency: 'EUR' }, // Default to EUR for most markets
-} as const;
+// Market code to country mapping (reverse lookup)
+export const marketToCountryMapping: Record<string, string> = {
+  at: 'Austria',
+  be: 'Belgium',
+  bg: 'Bulgaria',
+  cz: 'Czech Republic',
+  de: 'Germany',
+  dk: 'Denmark',
+  ee: 'Estonia',
+  fi: 'Finland',
+  fr: 'France',
+  hr: 'Croatia',
+  hu: 'Hungary',
+  it: 'Italy',
+  lt: 'Lithuania',
+  lu: 'Luxembourg',
+  lv: 'Latvia',
+  nl: 'Netherlands',
+  ph: 'Philippines',
+  pl: 'Poland',
+  pt: 'Portugal',
+  ro: 'Romania',
+  se: 'Sweden',
+  si: 'Slovenia',
+  sk: 'Slovakia',
+  es: 'Spain',
+  no: 'Norway',
+  gb: 'United Kingdom',
+  ch: 'Switzerland',
+};
 
-export const supportedMarkets = Object.keys(marketConfigMapping) as Array<keyof typeof marketConfigMapping>;
+export const supportedMarkets = Object.keys(marketToCountryMapping) as Array<keyof typeof marketToCountryMapping>;
 
 // Currency mapping by country (independent of URL routing)
 // This determines which currency to use for each country
@@ -106,6 +132,16 @@ export const getCurrencyDiscountKey = (country: string): string => {
   return `discount_${currency.toLowerCase()}`;
 };
 
+// Helper function to get country from market code
+export const getCountryFromMarket = (marketCode: string): string => {
+  return marketToCountryMapping[marketCode] || 'Sweden';
+};
+
+// Helper function to get market code from country
+export const getMarketFromCountry = (country: string): string => {
+  return countryToMarketMapping[country] || 'se';
+};
+
 // Helper function to get the currently selected country from localStorage
 export const getCurrentCountry = (): string => {
   if (typeof window === 'undefined') return 'Sweden'; // Default for SSR
@@ -116,4 +152,35 @@ export const getCurrentCountry = (): string => {
   } catch {
     return 'Sweden'; // Default on error
   }
+};
+
+// Market configuration mapping for UI display
+export const marketConfigMapping = {
+  at: { label: 'Austria', countryCode: 'AT', currency: 'EUR' },
+  be: { label: 'Belgium', countryCode: 'BE', currency: 'EUR' },
+  bg: { label: 'Bulgaria', countryCode: 'BG', currency: 'EUR' },
+  cz: { label: 'Czech Republic', countryCode: 'CZ', currency: 'EUR' },
+  de: { label: 'Germany', countryCode: 'DE', currency: 'EUR' },
+  dk: { label: 'Denmark', countryCode: 'DK', currency: 'DKK' },
+  ee: { label: 'Estonia', countryCode: 'EE', currency: 'EUR' },
+  fi: { label: 'Finland', countryCode: 'FI', currency: 'EUR' },
+  fr: { label: 'France', countryCode: 'FR', currency: 'EUR' },
+  hr: { label: 'Croatia', countryCode: 'HR', currency: 'EUR' },
+  hu: { label: 'Hungary', countryCode: 'HU', currency: 'EUR' },
+  it: { label: 'Italy', countryCode: 'IT', currency: 'EUR' },
+  lt: { label: 'Lithuania', countryCode: 'LT', currency: 'EUR' },
+  lu: { label: 'Luxembourg', countryCode: 'LU', currency: 'EUR' },
+  lv: { label: 'Latvia', countryCode: 'LV', currency: 'EUR' },
+  nl: { label: 'Netherlands', countryCode: 'NL', currency: 'EUR' },
+  ph: { label: 'Philippines', countryCode: 'PH', currency: 'EUR' },
+  pl: { label: 'Poland', countryCode: 'PL', currency: 'EUR' },
+  pt: { label: 'Portugal', countryCode: 'PT', currency: 'EUR' },
+  ro: { label: 'Romania', countryCode: 'RO', currency: 'EUR' },
+  se: { label: 'Sweden', countryCode: 'SE', currency: 'SEK' },
+  si: { label: 'Slovenia', countryCode: 'SI', currency: 'EUR' },
+  sk: { label: 'Slovakia', countryCode: 'SK', currency: 'EUR' },
+  es: { label: 'Spain', countryCode: 'ES', currency: 'EUR' },
+  no: { label: 'Norway', countryCode: 'NO', currency: 'NOK' },
+  gb: { label: 'United Kingdom', countryCode: 'GB', currency: 'GBP' },
+  ch: { label: 'Switzerland', countryCode: 'CH', currency: 'EUR' },
 };

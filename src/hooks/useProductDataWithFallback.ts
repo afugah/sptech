@@ -1,6 +1,5 @@
-import { useLocale } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { getCurrentCountry } from '@/src/lib/constants/markets';
+import { useMarket } from '@/src/hooks/useMarket';
 
 export type ProductDataSource = 'findify' | 'elastic' | 'typesense' | 'storyblok' | 'none';
 
@@ -37,7 +36,7 @@ export function useProductDataWithFallback(id: string | null): UseProductDataRes
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [source, setSource] = useState<ProductDataSource>('none');
-  const locale = useLocale();
+  const { marketCode, country } = useMarket();
 
   useEffect(() => {
     if (!id) {
@@ -52,9 +51,6 @@ export function useProductDataWithFallback(id: string | null): UseProductDataRes
       setSource('none');
 
       try {
-        // Get the selected country from localStorage
-        const country = getCurrentCountry();
-
         // Determine which endpoint to use based on feature flag
         const useDirectApi = process.env.NEXT_PUBLIC_USE_DIRECT_ELASTIC_API === 'true';
 
@@ -67,7 +63,7 @@ export function useProductDataWithFallback(id: string | null): UseProductDataRes
 
         // Only use Elastic search for individual products
         const elasticResponse = await fetch(
-          `/api/product/${endpoint}/${id}?locale=${locale}&country=${encodeURIComponent(country)}`,
+          `/api/product/${endpoint}/${id}?locale=en&country=${encodeURIComponent(country)}`,
         );
 
         if (elasticResponse.ok) {
@@ -92,7 +88,7 @@ export function useProductDataWithFallback(id: string | null): UseProductDataRes
     };
 
     fetchProductData();
-  }, [id, locale]);
+  }, [id, marketCode, country]);
 
   return {
     product,

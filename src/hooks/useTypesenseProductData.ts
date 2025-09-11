@@ -1,6 +1,5 @@
-import { useLocale } from 'next-intl';
 import { useCallback, useEffect, useState } from 'react';
-import { getCurrentCountry } from '@/src/lib/constants/markets';
+import { useMarket } from '@/src/hooks/useMarket';
 
 interface ProductData {
   id: string;
@@ -41,22 +40,19 @@ export function useTypesenseProductData(productId: string | null): UseTypesenseP
   const [product, setProduct] = useState<ProductData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const locale = useLocale();
+  const { marketCode, country } = useMarket();
 
-  const getCacheKey = useCallback((id: string, loc: string) => `${id}-${loc}`, []);
+  const getCacheKey = useCallback((id: string, market: string) => `${id}-${market}`, []);
 
   const fetchFromTypesense = useCallback(
-    async (id: string, loc: string) => {
-      const cacheKey = getCacheKey(id, loc);
+    async (id: string, market: string, countryName: string) => {
+      const cacheKey = getCacheKey(id, market);
       const cached = cache.get(cacheKey);
 
       // Check if we have cached data that's still valid
       if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
         return cached.data;
       }
-
-      // Get the selected country from localStorage
-      const country = getCurrentCountry();
 
       // Determine which endpoint to use based on feature flag
       const useDirectApi = process.env.NEXT_PUBLIC_USE_DIRECT_TYPESENSE_API === 'true';
@@ -71,7 +67,7 @@ export function useTypesenseProductData(productId: string | null): UseTypesenseP
 
       // Fetch from API with country parameter for correct currency
       // Use minimal fields for StoryblokProductCard to reduce data transfer
-      const apiUrl = `/api/product/typesense/${id}?locale=${loc}&country=${encodeURIComponent(country)}&fields=minimal`;
+      const apiUrl = `/api/product/typesense/${id}?locale=en&country=${encodeURIComponent(countryName)}&fields=minimal`;
       const response = await fetch(apiUrl);
 
       if (!response.ok) {
@@ -103,7 +99,7 @@ export function useTypesenseProductData(productId: string | null): UseTypesenseP
       setError(null);
 
       try {
-        const productData = await fetchFromTypesense(productId, locale);
+        const productData = await fetchFromTypesense(productId, marketCode, country);
         setProduct(productData);
       } catch (err) {
         setProduct(null);
@@ -114,7 +110,7 @@ export function useTypesenseProductData(productId: string | null): UseTypesenseP
     };
 
     fetchProductData();
-  }, [productId, locale, fetchFromTypesense]);
+  }, [productId, marketCode, country, fetchFromTypesense]);
 
   return {
     product,

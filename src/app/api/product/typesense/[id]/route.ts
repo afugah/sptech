@@ -9,6 +9,8 @@ const MINIMAL_FIELDS = [
   'title',
   'description',
   'image_url',
+  'hover_image_url',
+  'images',
   'prices',
   'product_urls',
   'variants',
@@ -16,9 +18,10 @@ const MINIMAL_FIELDS = [
   'in_stock',
   'created_at_timestamp',
   'updated_at_timestamp',
+  'variant_count',
 ];
 
-const CARD_FIELDS = [...MINIMAL_FIELDS, 'tags', 'custom_fields'];
+const CARD_FIELDS = [...MINIMAL_FIELDS, 'tags', 'custom_fields', 'collections', 'breadcrumbs', 'custom_attributes'];
 
 /**
  * Direct Typesense API endpoint for fetching single products
@@ -53,11 +56,11 @@ export async function GET(
     const typesenseUrl = `${typesenseProtocol}://${typesenseHost}:${typesensePort}/collections/${typesenseCollection}/documents/search`;
 
     // Build Typesense search query
-    // Use filter_by for exact match since id field can't be used in query_by
+    // Try to match by id OR sku since Storyblok might use different IDs
     const searchParams = new URLSearchParams({
       q: '*',
-      filter_by: `id:=${id}`, // Use exact match operator
-      limit: '1',
+      filter_by: `id:=${id} || sku:=${id}`, // Match by id, sku, or product_sku
+      limit: '10', // Get more results to find the right product
     });
 
     // Only add include_fields if not fetching all fields
@@ -90,7 +93,13 @@ export async function GET(
     // Check if product found - look for exact match
     let activeProduct = data.hits?.find((hit: { document: Record<string, unknown> }) => {
       const doc = hit.document;
-      return String(doc.id) === String(id) || String(doc.product_sku) === String(id) || String(doc.sku) === String(id);
+      // Try multiple fields for matching
+      return (
+        String(doc.id) === String(id) ||
+        String(doc.product_sku) === String(id) ||
+        String(doc.sku) === String(id) ||
+        String(doc.external_id) === String(id) // Also check external_id
+      );
     });
 
     // If no exact match, take the first result
@@ -108,12 +117,18 @@ export async function GET(
               totalHits: data.found || 0,
               query: {
                 q: '*',
-                filter_by: `id:${id}`,
+                filter_by: `id:=${id} || sku:=${id} || product_sku:=${id}`,
                 searchParams: Object.fromEntries(searchParams),
               },
               typesenseUrl,
               collection: typesenseCollection,
-              response: data,
+              hits: data.hits?.map((hit: { document: Record<string, unknown> }) => ({
+                id: hit.document.id,
+                sku: hit.document.sku,
+                product_sku: hit.document.product_sku,
+                external_id: hit.document.external_id,
+                title: hit.document.title,
+              })),
             }
           : {
               searchedId: id,
@@ -236,7 +251,12 @@ function transformMinimalProduct(
     if (marketKey) {
       const marketPrice = typesensePrices[marketKey];
       price = marketPrice.salePrice || marketPrice.regularPrice || 0;
-      if (marketPrice.regularPrice > marketPrice.salePrice && marketPrice.salePrice > 0) {
+      if (
+        marketPrice.regularPrice &&
+        marketPrice.salePrice &&
+        marketPrice.regularPrice > marketPrice.salePrice &&
+        marketPrice.salePrice > 0
+      ) {
         compareAt = marketPrice.regularPrice;
       }
     }
@@ -254,25 +274,29 @@ function transformMinimalProduct(
 
   // Handle slug - Typesense uses product_urls object with market keys
   const productUrls = rawProduct.product_urls as Record<string, string> | undefined;
-  let slug = `/products/${sku}`;
+  const countryCode = getCountryCode(country);
+  const marketCode = getMarketCodeFromCountryCode(countryCode);
+  let slug = `/${marketCode}/products/${sku}`;
 
   if (productUrls) {
-    const countryCode = getCountryCode(country);
     // Find URL for current market
     const marketKey = Object.keys(productUrls).find((key) => key.endsWith(`_${countryCode}`));
     if (marketKey && productUrls[marketKey]) {
-      slug = productUrls[marketKey];
+      // Prepend market code if not already present
+      const url = productUrls[marketKey];
+      slug = url.startsWith('/') ? `/${marketCode}${url}` : `/${marketCode}/${url}`;
     } else {
-      // Fallback to first available URL
+      // Fallback to first available URL with market prefix
       const firstUrl = Object.values(productUrls)[0];
       if (firstUrl) {
-        slug = firstUrl;
+        slug = firstUrl.startsWith('/') ? `/${marketCode}${firstUrl}` : `/${marketCode}/${firstUrl}`;
       }
     }
   }
 
-  // Handle image - Typesense uses image_url field directly
+  // Handle images - Typesense uses image_url and hover_image_url fields
   const imageUrl = String(rawProduct.image_url || '');
+  const hoverImageUrl = String(rawProduct.hover_image_url || imageUrl || '');
 
   // Get stock from variants
   const stock =
@@ -289,9 +313,12 @@ function transformMinimalProduct(
     compareAt: compareAt,
     thumbnail: {
       url: imageUrl,
-      hoverUrl: imageUrl, // Use same image for hover in Typesense
+      hoverUrl: hoverImageUrl,
     },
     stock: stock,
+    in_stock: rawProduct.in_stock === true,
+    availability: String(rawProduct.availability || (rawProduct.in_stock ? 'in_stock' : 'out_of_stock')),
+    variant_count: Number(rawProduct.variant_count || variants?.length || 0),
     created_at: String(rawProduct.created_at_timestamp || ''),
     custom_fields: {
       [`price_${currency}`]: [price.toString()],
@@ -319,6 +346,20 @@ function getCountryCode(country: string): string {
 }
 
 /**
+ * Get market code from country code
+ */
+function getMarketCodeFromCountryCode(countryCode: string): string {
+  const codeMap: Record<string, string> = {
+    SE: 'se',
+    NO: 'no',
+    FI: 'fi',
+    DK: 'dk',
+    GB: 'gb',
+  };
+  return codeMap[countryCode] || 'se';
+}
+
+/**
  * Transform to card product format (for product cards)
  */
 function transformCardProduct(
@@ -327,10 +368,23 @@ function transformCardProduct(
   country: string,
 ): Record<string, unknown> {
   const minimal = transformMinimalProduct(rawProduct, language, country);
+  const countryCode = getCountryCode(country);
+
+  // Extract collections for the language
+  const collections = rawProduct.collections as Record<string, string[]> | undefined;
+  const languageCollections = collections?.[language] || collections?.en || [];
+
+  // Extract breadcrumbs for the market
+  const breadcrumbs = rawProduct.breadcrumbs as Record<string, Array<Record<string, unknown>>> | undefined;
+  const marketKey = Object.keys(breadcrumbs || {}).find((key) => key.endsWith(`_${countryCode}`));
+  const marketBreadcrumbs = marketKey && breadcrumbs ? breadcrumbs[marketKey] : [];
 
   return {
     ...minimal,
     tags: rawProduct.tags || [],
+    collections: languageCollections,
+    breadcrumbs: marketBreadcrumbs,
+    custom_attributes: rawProduct.custom_attributes || [],
     custom_fields: extractCustomFields(rawProduct, country),
   };
 }
@@ -367,7 +421,12 @@ function transformFullProduct(
       mainPrice = marketPrice.salePrice || marketPrice.regularPrice || 0;
       salePrice = mainPrice;
 
-      if (marketPrice.regularPrice > marketPrice.salePrice && marketPrice.salePrice > 0) {
+      if (
+        marketPrice.regularPrice &&
+        marketPrice.salePrice &&
+        marketPrice.regularPrice > marketPrice.salePrice &&
+        marketPrice.salePrice > 0
+      ) {
         compareAtPrice = marketPrice.regularPrice;
       }
     }
@@ -392,22 +451,37 @@ function transformFullProduct(
 
   // Handle slug - Typesense uses product_urls object
   const productUrls = rawProduct.product_urls as Record<string, string> | undefined;
-  let slug = `/products/${sku}`;
+  const marketCode = getMarketCodeFromCountryCode(countryCode);
+  let slug = `/${marketCode}/products/${sku}`;
 
   if (productUrls) {
     const marketKey = Object.keys(productUrls).find((key) => key.endsWith(`_${countryCode}`));
     if (marketKey && productUrls[marketKey]) {
-      slug = productUrls[marketKey];
+      const url = productUrls[marketKey];
+      slug = url.startsWith('/') ? `/${marketCode}${url}` : `/${marketCode}/${url}`;
     } else {
       const firstUrl = Object.values(productUrls)[0];
       if (firstUrl) {
-        slug = firstUrl;
+        slug = firstUrl.startsWith('/') ? `/${marketCode}${firstUrl}` : `/${marketCode}/${firstUrl}`;
       }
     }
   }
 
-  // Handle image - Typesense uses image_url field directly
+  // Handle images - Typesense uses image_url, hover_image_url, and images array
   const imageUrl = String(rawProduct.image_url || '');
+  const hoverImageUrl = String(rawProduct.hover_image_url || imageUrl || '');
+  const imagesArray = rawProduct.images as string[] | undefined;
+
+  // Build images array for full product
+  let images: Array<{ src: string; alt: string }> = [];
+  if (imagesArray && Array.isArray(imagesArray)) {
+    images = imagesArray.map((url, index) => ({
+      src: url,
+      alt: `${title} - Image ${index + 1}`,
+    }));
+  } else if (imageUrl) {
+    images = [{ src: imageUrl, alt: title }];
+  }
 
   // Calculate total stock from all variants
   const totalStock =
@@ -429,9 +503,9 @@ function transformFullProduct(
     updated_at: String(rawProduct.updated_at_timestamp || ''),
     thumbnail: {
       url: imageUrl,
-      hoverUrl: imageUrl, // Use same image for hover in Typesense
+      hoverUrl: hoverImageUrl,
     },
-    images: imageUrl ? [{ src: imageUrl, alt: title }] : [],
+    images: images,
     status: rawProduct.availability === 'in_stock' ? 'ACTIVE' : 'INACTIVE',
     slug: slug,
     stock: totalStock,
@@ -442,7 +516,7 @@ function transformFullProduct(
     tags: [],
     otherColors: [],
     sizes: [],
-    variant_count: rawProduct.variant_count || variants?.length || 0,
+    variant_count: Number(rawProduct.variant_count || variants?.length || 0),
     variants: variants?.map((variant) => ({
       id: String(variant.id || ''),
       sku: String(variant.sku || ''),
@@ -485,7 +559,7 @@ function extractCustomFields(rawProduct: Record<string, unknown>, country: strin
 
           // Calculate discount
           const discount =
-            marketPrice.regularPrice > marketPrice.salePrice
+            marketPrice.regularPrice && marketPrice.salePrice && marketPrice.regularPrice > marketPrice.salePrice
               ? Math.round(((marketPrice.regularPrice - marketPrice.salePrice) / marketPrice.regularPrice) * 100)
               : 0;
           customFields[`discount_${curr}`] = [discount.toString()];

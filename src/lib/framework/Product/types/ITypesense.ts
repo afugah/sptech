@@ -98,16 +98,31 @@ export namespace ITypesense {
   // Product document structure for Typesense
   export interface ProductDocument {
     id: string;
-    external_id: string;
-    status: 'ACTIVE' | 'INACTIVE' | 'DRAFT' | 'SCHEDULED' | 'PAUSED';
-    product_sku: string;
+    external_id?: string;
+    sku: string; // Direct SKU field (new structure)
+    product_sku?: string; // Legacy field
     mpn?: string;
     product_group_identifier?: string;
-    type: string;
-    title: string;
-    slug: string;
-    fullSlug: string;
-    description?: string;
+    type?: string;
+
+    // Title and description as objects with language keys
+    title: string | Record<string, string>;
+    description?: string | Record<string, string>;
+
+    // URLs and slugs
+    slug?: string;
+    fullSlug?: string;
+    product_urls?: Record<string, string>; // Market-specific URLs
+
+    // Status and availability
+    status?: 'ACTIVE' | 'INACTIVE' | 'DRAFT' | 'SCHEDULED' | 'PAUSED';
+    availability?: 'in_stock' | 'out_of_stock' | 'preorder';
+    in_stock?: boolean;
+
+    // Images
+    image_url?: string; // Primary image
+    hover_image_url?: string; // Hover image
+    images?: string[]; // Array of all images
     media?: Array<{
       id: number;
       imageSrc: string;
@@ -123,8 +138,33 @@ export namespace ITypesense {
     material?: string;
     productGroup?: string;
     targetGroup?: string;
+    custom_attributes?: Array<Record<string, unknown>>;
 
-    // Product variants for pricing/stock (from Brink)
+    // Market-specific pricing structure
+    prices?: Record<
+      string,
+      {
+        country_code: string;
+        currency: string;
+        locale: string;
+        market_id: number;
+        regularPrice: number;
+        salePrice: number;
+        store_group_title: string;
+      }
+    >;
+
+    // Product variants with enhanced structure
+    variants?: Array<{
+      id: string | number;
+      sku: string;
+      in_stock: boolean;
+      stock: number;
+      title?: string[] | string;
+      ean?: string;
+    }>;
+
+    // Legacy variant structure
     productVariants?: Array<{
       id: number;
       sku: string;
@@ -137,7 +177,22 @@ export namespace ITypesense {
       }>;
     }>;
 
-    // Collections and campaigns
+    variant_count?: number;
+
+    // Collections with language keys
+    collections?: Record<string, string[]>;
+
+    // Breadcrumbs with market keys
+    breadcrumbs?: Record<
+      string,
+      Array<{
+        title?: string;
+        slug?: string;
+        full_slug?: string;
+      }>
+    >;
+
+    // Legacy collection structure
     primaryCollection?: {
       id: number;
       title: string;
@@ -169,11 +224,13 @@ export namespace ITypesense {
     facet_material?: string[];
     facet_price?: number;
 
-    // Timestamps
-    updated_at: string;
-    updatedAtTimestamp: number;
-    created_at: string;
-    createdAtTimestamp: number;
+    // Timestamps - using both formats
+    updated_at?: string;
+    updated_at_timestamp?: number;
+    updatedAtTimestamp?: number;
+    created_at?: string;
+    created_at_timestamp?: number;
+    createdAtTimestamp?: number;
   }
 
   // Collection document structure
