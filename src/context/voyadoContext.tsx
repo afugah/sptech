@@ -14,6 +14,7 @@ import React, {
 import { useCart } from '@/src/context/cartContext';
 import { useIdentification } from '@/src/context/identificationContext';
 import useLocalStorage from '@/src/hooks/useLocalStorage';
+import { isVoyadoEnabled } from '@/src/lib/features';
 import { getDisplayName } from '@/src/util/user';
 
 export type VoyadoContext = {
@@ -186,6 +187,11 @@ const VoyadoProvider = ({ children }: PromotionProviderProps) => {
 
   const init = useCallback(
     async (email: string) => {
+      // Only initialize if Voyado is enabled
+      if (!isVoyadoEnabled()) {
+        return;
+      }
+
       setVoyadoLoading(true);
       try {
         if (!email) throw new Error('No email provided');
@@ -254,6 +260,10 @@ const VoyadoProvider = ({ children }: PromotionProviderProps) => {
 
   const startVoyado = useCallback(
     async (contactId: string) => {
+      if (!isVoyadoEnabled()) {
+        return;
+      }
+
       await fetch(`/api/voyado/voyado-start`, {
         method: 'POST',
         headers: {

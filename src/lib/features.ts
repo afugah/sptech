@@ -57,3 +57,35 @@ export const UI_FEATURES = {
 export function useInlineHeaderMenu(): boolean {
   return UI_FEATURES.USE_INLINE_HEADER_MENU === true;
 }
+
+/**
+ * Feature flags for membership/loyalty systems
+ */
+export const MEMBERSHIP_FEATURES = {
+  // Voyado integration for customer loyalty and promotions
+  VOYADO: false,
+
+  // Shopab Members system (works similarly to Voyado)
+  SHOPAB_MEMBERS: false,
+};
+
+/**
+ * Helper function to check if Voyado is enabled
+ */
+export function isVoyadoEnabled(): boolean {
+  return MEMBERSHIP_FEATURES.VOYADO === true;
+}
+
+/**
+ * Helper function to check if Shopab Members is enabled
+ */
+export function isShopabMembersEnabled(): boolean {
+  return MEMBERSHIP_FEATURES.SHOPAB_MEMBERS === true;
+}
+
+/**
+ * Helper function to check if any membership system is enabled
+ */
+export function isMembershipSystemEnabled(): boolean {
+  return isVoyadoEnabled() || isShopabMembersEnabled();
+}

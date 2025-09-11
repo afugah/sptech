@@ -6,6 +6,7 @@ import { getFirestore } from 'firebase-admin/firestore';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { di } from '@/src/lib/di';
+import { isShopabMembersEnabled, isVoyadoEnabled } from '@/src/lib/features';
 import { VoyadoService } from '@/src/lib/framework/Voyado/services/VoyadoService';
 import { isVoyadoMember } from '@/src/lib/framework/Voyado/shared/isVoyadoMember';
 
@@ -103,14 +104,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       try {
         if (!user.email) throw new Error('No email provided');
 
-        const voyadoService = di.resolve(VoyadoService);
-        const contact = await voyadoService.getContactByEmail(user.email);
+        // Check if Voyado integration is enabled
+        if (isVoyadoEnabled()) {
+          const voyadoService = di.resolve(VoyadoService);
+          const contact = await voyadoService.getContactByEmail(user.email);
 
-        if (!isVoyadoMember(contact)) {
-          return false;
+          if (!isVoyadoMember(contact)) {
+            return false;
+          }
+
+          return !!contact;
         }
 
-        return !!contact;
+        // Check if Shopab Members integration is enabled
+        if (isShopabMembersEnabled()) {
+          // TODO: Implement Shopab Members verification when the system is ready
+          // For now, just allow sign in
+          return true;
+        }
+
+        // If no membership system is enabled, allow Firebase authentication
+        return true;
       } catch (error) {
         console.error('Failed to validate user:', error);
         return false;
