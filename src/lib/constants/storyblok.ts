@@ -288,11 +288,11 @@ export const mobileBannerHeightConst: Record<number, string> = {
 export const desktopBannerGapConst: Record<number, string> = {
   0: 'md:gap-0',
   1: 'md:gap-1',
-  2: 'md:gap-3',
-  3: 'md:gap-6',
-  4: 'md:gap-10',
-  5: 'md:gap-16',
-  6: 'md:gap-20',
+  2: 'md:gap-2',
+  3: 'md:gap-3',
+  4: 'md:gap-4',
+  5: 'md:gap-6',
+  6: 'md:gap-8',
 };
 export const mobileBannerGapConst: Record<number, string> = {
   0: 'gap-0',
