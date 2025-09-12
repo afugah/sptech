@@ -1,5 +1,6 @@
 import { inject, singleton } from 'tsyringe';
 import { auth } from '@/src/lib/auth';
+import { isVoyadoEnabled } from '@/src/lib/features';
 import { BrinkCommerceMapper } from '@/src/lib/framework/Commerce/repositories/mappers/BrinkCommerceMapper';
 import { type IBrink } from '@/src/lib/framework/Commerce/types/IBrink';
 import { type LoggerService } from '@/src/lib/framework/Logger/services/LoggerService';
@@ -42,6 +43,12 @@ export class BrinkCommerceRepository implements ICommerceRepository {
   public async getStoreGroupId(isLogout?: boolean): Promise<string> {
     try {
       if (isLogout) return this._defaultStoreGroupId;
+
+      // Skip Voyado member level checking if Voyado is disabled
+      if (!isVoyadoEnabled()) {
+        return this._defaultStoreGroupId;
+      }
+
       let session = null;
       try {
         session = await auth();
@@ -79,10 +86,32 @@ export class BrinkCommerceRepository implements ICommerceRepository {
       storeGroupId,
     };
 
-    return this.fetch(`/sessions/start`, {
-      method: 'POST',
-      body: JSON.stringify(body),
-    });
+    try {
+      return await this.fetch(`/sessions/start`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+    } catch (error) {
+      // If the error is about store group configuration, log it and try with default store group
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.includes('store group id') && errorMessage.includes('not found')) {
+        this._logger.error(`Store group configuration error: ${errorMessage}. Attempting with default store group.`);
+
+        // Try with a fallback store group ID
+        const fallbackBody: IBrink.SessionStartBody = {
+          ...sessionStart,
+          storeGroupId: 'default', // Use 'default' as fallback
+        };
+
+        return this.fetch(`/sessions/start`, {
+          method: 'POST',
+          body: JSON.stringify(fallbackBody),
+        });
+      }
+
+      // Re-throw if it's a different error
+      throw error;
+    }
   }
 
   public async getPrice(productId: string, countryCode: string): Promise<ICommercePrice[]> {
@@ -162,6 +191,11 @@ export class BrinkCommerceRepository implements ICommerceRepository {
 
   private async fetchMemberLevel(email: string | null | undefined): Promise<string | null> {
     if (!email) return null;
+
+    // Only fetch member level if Voyado is enabled
+    if (!isVoyadoEnabled()) {
+      return null;
+    }
 
     return this._voyadoService.getContactByEmail(email).then((contact) => {
       if (contact && contact.attributes) {

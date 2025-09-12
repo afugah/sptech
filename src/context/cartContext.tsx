@@ -14,6 +14,7 @@ import React, {
   useState,
 } from 'react';
 import useLocalStorage from '@/src/hooks/useLocalStorage';
+import { getCountryFromMarket, getCurrencyForCountry } from '@/src/lib/constants/markets';
 import {
   type CartProviders,
   type RequestAddItem,
@@ -62,41 +63,38 @@ type CartProviderProps = {
 };
 export type LocaleTypes = 'sv' | 'fi' | 'nb' | 'en';
 
-const DEFAULT_STORE = {
-  countryCode: 'SE',
-  languageCode: 'sv',
-  currencyCode: 'SEK',
-};
-
-// Store configurations for different markets
-// Note: This is primarily used for initial language and currency mapping
-// Currency is determined dynamically based on country selection
-const STORES = [
-  DEFAULT_STORE,
-  {
-    countryCode: 'FI',
-    languageCode: 'fi',
-    currencyCode: 'EUR',
-  },
-  {
-    countryCode: 'GB',
-    languageCode: 'en',
-    currencyCode: 'USD', // Default for English market
-  },
-];
-
 const CartProvider = ({ children }: CartProviderProps) => {
   const locale = useLocale();
   const defaultStore = useMemo(() => {
-    // Map locale to appropriate store configuration
-    if (locale === 'sv') {
-      return DEFAULT_STORE; // Sweden
-    } else if (locale === 'fi') {
-      return STORES.find((store) => store.countryCode === 'FI')!;
-    } else {
-      // All other locales use English/International store
-      return STORES.find((store) => store.countryCode === 'GB') ?? DEFAULT_STORE;
-    }
+    // The locale is actually the market code (e.g., 'se', 'no', 'dk', 'ph')
+    const marketCode = locale;
+
+    // Get the country name from the market code
+    const country = getCountryFromMarket(marketCode);
+
+    // Get the currency for this country
+    const currency = getCurrencyForCountry(country);
+
+    // Map country to country code for Brink Commerce
+    const countryCodeMap: Record<string, string> = {
+      Sweden: 'SE',
+      Finland: 'FI',
+      Norway: 'NO',
+      Denmark: 'DK',
+      Germany: 'DE',
+      'United Kingdom': 'GB',
+      Philippines: 'PH',
+      // Add more as needed
+    };
+
+    const countryCode = countryCodeMap[country] || 'SE';
+
+    // Return appropriate store configuration based on market
+    return {
+      countryCode,
+      languageCode: marketCode === 'se' ? 'sv' : marketCode === 'fi' ? 'fi' : 'en',
+      currencyCode: currency,
+    };
   }, [locale]);
 
   const [miniCartOpen, setMiniCartOpen] = useState<boolean>(false);
@@ -149,6 +147,7 @@ const CartProvider = ({ children }: CartProviderProps) => {
         'South Africa': 'ZA',
         Israel: 'IL',
         Turkey: 'TR',
+        Philippines: 'PH',
         // Add more as needed
       };
 
@@ -199,11 +198,11 @@ const CartProvider = ({ children }: CartProviderProps) => {
 
   useEffect(() => {
     setCookie('countryCode', store.countryCode);
-    // Only set defaultStore if store hasn't been initialized yet
-    if (!store.currencyCode) {
+    // Update store if it doesn't match the current market
+    if (store.countryCode !== defaultStore.countryCode) {
       setStore(defaultStore);
     }
-  }, [defaultStore, setStore, store, store.countryCode, store.currencyCode]);
+  }, [defaultStore, setStore, store, store.countryCode]);
 
   const clearCart = () => {
     setSessions({ ...sessions, [locale]: undefined });

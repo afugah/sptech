@@ -192,7 +192,7 @@ const ProductCard: React.FC<ICardProps> = React.memo(({ product, priority = fals
 
   return (
     <div className={'group relative'}>
-      <Link href={`/products/${slug}`} onClick={handleProductClick} className={'block'} aria-label={`View ${title}`}>
+      <Link href={slug} onClick={handleProductClick} className={'block'} aria-label={`View ${title}`}>
         {/* Image Container */}
         <div className={'relative aspect-[4/5] w-full overflow-hidden rounded-lg bg-gray-200'}>
           <Image {...imageProps} alt={imageProps.alt || ''} />
