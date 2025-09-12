@@ -1,7 +1,8 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
+import { ColorSelector } from '@/src/components/product/ColorSelector';
 import { useElasticProductData } from '@/src/hooks/useElasticProductData';
 import { useTypesenseProductData } from '@/src/hooks/useTypesenseProductData';
 import { type IFindify } from '@/src/lib/framework/Collection/types/IFindify';
@@ -23,6 +24,7 @@ interface ICardProps {
 const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
   const { name, image, id } = product;
   const showDates = useSearchParams().get('showDates') === 'true';
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
   // Check if Typesense is enabled
   const useTypesense = process.env.NEXT_PUBLIC_USE_DIRECT_TYPESENSE_API === 'true';
@@ -72,6 +74,7 @@ const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
 
   // Determine source and data
   let baseProduct;
+  let productGroupProducts;
   let dataSource: 'elastic' | 'typesense' | 'storyblok' = useTypesense ? 'typesense' : 'elastic';
 
   if (dataProduct) {
@@ -82,13 +85,18 @@ const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
       slug: dataProduct.slug,
       title: dataProduct.title,
       price: dataProduct.price,
-      thumbnail: dataProduct.thumbnail,
+      thumbnail: {
+        url: hoveredImage || dataProduct.thumbnail?.url || '',
+        hoverUrl: dataProduct.thumbnail?.hoverUrl,
+      },
       tags: dataProduct.tags,
       compareAt: dataProduct.compareAt,
       pricing: dataProduct.pricing as IFindify.PricingStructure | undefined,
       created_at: typeof dataProduct.created_at === 'string' ? dataProduct.created_at : undefined,
       custom_fields: dataProduct.custom_fields,
     };
+    // Get product group products if available
+    productGroupProducts = dataProduct.productGroupProducts;
   } else {
     // Fallback to Storyblok data only
     dataSource = 'storyblok';
@@ -99,7 +107,7 @@ const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
       title: name,
       price: undefined, // No price from Storyblok - will not display price
       thumbnail: {
-        url: image,
+        url: hoveredImage || image,
         hoverUrl: image,
       },
       tags: [name.split(' ')[0]],
@@ -107,6 +115,7 @@ const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
       pricing: undefined,
       created_at: undefined,
     };
+    productGroupProducts = undefined;
   }
 
   return (
@@ -120,6 +129,17 @@ const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
     >
       <div className={'flex flex-col gap-1'}>
         <ProductSourceLabel source={dataSource} className={'mb-1 self-start'} />
+
+        {/* Color Selector for product group variants */}
+        {productGroupProducts && productGroupProducts.length > 1 && (
+          <ColorSelector
+            productGroupProducts={productGroupProducts}
+            currentProductId={baseProduct.id}
+            onImageHover={setHoveredImage}
+            className={'mb-2'}
+          />
+        )}
+
         {/* Only show price if we have data from search engine (not Storyblok only) */}
         {(dataSource === 'elastic' || dataSource === 'typesense') && (
           <ProductPrice

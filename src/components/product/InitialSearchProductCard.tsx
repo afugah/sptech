@@ -5,7 +5,8 @@ import { Heart } from 'lucide-react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useFormatter } from 'next-intl';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import { ColorSelector } from '@/src/components/product/ColorSelector';
 import { ProductTag } from '@/src/components/product/ProductTag';
 import { useCart } from '@/src/context/cartContext';
 import { useFindifyAnalytics } from '@/src/context/findifyAnalytics/findifyAnalyticsContext';
@@ -25,7 +26,19 @@ interface ICardProps {
 
 const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
   const { product } = props;
-  const { slug, thumbnail, title, price, pricing, tags, compare_at, created_at, custom_fields } = product;
+  const {
+    id,
+    slug,
+    thumbnail,
+    title,
+    price,
+    pricing,
+    tags,
+    compare_at,
+    created_at,
+    custom_fields,
+    productGroupProducts,
+  } = product;
 
   const { store } = useCart();
   const { marketCode, country, currency } = useMarket();
@@ -35,6 +48,9 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
   const { emitFeedback } = useFindifyAnalytics();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const isSimplePricing = useSimplePricing();
+
+  // State for hover image preview
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
   // Use currency from market hook
   const currencyCode = currency || store?.currencyCode || 'EUR';
@@ -143,7 +159,7 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
         <div className={'relative w-full flex-1 overflow-hidden'}>
           <div className={'thumbnail contents'}>
             <Image
-              src={thumbnail?.url || ''}
+              src={hoveredImage || thumbnail?.url || ''}
               alt={title}
               width={500}
               height={700}
@@ -196,6 +212,18 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
             >
               {title}
             </h2>
+
+            {/* Color Selector */}
+            {productGroupProducts && productGroupProducts.length > 1 && (
+              <div className={'mb-2'}>
+                <ColorSelector
+                  productGroupProducts={productGroupProducts}
+                  currentProductId={id}
+                  onImageHover={setHoveredImage}
+                  className={'justify-center'}
+                />
+              </div>
+            )}
 
             <span className={'text-sans flex h-5 flex-col text-xs uppercase tracking-wide lg:text-sm'}>
               <span className={isSale.sale_price !== null ? 'text-red' : 'text-black'}>

@@ -2,10 +2,10 @@
 
 // This file is a dynamic proxy that re-exports types from Storyblok CLI v4 generated files
 // with enhanced custom field types for better development experience
-// Generated on: 2025-09-05T14:41:11.157Z
+// Generated on: 2025-09-12T19:46:05.569Z
 
 // Re-export all CLI-generated types
-export type * from '../../../.storyblok/types/329822/storyblok-components';
+export * from '../../../.storyblok/types/325752/storyblok-components.d.ts';
 
 // Enhanced Custom Field Types for CLI v4
 export interface StoryblokSlider {

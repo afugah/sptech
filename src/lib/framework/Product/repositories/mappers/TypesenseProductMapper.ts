@@ -3,7 +3,7 @@ import { type IProduct } from '@/src/lib/framework/Product/domain/entities/IProd
 import { type ITypesense } from '@/src/lib/framework/Product/types/ITypesense';
 
 export class TypesenseProductMapper {
-  public static FromTypesense(document: ITypesense.ProductDocument, language: string): IProduct {
+  public static FromTypesense(document: ITypesense.ProductDocument, language: string, marketKey?: string): IProduct {
     // Extract title based on new structure (can be string or object)
     const title =
       typeof document.title === 'object' && document.title !== null
@@ -48,6 +48,13 @@ export class TypesenseProductMapper {
             variantTitle = variant.title.join(' ');
           } else if (typeof variant.title === 'string') {
             variantTitle = variant.title;
+          } else if (typeof variant.title === 'object' && variant.title !== null) {
+            // Handle title as an object with language keys
+            variantTitle =
+              (variant.title as Record<string, string>)[language] ||
+              (variant.title as Record<string, string>).en ||
+              Object.values(variant.title as Record<string, string>)[0] ||
+              variantTitle;
           }
         }
 
@@ -74,7 +81,8 @@ export class TypesenseProductMapper {
           stock: {
             id: String(variant.id),
             quantity: variant.stock || 0,
-            isAvailable: variant.in_stock === true || (variant.stock || 0) > 0,
+            // Updated: Use in_stock field directly for availability
+            isAvailable: variant.in_stock === true,
             validateStock: true,
             inventories: [],
           },
@@ -92,7 +100,16 @@ export class TypesenseProductMapper {
       },
       color: Array.isArray(document.color) ? document.color : [document.color || ''],
       status: (document.status || (document.in_stock ? 'ACTIVE' : 'INACTIVE')) as ProductStatusEnum,
-      slug: document.slug || '',
+      // Use market-specific product URL if available
+      slug: (() => {
+        if (document.product_urls && marketKey && document.product_urls[marketKey]) {
+          const url = String(document.product_urls[marketKey]);
+          // Remove locale prefix if present (e.g., /se/products/... -> /products/...)
+          return url.replace(/^\/[a-z]{2}\/products\//, '/products/');
+        }
+        const baseSlug = document.slug || '';
+        return baseSlug.startsWith('/products/') ? baseSlug : `/products/${baseSlug}`;
+      })(),
       slugSv: document.slug || '',
       compare_at: null,
       discount: null,
@@ -117,15 +134,43 @@ export class TypesenseProductMapper {
           }
         : null,
       productColors: undefined,
-      productGroupProducts: undefined,
+      productGroupProducts: document.product_group_products?.map((pgp) => ({
+        id: pgp.id,
+        sku: pgp.sku,
+        title:
+          typeof pgp.title === 'object' && pgp.title !== null
+            ? pgp.title[language] || pgp.title.en || Object.values(pgp.title)[0] || ''
+            : String(pgp.title || ''),
+        imageUrl: pgp.image_url || '',
+        productUrl: (() => {
+          const url =
+            pgp.product_urls?.[marketKey || `europe_${language.toUpperCase()}`] || pgp.product_urls?.['en'] || '';
+          // Remove locale prefix if present (e.g., /se/products/... -> /products/...)
+          return url ? String(url).replace(/^\/[a-z]{2}\/products\//, '/products/') : '';
+        })(),
+        color: pgp.color || '',
+      })),
       isVariantAsImage: false,
       product_flag: [],
-      breadcrumbs:
-        document.primaryCollection?.breadcrumbs?.map((bc) => ({
-          title: bc.title,
-          slug: bc.slug,
-          full_slug: bc.full_slug,
-        })) || [],
+      // Use market-specific breadcrumbs if available, fallback to legacy structure
+      breadcrumbs: (() => {
+        // Try to get market-specific breadcrumbs
+        if (document.breadcrumbs && marketKey && document.breadcrumbs[marketKey]) {
+          return document.breadcrumbs[marketKey].map((bc) => ({
+            title: bc.title || '',
+            slug: bc.slug || '',
+            full_slug: bc.full_slug || '',
+          }));
+        }
+        // Fallback to legacy structure
+        return (
+          document.primaryCollection?.breadcrumbs?.map((bc) => ({
+            title: bc.title,
+            slug: bc.slug,
+            full_slug: bc.full_slug,
+          })) || []
+        );
+      })(),
 
       // Optional date fields - handle both naming conventions
       releaseDate: document.release_date,

@@ -4,17 +4,20 @@ import { type ICollectionResponse } from '@/src/lib/framework/Collection/types/I
 import { type ICollectionSearch } from '@/src/lib/framework/Collection/types/ICollectionSearch';
 
 export class TypesenseCollectionMapper {
-  public static ToCollectionResponse(searchResults: {
-    found: number;
-    page: number;
-    request_params?: { per_page?: number };
-    hits?: unknown[];
-  }): ICollectionResponse.Generic {
+  public static ToCollectionResponse(
+    searchResults: {
+      found: number;
+      page: number;
+      request_params?: { per_page?: number };
+      hits?: unknown[];
+    },
+    marketCode?: string,
+  ): ICollectionResponse.Generic {
     const perPage = searchResults.request_params?.per_page || 24;
     const totalPages = Math.ceil(searchResults.found / perPage);
 
     return {
-      items: searchResults.hits?.map((hit: unknown) => this.mapProductHit(hit)) || [],
+      items: searchResults.hits?.map((hit: unknown) => this.mapProductHit(hit, marketCode)) || [],
       pagination: {
         total: {
           items: searchResults.found,
@@ -32,32 +35,71 @@ export class TypesenseCollectionMapper {
     return [];
   }
 
-  private static mapProductHit(hit: unknown): ICollectionItem {
+  private static mapProductHit(hit: unknown, marketCode?: string): ICollectionItem {
     const hitRecord = hit as Record<string, unknown>;
     const document = hitRecord.document as Record<string, unknown>;
 
+    // Generate marketKey for accessing market-specific data
+    const marketKey = marketCode ? `europe_${marketCode.toUpperCase()}` : undefined;
+
     // Safe property access with type guards
     const media = Array.isArray(document.media) ? document.media : [];
-    const variants = Array.isArray(document.productVariants) ? document.productVariants : [];
+    const images = Array.isArray(document.images) ? document.images : [];
+    const variants = Array.isArray(document.variants)
+      ? document.variants
+      : Array.isArray(document.productVariants)
+        ? document.productVariants
+        : [];
     const firstVariant = variants.length > 0 ? variants[0] : {};
     const firstPrice = Array.isArray((firstVariant as Record<string, unknown>)?.regularPrices)
       ? ((firstVariant as Record<string, unknown>).regularPrices as unknown[])[0]
       : {};
 
+    // Get image URLs from new structure or fallback to media
+    const imageUrl = document.image_url
+      ? String(document.image_url)
+      : images.length > 0
+        ? String(images[0])
+        : media.length > 0
+          ? String((media[0] as Record<string, unknown>)?.imageSrc || '')
+          : '';
+    const hoverImageUrl = document.hover_image_url
+      ? String(document.hover_image_url)
+      : images.length > 1
+        ? String(images[1])
+        : media.length > 1
+          ? String((media[1] as Record<string, unknown>)?.imageSrc || '')
+          : null;
+
     return {
       id: String(document.id || ''),
-      sku: String(document.product_sku || ''),
+      sku: String(document.sku || document.product_sku || ''),
       key: String(document.id || ''),
       title: String(document.title || ''),
       display_name: String(document.title || ''),
       thumbnail: {
-        url: media.length > 0 ? String((media[0] as Record<string, unknown>)?.imageSrc || '') : '',
-        hoverUrl: media.length > 1 ? String((media[1] as Record<string, unknown>)?.imageSrc || '') : null,
+        url: imageUrl,
+        hoverUrl: hoverImageUrl,
       },
       color: Array.isArray(document.color) ? document.color.map(String) : [String(document.color || '')],
       description: String(document.description || ''),
       status: (document.status as ProductStatusEnum) || ProductStatusEnum.Active,
-      slug: String(document.slug || ''),
+      // Use market-specific product URL if available
+      slug: (() => {
+        if (marketKey && document.product_urls && typeof document.product_urls === 'object') {
+          const urls = document.product_urls as Record<string, unknown>;
+          if (urls[marketKey]) {
+            const url = String(urls[marketKey]);
+            // Remove locale prefix if present (e.g., /se/products/... -> /products/...)
+            // This regex matches /{locale}/products/ and captures just /products/...
+            const cleanUrl = url.replace(/^\/[a-z]{2}\/products\//, '/products/');
+            return cleanUrl;
+          }
+        }
+        // Fallback: Ensure slug has /products/ prefix
+        const baseSlug = String(document.slug || '');
+        return baseSlug.startsWith('/products/') ? baseSlug : `/products/${baseSlug}`;
+      })(),
       slugSv: String(document.slug || ''), // Using same slug for sv as we're single language now
       stock: Number((firstVariant as Record<string, unknown>)?.stock || 0),
       price: Number((firstPrice as Record<string, unknown>)?.price || 0),
@@ -77,6 +119,38 @@ export class TypesenseCollectionMapper {
         currency: String((firstPrice as Record<string, unknown>)?.currency_code || 'EUR'),
       } as unknown as ICollectionItem['pricing'],
       custom_fields: {},
+      // Add product group products for color selection
+      productGroupProducts: Array.isArray(document.product_group_products)
+        ? (document.product_group_products as unknown[]).map((pgp: unknown) => {
+            const product = pgp as Record<string, unknown>;
+            // Get product URL - try market-specific key first, then fallback to 'en'
+            let productUrl = '';
+            if (product.product_urls && typeof product.product_urls === 'object') {
+              const urls = product.product_urls as Record<string, unknown>;
+              // Try market-specific key first (e.g., europe_SE)
+              if (marketKey && urls[marketKey]) {
+                const url = String(urls[marketKey]);
+                // Remove locale prefix if present (e.g., /se/products/... -> /products/...)
+                productUrl = url.replace(/^\/[a-z]{2}\/products\//, '/products/');
+              }
+              // Fallback to 'en' key if market-specific not found
+              else if (urls['en']) {
+                const url = String(urls['en']);
+                // Remove locale prefix if present
+                productUrl = url.replace(/^\/[a-z]{2}\/products\//, '/products/');
+              }
+            }
+
+            return {
+              id: product.id || '',
+              sku: product.sku || '',
+              title: product.title || '',
+              imageUrl: product.image_url || '',
+              productUrl: productUrl,
+              color: product.color || '',
+            };
+          })
+        : undefined,
     };
   }
 

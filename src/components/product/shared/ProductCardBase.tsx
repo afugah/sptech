@@ -6,7 +6,6 @@ import React from 'react';
 import { useFindifyAnalytics } from '@/src/context/findifyAnalytics/findifyAnalyticsContext';
 import { Link } from '@/src/i18n/navigation';
 import { type IFindify } from '@/src/lib/framework/Collection/types/IFindify';
-import { ColorVariants } from './ColorVariants';
 import { ProductImage } from './ProductImage';
 import { ProductPrice } from './ProductPrice';
 import { ProductTags } from './ProductTags';
@@ -81,7 +80,6 @@ export const ProductCardBase: React.FC<ProductCardBaseProps> = ({
           'hover:[&_.thumbnail>.thumbnail-hover]:opacity-100': !!thumbnail?.hoverUrl,
         })}
       >
-        <ColorVariants />
         <ProductImage src={thumbnail?.url || ''} hoverSrc={thumbnail?.hoverUrl || undefined} alt={title} priority />
 
         <div className={contentClassName}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Skeleton } from '@/src/components/shadcn/skeleton';
 import { type ICollectionItem } from '@/src/lib/framework/Collection/domain/entities/ICollectionItem';
-import InitialSearchProductCard from '../InitialSearchProductCard';
+import ProductCard from '../ProductCard';
 
 interface InitialSearchProductGridStaticProps {
   productList: ICollectionItem[];
@@ -37,7 +37,7 @@ export const InitialSearchProductGridStatic: React.FC<InitialSearchProductGridSt
   return (
     <div className={'mb-3 grid w-full grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-6'}>
       {limitedProducts.map((product) => (
-        <InitialSearchProductCard key={product.id} product={product} />
+        <ProductCard key={product.id} product={product} variant={'search'} />
       ))}
     </div>
   );

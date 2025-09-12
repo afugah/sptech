@@ -4,7 +4,8 @@ import Heart from '@images/icons/heart.svg';
 import Image from 'next/image';
 import { useLocale } from 'next-intl';
 import { useFormatter } from 'next-intl';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { ColorSelector } from '@/src/components/product/ColorSelector';
 import { ProductTag } from '@/src/components/product/ProductTag';
 import { useFindifyAnalytics } from '@/src/context/findifyAnalytics/findifyAnalyticsContext';
 import { useOptionalCartActions } from '@/src/context/optimized/CartActionsContext';
@@ -107,7 +108,10 @@ const useFormattedPrice = (
 };
 
 const ProductCard: React.FC<ICardProps> = React.memo(({ product, priority = false, onProductClick }) => {
-  const { slug, thumbnail, title, price, pricing, tags, compare_at, created_at } = product;
+  const { id, slug, thumbnail, title, price, pricing, tags, compare_at, created_at, productGroupProducts } = product;
+
+  // State for hover image preview
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
   // Optimized context usage - only get what we need, handle when context is not available
   const cartActions = useOptionalCartActions();
@@ -175,10 +179,10 @@ const ProductCard: React.FC<ICardProps> = React.memo(({ product, priority = fals
     target.style.display = 'none';
   }, []);
 
-  // Memoized image props
+  // Memoized image props - use hovered image if available
   const imageProps = useMemo(
     () => ({
-      src: typeof thumbnail === 'string' ? thumbnail : thumbnail?.url || '',
+      src: hoveredImage || (typeof thumbnail === 'string' ? thumbnail : thumbnail?.url || ''),
       alt: title,
       width: 400,
       height: 500,
@@ -187,7 +191,7 @@ const ProductCard: React.FC<ICardProps> = React.memo(({ product, priority = fals
         'aspect-[4/5] w-full object-cover object-center transition-transform duration-300 group-hover:scale-105',
       onError: handleImageError,
     }),
-    [thumbnail, title, priority, handleImageError],
+    [hoveredImage, thumbnail, title, priority, handleImageError],
   );
 
   return (
@@ -233,6 +237,16 @@ const ProductCard: React.FC<ICardProps> = React.memo(({ product, priority = fals
           <h3 className={'line-clamp-2 text-sm font-medium text-gray-900 transition-colors group-hover:text-gray-700'}>
             {title}
           </h3>
+
+          {/* Color Selector */}
+          {productGroupProducts && productGroupProducts.length > 1 && (
+            <ColorSelector
+              productGroupProducts={productGroupProducts}
+              currentProductId={id}
+              onImageHover={setHoveredImage}
+              className={'py-1'}
+            />
+          )}
 
           {/* Price Display */}
           {formattedPrice && (

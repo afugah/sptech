@@ -119,7 +119,7 @@ export class TypesenseCollectionRepository implements ICollectionRepository {
         .documents()
         .search(searchParams);
 
-      return TypesenseCollectionMapper.ToCollectionResponse(searchResults);
+      return TypesenseCollectionMapper.ToCollectionResponse(searchResults, marketCode);
     } catch (error) {
       this._logger.error('Typesense query search error:', error);
       throw error;
@@ -172,7 +172,7 @@ export class TypesenseCollectionRepository implements ICollectionRepository {
         .documents()
         .search(searchParams);
 
-      return TypesenseCollectionMapper.ToCollectionResponse(searchResults);
+      return TypesenseCollectionMapper.ToCollectionResponse(searchResults, marketCode);
     } catch (error) {
       this._logger.error('Typesense autocomplete search error:', error);
       throw error;
@@ -203,7 +203,7 @@ export class TypesenseCollectionRepository implements ICollectionRepository {
         .documents()
         .search(searchParams);
 
-      return TypesenseCollectionMapper.ToCollectionResponse(searchResults);
+      return TypesenseCollectionMapper.ToCollectionResponse(searchResults, marketCode);
     } catch (error) {
       this._logger.error('Typesense slug search error:', error);
       throw error;
@@ -233,7 +233,7 @@ export class TypesenseCollectionRepository implements ICollectionRepository {
         .documents()
         .search(searchParams);
 
-      return TypesenseCollectionMapper.ToCollectionResponse(searchResults);
+      return TypesenseCollectionMapper.ToCollectionResponse(searchResults, marketCode);
     } catch (error) {
       this._logger.error('Typesense items search error:', error);
       throw error;
@@ -271,7 +271,7 @@ export class TypesenseCollectionRepository implements ICollectionRepository {
         .documents()
         .search(searchParams);
 
-      return TypesenseCollectionMapper.ToCollectionResponse(searchResults);
+      return TypesenseCollectionMapper.ToCollectionResponse(searchResults, marketCode);
     } catch (error) {
       this._logger.error('Typesense recommendations search error:', error);
       throw error;

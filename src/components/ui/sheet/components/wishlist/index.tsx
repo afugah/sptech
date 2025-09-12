@@ -1,7 +1,7 @@
 'use client';
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import WishlistProductCard from '@/src/components/product/WishlistProductCard';
+import ProductCard from '@/src/components/product/ProductCard';
 import { useWishlist } from '@/src/hooks/useWishlist';
 import PageHeader from '../../../../header/PageHeader';
 import { Button } from '../../../../shadcn/button';
@@ -45,7 +45,13 @@ const Wishlist = () => {
             ) : (
               <div className={'grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'}>
                 {wishlistItems.map((item) => (
-                  <WishlistProductCard key={item.id} product={item} />
+                  <ProductCard
+                    key={item.id}
+                    product={item}
+                    variant={'wishlist'}
+                    showWishlist={true}
+                    wishlistCheckBy={'id'}
+                  />
                 ))}
               </div>
             )}

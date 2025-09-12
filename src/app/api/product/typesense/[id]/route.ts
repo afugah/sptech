@@ -275,21 +275,21 @@ function transformMinimalProduct(
   // Handle slug - Typesense uses product_urls object with market keys
   const productUrls = rawProduct.product_urls as Record<string, string> | undefined;
   const countryCode = getCountryCode(country);
-  const marketCode = getMarketCodeFromCountryCode(countryCode);
-  let slug = `/${marketCode}/products/${sku}`;
+  let slug = `/products/${sku}`;
 
   if (productUrls) {
     // Find URL for current market
     const marketKey = Object.keys(productUrls).find((key) => key.endsWith(`_${countryCode}`));
     if (marketKey && productUrls[marketKey]) {
-      // Prepend market code if not already present
       const url = productUrls[marketKey];
-      slug = url.startsWith('/') ? `/${marketCode}${url}` : `/${marketCode}/${url}`;
+      // Remove locale prefix if present (e.g., /se/products/... -> /products/...)
+      slug = url.replace(/^\/[a-z]{2}\/products\//, '/products/');
     } else {
-      // Fallback to first available URL with market prefix
+      // Fallback to first available URL
       const firstUrl = Object.values(productUrls)[0];
       if (firstUrl) {
-        slug = firstUrl.startsWith('/') ? `/${marketCode}${firstUrl}` : `/${marketCode}/${firstUrl}`;
+        // Remove locale prefix if present
+        slug = firstUrl.replace(/^\/[a-z]{2}\/products\//, '/products/');
       }
     }
   }

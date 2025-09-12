@@ -52,12 +52,29 @@ export class TypesenseRepository implements IProductRepository {
     }
 
     try {
-      const searchParams: Record<string, unknown> = {
-        q: '*',
-        query_by: 'slug,fullSlug',
-        filter_by: `status:ACTIVE && fullSlug:${slug.replaceAll('//', '/')}`,
-        per_page: 1,
-      };
+      // Extract ID from slug if it contains one (e.g., "battery-case-2-261" -> "261")
+      const idMatch = slug.match(/-(\d+)$/);
+      let searchParams: Record<string, unknown>;
+
+      if (idMatch) {
+        // Search by ID if we can extract it from the slug
+        const id = idMatch[1];
+        searchParams = {
+          q: '*',
+          query_by: 'id,external_id',
+          filter_by: `id:${id}`,
+          per_page: 1,
+        };
+      } else {
+        // Fallback to searching by SKU or title
+        // Remove any leading slashes and "products/" prefix
+        const cleanSlug = slug.replace(/^\/+/, '').replace(/^products\//, '');
+        searchParams = {
+          q: cleanSlug,
+          query_by: 'sku,title.en',
+          per_page: 1,
+        };
+      }
 
       const searchResults = await this.client
         .collections(this._config.Search.Typesense.Collection)
@@ -71,7 +88,13 @@ export class TypesenseRepository implements IProductRepository {
       }
 
       const hit = searchResults.hits[0];
-      const product = TypesenseProductMapper.FromTypesense(hit.document as ITypesense.ProductDocument, language);
+      // Generate marketKey from locale and language (e.g., "europe_SE")
+      const marketKey = `europe_${locale.toUpperCase()}`;
+      const product = TypesenseProductMapper.FromTypesense(
+        hit.document as ITypesense.ProductDocument,
+        language,
+        marketKey,
+      );
 
       this._logger.debug(`Found item for locale "${locale}" with slug: ${slug}`);
 
@@ -92,7 +115,7 @@ export class TypesenseRepository implements IProductRepository {
       const searchParams: Record<string, unknown> = {
         q: '*',
         query_by: 'id,external_id',
-        filter_by: `status:ACTIVE && id:${id}`,
+        filter_by: `id:${id}`,
         per_page: 1,
       };
 
@@ -108,7 +131,13 @@ export class TypesenseRepository implements IProductRepository {
       }
 
       const hit = searchResults.hits[0];
-      const product = TypesenseProductMapper.FromTypesense(hit.document as ITypesense.ProductDocument, language);
+      // Generate marketKey from locale and language (e.g., "europe_SE")
+      const marketKey = `europe_${locale.toUpperCase()}`;
+      const product = TypesenseProductMapper.FromTypesense(
+        hit.document as ITypesense.ProductDocument,
+        language,
+        marketKey,
+      );
 
       this._logger.debug(`Found item for locale "${locale}" with ID: ${id}`);
 

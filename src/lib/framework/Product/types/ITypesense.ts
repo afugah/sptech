@@ -179,6 +179,16 @@ export namespace ITypesense {
 
     variant_count?: number;
 
+    // Product group products (for color variants)
+    product_group_products?: Array<{
+      id: string;
+      sku: string;
+      title?: Record<string, string> | string;
+      image_url?: string;
+      product_urls?: Record<string, string>;
+      color?: string; // Future field for color attribute
+    }>;
+
     // Collections with language keys
     collections?: Record<string, string[]>;
 

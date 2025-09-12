@@ -1,6 +1,5 @@
 'use client';
 
-import StoryblokProductCard from '@components/product/StoryblokProductCard';
 import React from 'react';
 import { cn } from '@/lib/utils';
 import {
@@ -18,7 +17,6 @@ import { type ShoplabProducts, type StoryblokColorPicker } from '@/src/types/fra
 import { isColorPicker } from '@/src/types/framework/storyblok-helpers';
 import ProductCard from '../product/ProductCard';
 import TitleSubtitle from '../product/TitleSubtitle';
-import { Card } from '../shadcn/card';
 
 const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
   const {
@@ -113,15 +111,14 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
                             key={product.id}
                             className={'basis-1/2 pl-2 sm:pl-4 md:basis-[33.1%] md:pl-6 lg:basis-[25%]'}
                           >
-                            <Card className={'overflow-hidden rounded-none border-none shadow-none'}>
-                              <StoryblokProductCard
-                                product={{
-                                  ...product,
-                                  id: product.product_sku || product.id,
-                                  subtitle: product.product_sku,
-                                }}
-                              />
-                            </Card>
+                            <ProductCard
+                              product={{
+                                ...product,
+                                id: product.product_sku || product.id,
+                                subtitle: product.product_sku,
+                              }}
+                              variant={'storyblok'}
+                            />
                           </CarouselItem>
                         ),
                     )}
@@ -153,15 +150,15 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
               : defaultProducts?.map(
                   (product: { image: string; name: string; id: string; price: string; product_sku: string }) =>
                     product && (
-                      <Card key={product.id} className={'overflow-hidden rounded-none border-none shadow-none'}>
-                        <StoryblokProductCard
-                          product={{
-                            ...product,
-                            id: product.product_sku || product.id,
-                            subtitle: product.product_sku,
-                          }}
-                        />
-                      </Card>
+                      <ProductCard
+                        key={product.id}
+                        product={{
+                          ...product,
+                          id: product.product_sku || product.id,
+                          subtitle: product.product_sku,
+                        }}
+                        variant={'storyblok'}
+                      />
                     ),
                 )}
           </div>
@@ -195,15 +192,14 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
                             key={product.id}
                             className={'basis-1/2 pl-2 sm:pl-4 md:basis-[33.1%] md:pl-6 lg:basis-[25%]'}
                           >
-                            <Card className={'overflow-hidden rounded-none border-none shadow-none'}>
-                              <StoryblokProductCard
-                                product={{
-                                  ...product,
-                                  id: product.product_sku || product.id,
-                                  subtitle: product.product_sku,
-                                }}
-                              />
-                            </Card>
+                            <ProductCard
+                              product={{
+                                ...product,
+                                id: product.product_sku || product.id,
+                                subtitle: product.product_sku,
+                              }}
+                              variant={'storyblok'}
+                            />
                           </CarouselItem>
                         ),
                     )}

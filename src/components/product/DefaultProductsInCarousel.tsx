@@ -4,7 +4,7 @@ import { CarouselItem } from '@/src/components/shadcn/carousel';
 import { type ICollectionSearch } from '@/src/lib/framework/Collection/types/ICollectionSearch';
 import { CarouselComponent } from '../carousel/carousel';
 import { useSearchProduct } from '../search/dropdown-search/components/useSearchProduct';
-import InitialSearchProductCard from './InitialSearchProductCard';
+import ProductCard from './ProductCard';
 
 const DefaultProductsInCarousel = () => {
   const defaultFilters: ICollectionSearch.Filter = {
@@ -33,7 +33,7 @@ const DefaultProductsInCarousel = () => {
     <CarouselComponent>
       {productList?.map((product) => (
         <CarouselItem key={product.key} className={'basis-1/2 pl-2 sm:pl-4 md:basis-[33.1%] md:pl-6 lg:basis-[25%]'}>
-          <InitialSearchProductCard product={product} />
+          <ProductCard product={product} variant={'search'} />
         </CarouselItem>
       ))}
     </CarouselComponent>

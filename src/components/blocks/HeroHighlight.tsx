@@ -14,7 +14,6 @@ import {
 import { isColorPicker } from '@/src/types/framework/storyblok-helpers';
 import { CarouselComponent } from '../carousel/carousel';
 import ProductCard from '../product/ProductCard';
-import StoryblokProductCard from '../product/StoryblokProductCard';
 import TitleSubtitle from '../product/TitleSubtitle';
 import { CarouselItem } from '../shadcn/carousel';
 
@@ -114,8 +113,9 @@ const HeroHighlight: IStoryblok.FC<HeroHighlightStoryblok> = ({ blok }) => {
                       key={product.product_sku || product.id}
                       className={'basis-1/2 pl-2 sm:pl-4 md:basis-[33.1%] md:pl-6 lg:basis-[50%]'}
                     >
-                      <StoryblokProductCard
+                      <ProductCard
                         product={{ ...product, id: product.product_sku || product.id, subtitle: product.product_sku }}
+                        variant={'storyblok'}
                       />
                     </CarouselItem>
                   ))}

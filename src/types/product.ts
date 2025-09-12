@@ -53,15 +53,19 @@ export interface ProductVariant {
 }
 
 export interface ProductGroupProduct {
-  id: number;
-  title: LocalizedValue;
+  id: number | string;
+  title: LocalizedValue | string;
   image?: string;
-  product_sku: string;
-  slug: LocalizedValue;
-  fullSlug: Partial<LocalizedValue>;
-  status: 'ACTIVE' | 'INACTIVE';
-  stockSum: number;
-  attributes: Record<string, unknown>[];
+  imageUrl?: string; // New field from Typesense
+  product_sku?: string;
+  sku?: string; // New field from Typesense
+  slug?: LocalizedValue;
+  productUrl?: string; // New field from Typesense
+  fullSlug?: Partial<LocalizedValue>;
+  status?: 'ACTIVE' | 'INACTIVE';
+  stockSum?: number;
+  attributes?: Record<string, unknown>[];
+  color?: string; // New field for color variant
   // Enhanced fields for material selection
   material?: {
     value: LocalizedValue;

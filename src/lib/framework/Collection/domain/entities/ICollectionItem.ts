@@ -1,4 +1,5 @@
 import { type ProductStatusEnum } from '@/src/lib/constants/ProductStatusEnum';
+import { type ProductGroupProduct } from '@/src/types/product';
 import { type IFindify } from '../../types/IFindify';
 
 export interface ICollectionItem {
@@ -30,6 +31,7 @@ export interface ICollectionItem {
   created_at: Date | number;
   pricing: IFindify.PricingStructure;
   custom_fields?: Record<string, string[] | string>;
+  productGroupProducts?: ProductGroupProduct[];
 }
 export interface ICollectionWishlistItem {
   id: string;

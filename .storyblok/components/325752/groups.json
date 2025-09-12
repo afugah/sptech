@@ -1,15 +1,15 @@
 [
   {
     "name": "Banner",
-    "id": 538014,
-    "uuid": "07b504ee-6608-4d2b-b9a1-c2bdccae7e18",
+    "id": 88433192359362,
+    "uuid": "3921be4c-7f01-43e4-8d4f-923a8732b28d",
     "parent_id": null,
     "parent_uuid": null
   },
   {
     "name": "UI",
-    "id": 538015,
-    "uuid": "a6c556de-a16a-43c3-87c3-84d5c89bd36a",
+    "id": 88433192367555,
+    "uuid": "cdd78c55-47f9-44b3-b290-75480b468c0d",
     "parent_id": null,
     "parent_uuid": null
   }

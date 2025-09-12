@@ -13,7 +13,7 @@ import { sectionBackgroundColorConst } from '@/src/lib/constants/storyblok';
 import { type IStoryblok } from '@/src/types/framework/storyblok';
 import { type ProductCardDisplay } from '@/src/types/framework/storyblok-components';
 import { isColorPicker, type StoryblokColorPicker } from '@/src/types/framework/storyblok-helpers';
-import StoryblokProductCard from '../product/StoryblokProductCard';
+import ProductCard from '../product/ProductCard';
 
 const ProductCardDisplayComponent: IStoryblok.FC<ProductCardDisplay> = ({ blok }) => {
   const { layoutMode, backgroundColor, title, itemsPerView, products } = blok;
@@ -51,8 +51,9 @@ const ProductCardDisplayComponent: IStoryblok.FC<ProductCardDisplay> = ({ blok }
             productsData.items.length > 0 &&
             productsData.items.map((product) => (
               <div key={product.product_sku || product.id} className={''}>
-                <StoryblokProductCard
+                <ProductCard
                   product={{ ...product, id: product.product_sku || product.id, subtitle: product.product_sku }}
+                  variant={'storyblok'}
                 />
               </div>
             ))}
@@ -85,8 +86,9 @@ const ProductCardDisplayComponent: IStoryblok.FC<ProductCardDisplay> = ({ blok }
                   key={product.product_sku || product.id}
                   className={'pl-2 md:basis-1/2 md:pl-6 lg:basis-[25%]'}
                 >
-                  <StoryblokProductCard
+                  <ProductCard
                     product={{ ...product, id: product.product_sku || product.id, subtitle: product.product_sku }}
+                    variant={'storyblok'}
                   />
                 </CarouselItem>
               ))}
