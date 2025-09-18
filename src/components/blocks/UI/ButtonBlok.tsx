@@ -2,6 +2,7 @@
 
 import { storyblokEditable } from '@storyblok/react';
 import classNames from 'classnames';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { Link } from '@/src/i18n/navigation';
 import {
@@ -37,6 +38,8 @@ const ButtonBlok: IStoryblok.FC<ButtonType> = ({ blok }) => {
     border,
     marginRight,
     rounded,
+    icon,
+    iconColor,
   } = blok;
 
   const linkClasses = classNames(
@@ -100,7 +103,19 @@ const ButtonBlok: IStoryblok.FC<ButtonType> = ({ blok }) => {
             : {}),
         }}
       >
+        {icon === 'arrow_left' && (
+          <ArrowLeft
+            className={'ml-2 h-6 w-6'}
+            style={{ color: (iconColor as StoryblokColorPicker)?.value as string }}
+          />
+        )}
         {text}
+        {icon === 'arrow_right' && (
+          <ArrowRight
+            className={'ml-2 h-6 w-6'}
+            style={{ color: (iconColor as StoryblokColorPicker)?.value as string }}
+          />
+        )}
       </Button>
     </Link>
   );

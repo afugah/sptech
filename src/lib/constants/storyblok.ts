@@ -220,16 +220,16 @@ export const sectionBackgroundColorConst: Record<string, string> = {
 };
 
 export const opacityConst: Record<number, string> = {
-  1: 'text-opacity-10',
-  2: 'text-opacity-20',
-  3: 'text-opacity-30',
-  4: 'text-opacity-40',
-  5: 'text-opacity-50',
-  6: 'text-opacity-60',
-  7: 'text-opacity-70',
-  8: 'text-opacity-80',
-  9: 'text-opacity-90',
-  10: 'text-opacity-100',
+  1: 'bg-opacity-10',
+  2: 'bg-opacity-20',
+  3: 'bg-opacity-30',
+  4: 'bg-opacity-40',
+  5: 'bg-opacity-50',
+  6: 'bg-opacity-60',
+  7: 'bg-opacity-70',
+  8: 'bg-opacity-80',
+  9: 'bg-opacity-90',
+  10: 'bg-opacity-100',
 };
 export const storyblokComponentsConst = {
   hero: 'Hero',
