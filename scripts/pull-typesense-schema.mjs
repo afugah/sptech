@@ -72,7 +72,20 @@ async function fetchCollectionSchema(collectionName) {
   try {
     console.log(`🔄 Fetching schema for collection: ${collectionName}`);
 
-    const collection = await client.collections(collectionName).retrieve();
+    // First, try to get the collection schema directly
+    let collection;
+    try {
+      collection = await client.collections(collectionName).retrieve();
+    } catch (schemaError) {
+      if (schemaError.httpStatus === 403 || schemaError.httpStatus === 401) {
+        console.log(`⚠️  Cannot access collection schema (search-only API key?)`);
+        console.log(`   Will attempt to infer schema from documents...`);
+
+        // For search-only API keys, we'll infer the schema from documents
+        return await inferSchemaFromDocuments(collectionName);
+      }
+      throw schemaError;
+    }
 
     // Extract relevant schema information
     const schema = {
@@ -99,6 +112,133 @@ async function fetchCollectionSchema(collectionName) {
     }
     throw error;
   }
+}
+
+async function inferSchemaFromDocuments(collectionName) {
+  try {
+    console.log(`🔍 Inferring schema from documents in: ${collectionName}`);
+
+    // Search for multiple documents to get a good sample
+    const searchResult = await client.collections(collectionName)
+      .documents()
+      .search({
+        q: '*',
+        per_page: 10,
+        limit_hits: 10,
+      });
+
+    if (!searchResult.hits || searchResult.hits.length === 0) {
+      console.error(`❌ No documents found in collection "${collectionName}"`);
+      return null;
+    }
+
+    console.log(`   Found ${searchResult.hits.length} sample documents`);
+
+    // Analyze all documents to build a comprehensive field list
+    const fieldMap = new Map();
+
+    searchResult.hits.forEach(hit => {
+      const doc = hit.document;
+      analyzeDocumentFields(doc, fieldMap);
+    });
+
+    // Convert field map to schema-like structure
+    const fields = Array.from(fieldMap.entries()).map(([name, info]) => ({
+      name,
+      type: info.type,
+      optional: info.optional,
+      facet: info.facet || false,
+      index: true,
+      sort: false,
+      inferred: true
+    }));
+
+    // Create inferred schema
+    const schema = {
+      name: collectionName,
+      fields,
+      default_sorting_field: undefined,
+      token_separators: undefined,
+      symbols_to_index: undefined,
+      enable_nested_fields: true,
+      num_documents: searchResult.found,
+      created_at: undefined,
+      metadata: {
+        pulled_at: new Date().toISOString(),
+        environment: process.env.NODE_ENV || 'development',
+        typesense_host: TYPESENSE_HOST,
+        inferred_from_documents: true,
+        warning: 'Schema inferred from documents - may not include all fields or correct types'
+      }
+    };
+
+    return schema;
+  } catch (error) {
+    console.error(`❌ Failed to infer schema: ${error.message}`);
+    return null;
+  }
+}
+
+function analyzeDocumentFields(obj, fieldMap, prefix = '') {
+  for (const [key, value] of Object.entries(obj)) {
+    const fieldName = prefix ? `${prefix}.${key}` : key;
+
+    if (!fieldMap.has(fieldName)) {
+      fieldMap.set(fieldName, {
+        type: inferFieldType(value),
+        optional: true,
+        examples: []
+      });
+    }
+
+    const fieldInfo = fieldMap.get(fieldName);
+
+    // Add example values (limit to 3)
+    if (fieldInfo.examples.length < 3 && value !== null && value !== undefined) {
+      fieldInfo.examples.push(value);
+    }
+
+    // Check for facetable fields
+    if (key.includes('category') || key.includes('color') || key.includes('brand') || key.includes('type')) {
+      fieldInfo.facet = true;
+    }
+
+    // Recurse for nested objects (but not arrays of objects)
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      analyzeDocumentFields(value, fieldMap, fieldName);
+    }
+  }
+}
+
+function inferFieldType(value) {
+  if (value === null || value === undefined) {
+    return 'auto';
+  }
+
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return 'string[]'; // Default assumption
+    }
+    const firstItem = value[0];
+    if (typeof firstItem === 'object') {
+      return 'object[]';
+    }
+    return `${typeof firstItem}[]`;
+  }
+
+  if (typeof value === 'object') {
+    return 'object';
+  }
+
+  if (typeof value === 'number') {
+    return Number.isInteger(value) ? 'int64' : 'float';
+  }
+
+  if (typeof value === 'boolean') {
+    return 'bool';
+  }
+
+  return 'string';
 }
 
 async function fetchSampleDocument(collectionName) {
@@ -156,9 +296,16 @@ async function saveSchema(collectionName, schema, sampleDocument) {
 
 function generateSchemaSummary(schema, sampleDocument) {
   let summary = `# Typesense Collection: ${schema.name}\n\n`;
+
+  if (schema.metadata.inferred_from_documents) {
+    summary += `> ⚠️ **Note**: Schema inferred from documents (search-only API key). Actual schema may differ.\n\n`;
+  }
+
   summary += `## Metadata\n`;
   summary += `- **Documents**: ${schema.num_documents || 0}\n`;
-  summary += `- **Created**: ${schema.created_at}\n`;
+  if (schema.created_at) {
+    summary += `- **Created**: ${schema.created_at}\n`;
+  }
   summary += `- **Pulled**: ${schema.metadata.pulled_at}\n`;
   summary += `- **Environment**: ${schema.metadata.environment}\n\n`;
 

@@ -157,7 +157,7 @@ function generateNestedInterface(structure, interfaceName) {
       output += `    ${key}?: ${type};\n`;
     }
   }
-  output += '  }`;
+  output += '  }';
 
   return output;
 }
@@ -178,7 +178,12 @@ function generateTypeFile(collectionName) {
   console.log(`🔄 Generating types for: ${collectionName}`);
 
   const schemaData = JSON.parse(fs.readFileSync(schemaPath, 'utf-8'));
-  const interfaceName = `Typesense${capitalizeFirst(collectionName)}Document`;
+  // Sanitize collection name for TypeScript identifier
+  const sanitizedName = collectionName
+    .replace(/[^a-zA-Z0-9]/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_|_$/g, '');
+  const interfaceName = `Typesense${capitalizeFirst(sanitizedName)}Document`;
 
   let output = `/* eslint-disable @typescript-eslint/no-explicit-any */\n\n`;
   output += `// Auto-generated Typesense types for collection: ${collectionName}\n`;
