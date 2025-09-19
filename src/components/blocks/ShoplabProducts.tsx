@@ -10,7 +10,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/src/components/shadcn/carousel';
-import { useFindifyProducts } from '@/src/hooks/useFindifyProducts';
 import { sectionBackgroundColorConst, sizeConst } from '@/src/lib/constants/storyblok';
 import { type IStoryblok } from '@/src/types/framework/storyblok';
 import { type ShoplabProducts, type StoryblokColorPicker } from '@/src/types/framework/storyblok-components';
@@ -27,16 +26,15 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
     backgroundColor,
     itemsPerView,
     products,
-    findifyProducts,
     layoutMode,
+    showColorSelector,
+    showWishlist,
+    showTags,
+    showAddToCart,
+    showPrice,
   } = blok;
 
-  const ItemCount = Number(itemsPerView) || 4;
-
-  const { products: findifyProductsData, isLoading: isLoadingFindify } = useFindifyProducts(
-    findifyProducts as string,
-    ItemCount as number | undefined,
-  );
+  const _ItemCount = Number(itemsPerView) || 4;
 
   const backgroundColorClass =
     backgroundColor &&
@@ -64,9 +62,8 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
         ? 'bg-white'
         : 'bg-transparent';
 
-  // Determine if we should use Findify products or default products
-  const shouldUseFindifyProducts = findifyProducts && findifyProductsData.length > 0;
-  const defaultProducts = productsData?.items;
+  // Handle both array and object with items property
+  const displayProducts = Array.isArray(products) ? products : productsData?.items;
 
   const getGridColsClass = (cols: number) => {
     const gridColsMap = {
@@ -84,7 +81,7 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
     return (
       <div style={backgroundStyle} className={cn('relative w-full py-2', finalBackgroundClass || 'bg-seashell')}>
         <TitleSubtitle title={title} titleColor={getTitleColor} titleSize={titleSizeClass} />
-        {(shouldUseFindifyProducts || (defaultProducts && defaultProducts.length > 0)) && !isLoadingFindify && (
+        {displayProducts && displayProducts.length > 0 && (
           <Carousel
             className={cn('w-full bg-transparent px-9 md:px-14')}
             opts={{
@@ -95,33 +92,37 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
           >
             <div className={'px-3'}>
               <CarouselContent className={'-ml-2 bg-transparent lg:-ml-1'}>
-                {shouldUseFindifyProducts
-                  ? findifyProductsData.map((product) => (
-                      <CarouselItem
-                        key={product.id}
-                        className={'basis-1/2 pl-2 sm:pl-4 md:basis-[33.1%] md:pl-6 lg:basis-[25%]'}
-                      >
-                        <ProductCard product={product} />
-                      </CarouselItem>
-                    ))
-                  : defaultProducts?.map(
-                      (product: { image: string; name: string; id: string; price: string; product_sku: string }) =>
-                        product && (
-                          <CarouselItem
-                            key={product.id}
-                            className={'basis-1/2 pl-2 sm:pl-4 md:basis-[33.1%] md:pl-6 lg:basis-[25%]'}
-                          >
-                            <ProductCard
-                              product={{
-                                ...product,
-                                id: product.product_sku || product.id,
-                                subtitle: product.product_sku,
-                              }}
-                              variant={'storyblok'}
-                            />
-                          </CarouselItem>
-                        ),
-                    )}
+                {displayProducts?.map((product) => {
+                  // Check if it's a Storyblok product - products from Storyblok only have minimal data (id, name, image)
+                  // while Typesense products have full data (sku, title, slug, etc.)
+                  const isStoryblokProduct = !product.sku && !product.slug && product.id;
+
+                  // For Storyblok products, only pass the minimal data needed for fetching
+                  const productData = isStoryblokProduct
+                    ? {
+                        id: product.id,
+                        name: product.name,
+                        image: product.image,
+                      }
+                    : product;
+
+                  return (
+                    <CarouselItem
+                      key={product.id}
+                      className={'basis-1/2 pl-2 sm:pl-4 md:basis-[33.1%] md:pl-6 lg:basis-[25%]'}
+                    >
+                      <ProductCard
+                        product={productData}
+                        showColorSelector={showColorSelector}
+                        showWishlist={showWishlist}
+                        showTags={showTags}
+                        showAddToCart={showAddToCart}
+                        showPrice={showPrice}
+                        variant={isStoryblokProduct ? 'storyblok' : 'default'}
+                      />
+                    </CarouselItem>
+                  );
+                })}
               </CarouselContent>
 
               <CarouselPrevious className={'hidden lg:flex'} />
@@ -138,34 +139,42 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
   return (
     <div style={backgroundStyle} className={cn('relative w-full py-2', finalBackgroundClass || 'bg-seashell')}>
       <TitleSubtitle title={title} titleColor={getTitleColor} titleSize={titleSizeClass} />
-      {(shouldUseFindifyProducts || (defaultProducts && defaultProducts.length > 0)) && !isLoadingFindify && (
+      {displayProducts && displayProducts.length > 0 && (
         <div className={`hidden w-full lg:block`}>
           <div className={cn('grid gap-2 gap-y-2', getGridColsClass(Number(itemsPerView)))}>
-            {shouldUseFindifyProducts
-              ? findifyProductsData.map((product) => (
-                  <div key={product.id} className={''}>
-                    <ProductCard product={product} />
-                  </div>
-                ))
-              : defaultProducts?.map(
-                  (product: { image: string; name: string; id: string; price: string; product_sku: string }) =>
-                    product && (
-                      <ProductCard
-                        key={product.id}
-                        product={{
-                          ...product,
-                          id: product.product_sku || product.id,
-                          subtitle: product.product_sku,
-                        }}
-                        variant={'storyblok'}
-                      />
-                    ),
-                )}
+            {displayProducts?.map((product) => {
+              // Check if it's a Storyblok product - products from Storyblok only have minimal data (id, name, image)
+              // while Typesense products have full data (sku, title, slug, etc.)
+              const isStoryblokProduct = !product.sku && !product.slug && product.id;
+
+              // For Storyblok products, only pass the minimal data needed for fetching
+              const productData = isStoryblokProduct
+                ? {
+                    id: product.id,
+                    name: product.name,
+                    image: product.image,
+                  }
+                : product;
+
+              return (
+                <div key={product.id} className={''}>
+                  <ProductCard
+                    product={productData}
+                    showColorSelector={showColorSelector}
+                    showWishlist={showWishlist}
+                    showTags={showTags}
+                    showAddToCart={showAddToCart}
+                    showPrice={showPrice}
+                    variant={isStoryblokProduct ? 'storyblok' : 'default'}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
       <div className={'block lg:hidden'}>
-        {(shouldUseFindifyProducts || (defaultProducts && defaultProducts.length > 0)) && !isLoadingFindify && (
+        {displayProducts && displayProducts.length > 0 && (
           <Carousel
             className={cn('w-full bg-transparent px-0 md:px-0')}
             opts={{
@@ -176,33 +185,37 @@ const ShoplabProductsComponent: IStoryblok.FC<ShoplabProducts> = ({ blok }) => {
           >
             <div className={'px-3'}>
               <CarouselContent className={'-ml-2 bg-transparent'}>
-                {shouldUseFindifyProducts
-                  ? findifyProductsData.map((product) => (
-                      <CarouselItem
-                        key={product.id}
-                        className={'basis-1/2 pl-2 sm:pl-4 md:basis-[33.1%] md:pl-6 lg:basis-[25%]'}
-                      >
-                        <ProductCard product={product} />
-                      </CarouselItem>
-                    ))
-                  : defaultProducts?.map(
-                      (product: { image: string; name: string; id: string; price: string; product_sku: string }) =>
-                        product && (
-                          <CarouselItem
-                            key={product.id}
-                            className={'basis-1/2 pl-2 sm:pl-4 md:basis-[33.1%] md:pl-6 lg:basis-[25%]'}
-                          >
-                            <ProductCard
-                              product={{
-                                ...product,
-                                id: product.product_sku || product.id,
-                                subtitle: product.product_sku,
-                              }}
-                              variant={'storyblok'}
-                            />
-                          </CarouselItem>
-                        ),
-                    )}
+                {displayProducts?.map((product) => {
+                  // Check if it's a Storyblok product - products from Storyblok only have minimal data (id, name, image)
+                  // while Typesense products have full data (sku, title, slug, etc.)
+                  const isStoryblokProduct = !product.sku && !product.slug && product.id;
+
+                  // For Storyblok products, only pass the minimal data needed for fetching
+                  const productData = isStoryblokProduct
+                    ? {
+                        id: product.id,
+                        name: product.name,
+                        image: product.image,
+                      }
+                    : product;
+
+                  return (
+                    <CarouselItem
+                      key={product.id}
+                      className={'basis-1/2 pl-2 sm:pl-4 md:basis-[33.1%] md:pl-6 lg:basis-[25%]'}
+                    >
+                      <ProductCard
+                        product={productData}
+                        showColorSelector={showColorSelector}
+                        showWishlist={showWishlist}
+                        showTags={showTags}
+                        showAddToCart={showAddToCart}
+                        showPrice={showPrice}
+                        variant={isStoryblokProduct ? 'storyblok' : 'default'}
+                      />
+                    </CarouselItem>
+                  );
+                })}
               </CarouselContent>
 
               <CarouselPrevious className={'hidden lg:flex'} />

@@ -3,7 +3,9 @@ import { type Grid, type Hero, type Usp } from '@/src/types/framework/storyblok-
 
 /* #region Components validation */
 
-type IStory = Hero | Grid | Usp;
+// Add any type to handle all possible Storyblok components including linksGrid
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type IStory = Hero | Grid | Usp | any;
 const validComponents = Object.keys(storyblokComponents);
 
 export const filterValidStoryBlocks = (blocks?: Array<IStory> | undefined): Array<IStory> =>

@@ -66,6 +66,7 @@ export interface ProductGroupProduct {
   stockSum?: number;
   attributes?: Record<string, unknown>[];
   color?: string; // New field for color variant
+  hexColor?: string; // Hex code for color display
   // Enhanced fields for material selection
   material?: {
     value: LocalizedValue;

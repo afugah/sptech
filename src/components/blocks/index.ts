@@ -35,6 +35,7 @@ import HeroHighlight from './HeroHighlight';
 import HeroHighlightWithoutProducts from './HeroHighlightWithoutProducts';
 import ItemCardDetails from './ItemCardDetails';
 import ItemCardDisplay from './ItemCardDisplay';
+import LinksGrid from './LinksGrid';
 import LiveShoppingBanner from './LiveShopping/LiveShoppingBanner';
 import LiveShoppingCard from './LiveShopping/LiveShoppingCard';
 import ProductCardDisplay from './ProductCardDisplay';
@@ -93,4 +94,5 @@ export const storyblokComponents: SbReactComponentsMap = {
   sizeGuideMeasure: SizeGuideMeasure,
   'horizontal-scroll-grid': HorizontalScrollGridBlok,
   'horizontal-scroll-grid-card': HorizontalScrollGridCardBlok,
+  linksGrid: LinksGrid,
 };

@@ -337,9 +337,27 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
       {/* Wishlist button (absolute positioned) */}
       {showWishlist && <WishlistButton product={product} checkBy={wishlistCheckBy} />}
 
-      {/* Tags (absolute positioned) */}
+      {/* Color Selector (absolute positioned top left) */}
+      {showColorSelector && product.productGroupProducts && product.productGroupProducts.length > 1 && (
+        <div className={'absolute left-2 top-2 z-10'}>
+          <ColorSelector
+            productGroupProducts={product.productGroupProducts}
+            currentProductId={product.id}
+            onImageHover={setHoveredImage}
+            variant={'compact'}
+            className={'rounded-full bg-white/90 px-1.5 py-1 backdrop-blur-sm'}
+          />
+        </div>
+      )}
+
+      {/* Tags (absolute positioned below color selector) */}
       {showTags && productTags.length > 0 && (
-        <div className={'absolute left-2 top-2 z-10 flex flex-wrap gap-1'}>
+        <div
+          className={classNames('absolute left-2 z-10 flex flex-wrap gap-1', {
+            'top-14': showColorSelector && product.productGroupProducts && product.productGroupProducts.length > 1,
+            'top-2': !showColorSelector || !product.productGroupProducts || product.productGroupProducts.length <= 1,
+          })}
+        >
           {productTags.slice(0, 2).map((tag, index) => (
             <ProductTag
               key={`${tag}-${index}`}
@@ -409,16 +427,6 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
 
             {/* Title */}
             <h3 className={titleClassName}>{product.title}</h3>
-
-            {/* Color Selector */}
-            {showColorSelector && product.productGroupProducts && product.productGroupProducts.length > 1 && (
-              <ColorSelector
-                productGroupProducts={product.productGroupProducts}
-                currentProductId={product.id}
-                onImageHover={setHoveredImage}
-                className={'py-1'}
-              />
-            )}
 
             {/* Source Label (for wishlist/debug) */}
             {showSourceLabel && <ProductSourceLabel source={'findify'} className={'mb-1 self-start'} />}

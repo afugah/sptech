@@ -141,13 +141,37 @@ export class TypesenseCollectionMapper {
               }
             }
 
+            // Extract color information from attributes
+            let colorName = '';
+            let hexColor = '';
+
+            if (Array.isArray(product.attributes) && product.attributes.length > 0) {
+              const colorAttr = product.attributes.find((attr: unknown) => {
+                return typeof attr === 'object' && attr !== null && 'color' in attr;
+              });
+              if (colorAttr && typeof colorAttr === 'object' && 'color' in colorAttr && colorAttr.color) {
+                // Get color name
+                if (colorAttr.color.title) {
+                  colorName =
+                    typeof colorAttr.color.title === 'object'
+                      ? colorAttr.color.title.en || ''
+                      : String(colorAttr.color.title);
+                }
+                // Get hex color
+                if (colorAttr.color.meta && colorAttr.color.meta.hexColor) {
+                  hexColor = colorAttr.color.meta.hexColor;
+                }
+              }
+            }
+
             return {
               id: product.id || '',
               sku: product.sku || '',
               title: product.title || '',
               imageUrl: product.image_url || '',
               productUrl: productUrl,
-              color: product.color || '',
+              color: colorName || product.color || '',
+              hexColor: hexColor,
             };
           })
         : undefined,

@@ -11,9 +11,16 @@ interface ColorSelectorProps {
   currentProductId: string | number;
   onImageHover?: (imageUrl: string | null) => void;
   className?: string;
+  variant?: 'default' | 'compact';
 }
 
-export function ColorSelector({ productGroupProducts, currentProductId, onImageHover, className }: ColorSelectorProps) {
+export function ColorSelector({
+  productGroupProducts,
+  currentProductId,
+  onImageHover,
+  className,
+  variant = 'default',
+}: ColorSelectorProps) {
   const router = useRouter();
   const [hoveredProductId, setHoveredProductId] = useState<string | number | null>(null);
 
@@ -52,6 +59,57 @@ export function ColorSelector({ productGroupProducts, currentProductId, onImageH
     }
   };
 
+  // Compact variant for product cards
+  if (variant === 'compact') {
+    return (
+      <div className={classNames('flex gap-1', className)}>
+        {displayProducts.slice(0, 5).map((product) => {
+          const isSelected = String(product.id) === String(currentProductId);
+          const productTitle = typeof product.title === 'string' ? product.title : product.title?.en || '';
+          const colorName = product.color || productTitle || 'Color';
+          const imageUrl = product.imageUrl || product.image || '';
+          const hexColor = 'hexColor' in product ? (product as { hexColor?: string }).hexColor : undefined;
+
+          return (
+            <button
+              key={product.id}
+              onClick={() => handleColorClick(product)}
+              onMouseEnter={() => handleColorHover(product)}
+              onMouseLeave={() => handleColorHover(null)}
+              disabled={isSelected}
+              className={classNames('group relative h-6 w-6 rounded-full border transition-all duration-200', {
+                'border-2 border-black shadow-sm': isSelected,
+                'border border-gray-400 hover:border-gray-600': !isSelected,
+                'cursor-default': isSelected,
+                'cursor-pointer hover:scale-110': !isSelected,
+              })}
+              aria-label={`Select ${colorName} color`}
+              aria-pressed={isSelected}
+              aria-current={isSelected ? 'true' : undefined}
+            >
+              {imageUrl ? (
+                // Show product thumbnail if available
+                <div className={'relative h-full w-full overflow-hidden rounded-full'}>
+                  <Image src={imageUrl} alt={colorName} fill className={'object-cover'} sizes={'24px'} />
+                </div>
+              ) : hexColor ? (
+                // Use hex color if available
+                <div className={'h-full w-full rounded-full'} style={{ backgroundColor: hexColor }} />
+              ) : (
+                // Fallback to color swatch based on color name or a gradient
+                <div className={classNames('h-full w-full rounded-full', getColorClassByName(colorName))} />
+              )}
+            </button>
+          );
+        })}
+        {displayProducts.length > 5 && (
+          <span className={'self-center text-xs text-gray-500'}>+{displayProducts.length - 5}</span>
+        )}
+      </div>
+    );
+  }
+
+  // Default variant with labels
   return (
     <div className={classNames('flex items-center gap-2', className)}>
       <span className={'text-sm font-medium text-gray-700'}>Colors:</span>
@@ -64,6 +122,7 @@ export function ColorSelector({ productGroupProducts, currentProductId, onImageH
           // Use color property if available, otherwise try to extract from title or use default
           const colorName = product.color || productTitle || 'Color';
           const imageUrl = product.imageUrl || product.image || '';
+          const hexColor = 'hexColor' in product ? (product as { hexColor?: string }).hexColor : undefined;
 
           return (
             <button
@@ -89,6 +148,9 @@ export function ColorSelector({ productGroupProducts, currentProductId, onImageH
                 <div className={'relative h-full w-full overflow-hidden rounded-full'}>
                   <Image src={imageUrl} alt={colorName} fill className={'object-cover'} sizes={'40px'} />
                 </div>
+              ) : hexColor ? (
+                // Use hex color if available
+                <div className={'h-full w-full rounded-full'} style={{ backgroundColor: hexColor }} />
               ) : (
                 // Fallback to color swatch based on color name or a gradient
                 <div className={classNames('h-full w-full rounded-full', getColorClassByName(colorName))} />

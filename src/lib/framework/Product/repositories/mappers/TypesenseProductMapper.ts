@@ -134,22 +134,48 @@ export class TypesenseProductMapper {
           }
         : null,
       productColors: undefined,
-      productGroupProducts: document.product_group_products?.map((pgp) => ({
-        id: pgp.id,
-        sku: pgp.sku,
-        title:
-          typeof pgp.title === 'object' && pgp.title !== null
-            ? pgp.title[language] || pgp.title.en || Object.values(pgp.title)[0] || ''
-            : String(pgp.title || ''),
-        imageUrl: pgp.image_url || '',
-        productUrl: (() => {
-          const url =
-            pgp.product_urls?.[marketKey || `europe_${language.toUpperCase()}`] || pgp.product_urls?.['en'] || '';
-          // Remove locale prefix if present (e.g., /se/products/... -> /products/...)
-          return url ? String(url).replace(/^\/[a-z]{2}\/products\//, '/products/') : '';
-        })(),
-        color: pgp.color || '',
-      })),
+      productGroupProducts: document.product_group_products?.map((pgp) => {
+        // Extract color information from attributes
+        let colorName = pgp.color || '';
+        let hexColor = '';
+
+        if (Array.isArray(pgp.attributes) && pgp.attributes.length > 0) {
+          const colorAttr = pgp.attributes.find((attr: unknown) => {
+            return typeof attr === 'object' && attr !== null && 'color' in attr;
+          });
+          if (colorAttr && typeof colorAttr === 'object' && 'color' in colorAttr && colorAttr.color) {
+            // Get color name
+            if (colorAttr.color.title) {
+              colorName =
+                typeof colorAttr.color.title === 'object'
+                  ? colorAttr.color.title[language] || colorAttr.color.title.en || ''
+                  : String(colorAttr.color.title);
+            }
+            // Get hex color
+            if (colorAttr.color.meta && colorAttr.color.meta.hexColor) {
+              hexColor = colorAttr.color.meta.hexColor;
+            }
+          }
+        }
+
+        return {
+          id: pgp.id,
+          sku: pgp.sku,
+          title:
+            typeof pgp.title === 'object' && pgp.title !== null
+              ? pgp.title[language] || pgp.title.en || Object.values(pgp.title)[0] || ''
+              : String(pgp.title || ''),
+          imageUrl: pgp.image_url || '',
+          productUrl: (() => {
+            const url =
+              pgp.product_urls?.[marketKey || `europe_${language.toUpperCase()}`] || pgp.product_urls?.['en'] || '';
+            // Remove locale prefix if present (e.g., /se/products/... -> /products/...)
+            return url ? String(url).replace(/^\/[a-z]{2}\/products\//, '/products/') : '';
+          })(),
+          color: colorName,
+          hexColor: hexColor,
+        };
+      }),
       isVariantAsImage: false,
       product_flag: [],
       // Use market-specific breadcrumbs if available, fallback to legacy structure

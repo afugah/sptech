@@ -89,7 +89,6 @@ const ButtonBlok: IStoryblok.FC<ButtonType> = ({ blok }) => {
       <Button
         className={buttonClasses}
         {...storyblokEditable(blok)}
-        key={blok._uid}
         data-test={'button'}
         style={{
           ...((colorPickerBackground as { value?: string })?.value

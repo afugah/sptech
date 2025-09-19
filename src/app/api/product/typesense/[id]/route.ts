@@ -19,6 +19,9 @@ const MINIMAL_FIELDS = [
   'created_at_timestamp',
   'updated_at_timestamp',
   'variant_count',
+  'product_group_products', // Added for color selector support
+  'product_group_identifier',
+  'attributes', // Needed for color information in product groups
 ];
 
 const CARD_FIELDS = [...MINIMAL_FIELDS, 'tags', 'custom_fields', 'collections', 'breadcrumbs', 'custom_attributes'];
@@ -304,6 +307,59 @@ function transformMinimalProduct(
       return total + (Number(variant.stock) || 0);
     }, 0) || 0;
 
+  // Extract product group products for color variations
+  const productGroupProducts = Array.isArray(rawProduct.product_group_products)
+    ? (rawProduct.product_group_products as unknown[]).map((pgp: unknown) => {
+        const product = pgp as Record<string, unknown>;
+
+        // Extract color information from attributes
+        let colorName = '';
+        let hexColor = '';
+
+        if (Array.isArray(product.attributes) && product.attributes.length > 0) {
+          const colorAttr = (product.attributes as unknown[]).find((attr: unknown) => {
+            const attrObj = attr as Record<string, unknown>;
+            return attrObj.color !== undefined;
+          });
+
+          if (colorAttr && typeof colorAttr === 'object' && 'color' in colorAttr) {
+            const color = colorAttr.color as Record<string, unknown>;
+            // Get color name
+            if (color.title) {
+              const titleObj = color.title as Record<string, string> | string;
+              colorName = typeof titleObj === 'object' ? titleObj[language] || titleObj.en || '' : String(titleObj);
+            }
+            // Get hex color
+            if (color.meta && typeof color.meta === 'object' && 'hexColor' in color.meta) {
+              hexColor = String(color.meta.hexColor);
+            }
+          }
+        }
+
+        // Get product URL for this variant
+        let productUrl = '';
+        if (product.product_urls && typeof product.product_urls === 'object') {
+          const urls = product.product_urls as Record<string, string>;
+          const marketKey = Object.keys(urls).find((key) => key.endsWith(`_${countryCode}`));
+          if (marketKey) {
+            productUrl = urls[marketKey].replace(/^\/[a-z]{2}\/products\//, '/products/');
+          } else if (urls.en) {
+            productUrl = urls.en.replace(/^\/[a-z]{2}\/products\//, '/products/');
+          }
+        }
+
+        return {
+          id: String(product.id || ''),
+          sku: String(product.sku || ''),
+          title: product.title || '',
+          imageUrl: String(product.image_url || ''),
+          productUrl: productUrl,
+          color: colorName || String(product.color || ''),
+          hexColor: hexColor,
+        };
+      })
+    : undefined;
+
   return {
     id: String(rawProduct.id || ''),
     sku: sku,
@@ -320,6 +376,7 @@ function transformMinimalProduct(
     availability: String(rawProduct.availability || (rawProduct.in_stock ? 'in_stock' : 'out_of_stock')),
     variant_count: Number(rawProduct.variant_count || variants?.length || 0),
     created_at: String(rawProduct.created_at_timestamp || ''),
+    productGroupProducts: productGroupProducts,
     custom_fields: {
       [`price_${currency}`]: [price.toString()],
     },

@@ -66,7 +66,7 @@ export function useTypesenseProductData(productId: string | null): UseTypesenseP
       }
 
       // Fetch from API with country parameter for correct currency
-      // Use minimal fields for StoryblokProductCard to reduce data transfer
+      // Use minimal fields for StoryblokProductCard (now includes product_group_products)
       const apiUrl = `/api/product/typesense/${id}?locale=en&country=${encodeURIComponent(countryName)}&fields=minimal`;
       const response = await fetch(apiUrl);
 
