@@ -7,7 +7,7 @@ import { routing } from './i18n/routing';
 
 const bloomFilter = new JsBloom(GeneratedBloomFilter);
 const intlMiddleware = createIntlMiddleware(routing, {
-  localeDetection: true,
+  localeDetection: false,
   alternateLinks: false,
 });
 
