@@ -11,6 +11,7 @@ type IProps = {
   product_flag?: Array<{ title: string; textColor: string; backgroundColor: string }>;
   productName?: string;
   className?: string;
+  onImageClick?: (index: number) => void;
 };
 
 type IDotButtonPropType = {
@@ -21,7 +22,7 @@ type IDotButtonPropType = {
 const OPTIONS: EmblaOptionsType = { loop: true, watchDrag: true };
 
 export const ImageGalleryHorizontal: React.FC<IProps> = (props) => {
-  const { slides, product_flag, className, productName } = props;
+  const { slides, product_flag, className, productName, onImageClick } = props;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
   const [scrollSnaps, setScrollSnaps] = React.useState<number[]>([]);
@@ -60,20 +61,22 @@ export const ImageGalleryHorizontal: React.FC<IProps> = (props) => {
         <div className={`embla__container flex self-center`}>
           {slides.map((slide, index) => (
             <div className={'embla__slide w-full flex-shrink-0'} key={index}>
-              <Image
-                className={'mx-auto h-auto w-full max-w-[1040px] object-contain'}
-                priority={true}
-                src={typeof slide === 'string' ? slide : slide.src}
-                alt={
-                  productName
-                    ? productName.replace('NO', (index + 1).toString())
-                    : typeof slide === 'string'
-                      ? 'Product image'
-                      : slide.alt
-                }
-                width={1500}
-                height={2100}
-              />
+              <div className={onImageClick ? 'cursor-pointer' : ''} onClick={() => onImageClick?.(index)}>
+                <Image
+                  className={'mx-auto h-auto w-full max-w-[1040px] object-contain'}
+                  priority={true}
+                  src={typeof slide === 'string' ? slide : slide.src}
+                  alt={
+                    productName
+                      ? productName.replace('NO', (index + 1).toString())
+                      : typeof slide === 'string'
+                        ? 'Product image'
+                        : slide.alt
+                  }
+                  width={1500}
+                  height={2100}
+                />
+              </div>
 
               <div className={'flex-start absolute bottom-4 left-4 flex flex-col items-start gap-2'}>
                 {index === 0 &&

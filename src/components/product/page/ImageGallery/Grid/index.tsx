@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { ImageGalleryHorizontal } from '@/src/components/product/page/ImageGallery/Horizontal';
+import { ImageZoomGallery } from '@/src/components/product/page/ImageGallery/ZoomGallery';
 import { MEDIUM } from '@/src/styles/theme';
 
 interface IImageGalleryGridProps {
@@ -16,8 +17,10 @@ interface IImageGalleryGridProps {
 }
 
 export const ImageGalleryGrid: React.FC<IImageGalleryGridProps> = (props) => {
-  const { images = [], className } = props;
+  const { images = [], className, productName } = props;
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   useEffect(() => {
     // Only run on client side
@@ -37,6 +40,11 @@ export const ImageGalleryGrid: React.FC<IImageGalleryGridProps> = (props) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    setIsZoomOpen(true);
+  };
+
   // During SSR and initial client render, show both versions with CSS to control visibility
   // This prevents hydration mismatches
   if (isMobile === null) {
@@ -44,28 +52,71 @@ export const ImageGalleryGrid: React.FC<IImageGalleryGridProps> = (props) => {
       <>
         {/* Mobile version - hidden on desktop */}
         <div className={'relative max-h-[60vh] shrink-0 overflow-hidden md:hidden [&_img]:!relative'}>
-          <ImageGalleryHorizontal slides={images} className={className} />
+          <ImageGalleryHorizontal slides={images} className={className} onImageClick={handleImageClick} />
         </div>
 
         {/* Desktop version - hidden on mobile */}
-        <div style={{ display: 'flex', flexWrap: 'wrap' }} className={classNames('hidden md:flex', className)}>
-          {images.map((img, idx) => (
-            <Image
-              key={`${img}-${idx}`}
-              src={img}
-              width={0}
-              height={0}
-              className={classNames('h-auto pb-2 pr-2', {
-                'w-full': images.length === 1,
-                'w-full lg:w-1/2': images.length > 1,
-              })}
-              priority={true}
-              quality={75}
-              alt={'Product image'}
-              sizes={`(max-width: ${MEDIUM}px) 100vw, 50vw`}
-            />
-          ))}
+        <div className={classNames('hidden gap-2 md:flex', className)}>
+          {images.length > 1 ? (
+            <>
+              {/* First image - takes left half */}
+              <div className={'w-1/2 cursor-pointer'} onClick={() => handleImageClick(0)}>
+                <Image
+                  key={`${images[0]}-0`}
+                  src={images[0]}
+                  width={0}
+                  height={0}
+                  className={'h-auto w-full transition-opacity hover:opacity-90'}
+                  priority={true}
+                  quality={75}
+                  alt={'Product image'}
+                  sizes={'50vw'}
+                />
+              </div>
+
+              {/* Remaining images - arranged in grid on right half */}
+              <div className={'grid w-1/2 grid-cols-2 gap-2'}>
+                {images.slice(1).map((img, idx) => (
+                  <div key={`${img}-${idx + 1}`} className={'cursor-pointer'} onClick={() => handleImageClick(idx + 1)}>
+                    <Image
+                      src={img}
+                      width={0}
+                      height={0}
+                      className={'h-auto w-full transition-opacity hover:opacity-90'}
+                      priority={idx < 3}
+                      quality={75}
+                      alt={'Product image'}
+                      sizes={'25vw'}
+                    />
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            /* Single image - full width */
+            <div className={'cursor-pointer'} onClick={() => handleImageClick(0)}>
+              <Image
+                key={`${images[0]}-0`}
+                src={images[0]}
+                width={0}
+                height={0}
+                className={'h-auto w-full transition-opacity hover:opacity-90'}
+                priority={true}
+                quality={75}
+                alt={'Product image'}
+                sizes={'100vw'}
+              />
+            </div>
+          )}
         </div>
+
+        <ImageZoomGallery
+          images={images}
+          initialIndex={selectedImageIndex}
+          isOpen={isZoomOpen}
+          onClose={() => setIsZoomOpen(false)}
+          productName={productName}
+        />
       </>
     );
   }
@@ -73,31 +124,84 @@ export const ImageGalleryGrid: React.FC<IImageGalleryGridProps> = (props) => {
   // After hydration, render based on actual window size
   if (isMobile) {
     return (
-      <div className={'relative max-h-[60vh] shrink-0 overflow-hidden [&_img]:!relative'}>
-        <ImageGalleryHorizontal slides={images} className={className} />
-      </div>
+      <>
+        <div className={'relative max-h-[60vh] shrink-0 overflow-hidden [&_img]:!relative'}>
+          <ImageGalleryHorizontal slides={images} className={className} onImageClick={handleImageClick} />
+        </div>
+        <ImageZoomGallery
+          images={images}
+          initialIndex={selectedImageIndex}
+          isOpen={isZoomOpen}
+          onClose={() => setIsZoomOpen(false)}
+          productName={productName}
+        />
+      </>
     );
   }
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }} className={className}>
-      {/* TODO: Add some package to zoom on click */}
-      {images.map((img, idx) => (
-        <Image
-          key={`${img}-${idx}`}
-          src={img}
-          width={0}
-          height={0}
-          className={classNames('h-auto pb-2 pr-2', {
-            'w-full': images.length === 1,
-            'w-full lg:w-1/2': images.length > 1,
-          })}
-          priority={true}
-          quality={75}
-          alt={'Product image'}
-          sizes={`(max-width: ${MEDIUM}px) 100vw, 50vw`}
-        />
-      ))}
-    </div>
+    <>
+      <div className={classNames('flex flex-col gap-2', className)}>
+        {images.length > 1 ? (
+          <>
+            {/* First image - takes left half */}
+            <div className={'w-full cursor-pointer'} onClick={() => handleImageClick(0)}>
+              <Image
+                key={`${images[0]}-0`}
+                src={images[0]}
+                width={0}
+                height={0}
+                className={'h-auto w-full transition-opacity hover:opacity-90'}
+                priority={true}
+                quality={75}
+                alt={'Product image'}
+                sizes={'50vw'}
+              />
+            </div>
+
+            {/* Remaining images - arranged in grid on right half */}
+            <div className={'grid w-full grid-cols-2 gap-2'}>
+              {images.slice(1).map((img, idx) => (
+                <div key={`${img}-${idx + 1}`} className={'cursor-pointer'} onClick={() => handleImageClick(idx + 1)}>
+                  <Image
+                    src={img}
+                    width={0}
+                    height={0}
+                    className={'h-auto w-full transition-opacity hover:opacity-90'}
+                    priority={idx < 3}
+                    quality={75}
+                    alt={'Product image'}
+                    sizes={'25vw'}
+                  />
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          /* Single image - full width */
+          <div className={'cursor-pointer'} onClick={() => handleImageClick(0)}>
+            <Image
+              key={`${images[0]}-0`}
+              src={images[0]}
+              width={0}
+              height={0}
+              className={'h-auto w-full transition-opacity hover:opacity-90'}
+              priority={true}
+              quality={75}
+              alt={'Product image'}
+              sizes={'100vw'}
+            />
+          </div>
+        )}
+      </div>
+
+      <ImageZoomGallery
+        images={images}
+        initialIndex={selectedImageIndex}
+        isOpen={isZoomOpen}
+        onClose={() => setIsZoomOpen(false)}
+        productName={productName}
+      />
+    </>
   );
 };
