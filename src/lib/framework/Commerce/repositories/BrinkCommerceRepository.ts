@@ -16,10 +16,22 @@ export class BrinkCommerceRepository implements ICommerceRepository {
   private readonly _defaultStoreGroupId: string = process.env.NEXT_PUBLIC_BRINK_STORE_GROUP_ID || '';
 
   protected readonly baseUrl: string = process.env.NEXT_PUBLIC_BRINK_API_URL || '';
-  protected readonly apiKey: string = 'BrinkCommerceDefaultApiKey';
+  protected readonly apiKey: string = process.env.BRINK_SHOPPER_X_API_KEY || 'BrinkCommerceDefaultApiKey';
 
   private readonly storeGroupsEnv = process.env.NEXT_PUBLIC_BRINK_STORE_GROUPS || '';
   private readonly storeGroupsInventoryEnv = process.env.NEXT_PUBLIC_BRINK_STORE_GROUP_INVENTORY || '';
+
+  // Store group mapping - currently only Sweden is supported in staging
+  private get countryStoreGroupMap(): Record<string, string> {
+    return {
+      SE: this._defaultStoreGroupId, // Sweden uses the configured store group
+      // Other countries fall back to default store group
+      // NO: this._defaultStoreGroupId, // Norway - not currently supported in staging
+      // DK: this._defaultStoreGroupId, // Denmark - not currently supported in staging
+      // FI: this._defaultStoreGroupId, // Finland - not currently supported in staging
+    };
+  }
+
   protected get storeGroups(): Record<string, string> {
     const env = this.storeGroupsEnv;
     if (!env?.length) return {};
@@ -33,6 +45,17 @@ export class BrinkCommerceRepository implements ICommerceRepository {
         .map((s) => s.trim());
       return { ...acc, [key.toLowerCase()]: value };
     }, {});
+  }
+
+  public getStoreGroupForCountry(countryCode: string): string {
+    // First try country-specific mapping
+    const countrySpecificStoreGroup = this.countryStoreGroupMap[countryCode.toUpperCase()];
+    if (countrySpecificStoreGroup) {
+      return countrySpecificStoreGroup;
+    }
+
+    // Fallback to default store group
+    return this._defaultStoreGroupId;
   }
 
   public constructor(
@@ -80,11 +103,20 @@ export class BrinkCommerceRepository implements ICommerceRepository {
     return this._defaultStoreGroupId;
   }
   public async startSession(sessionStart: RequestSessionStart, isLogout?: boolean): Promise<ShopperSessionResponse> {
-    const storeGroupId = await this.getStoreGroupId(isLogout);
+    // Use country-specific store group mapping for the request country
+    const countrySpecificStoreGroup = this.getStoreGroupForCountry(sessionStart.countryCode);
+    const memberStoreGroupId = await this.getStoreGroupId(isLogout);
+
+    // Use country-specific store group if available, otherwise use member-based store group
+    const storeGroupId =
+      countrySpecificStoreGroup !== this._defaultStoreGroupId ? countrySpecificStoreGroup : memberStoreGroupId;
+
     const body: IBrink.SessionStartBody = {
       ...sessionStart,
       storeGroupId,
     };
+
+    this._logger.info(`Starting session with store group: ${storeGroupId}, country: ${sessionStart.countryCode}`);
 
     try {
       return await this.fetch(`/sessions/start`, {
@@ -92,10 +124,17 @@ export class BrinkCommerceRepository implements ICommerceRepository {
         body: JSON.stringify(body),
       });
     } catch (error) {
-      // If the error is about store group configuration, log it and try with default store group
+      // If the error is about store group configuration, log it and provide helpful information
       const errorMessage = error instanceof Error ? error.message : String(error);
       if (errorMessage.includes('store group id') && errorMessage.includes('not found')) {
-        this._logger.error(`Store group configuration error: ${errorMessage}. Attempting with default store group.`);
+        this._logger.error(
+          `Store group configuration error: [store group id ${storeGroupId}, countryCode ${sessionStart.countryCode} not found]:. Attempting with default store group.`,
+        );
+        this._logger.error(`Current configuration: NEXT_PUBLIC_BRINK_STORE_GROUP_ID=${this._defaultStoreGroupId}`);
+        this._logger.error(`Available store groups from env: ${JSON.stringify(this.storeGroups)}`);
+        this._logger.error(
+          `Please verify the store group configuration in BrinkCommerce admin for country ${sessionStart.countryCode}`,
+        );
 
         // Try with a fallback store group ID
         const fallbackBody: IBrink.SessionStartBody = {
@@ -103,10 +142,43 @@ export class BrinkCommerceRepository implements ICommerceRepository {
           storeGroupId: 'default', // Use 'default' as fallback
         };
 
-        return this.fetch(`/sessions/start`, {
-          method: 'POST',
-          body: JSON.stringify(fallbackBody),
-        });
+        try {
+          return await this.fetch(`/sessions/start`, {
+            method: 'POST',
+            body: JSON.stringify(fallbackBody),
+          });
+        } catch (fallbackError) {
+          const fallbackErrorMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+          this._logger.error(`Fallback with 'default' store group also failed: ${fallbackErrorMessage}`);
+
+          // Try one more fallback with a working store group but different country
+          // This allows the session to start even if the specific country isn't supported
+          const compatibleCountryFallback: IBrink.SessionStartBody = {
+            ...sessionStart,
+            countryCode: 'NO', // Use Norway as fallback (known to work with Europe store group)
+            storeGroupId: 'Europe',
+          };
+
+          try {
+            this._logger.warn(
+              `Attempting emergency fallback: Using NO country with Europe store group for ${sessionStart.countryCode} request`,
+            );
+            return await this.fetch(`/sessions/start`, {
+              method: 'POST',
+              body: JSON.stringify(compatibleCountryFallback),
+            });
+          } catch (emergencyError) {
+            const emergencyErrorMessage =
+              emergencyError instanceof Error ? emergencyError.message : String(emergencyError);
+            this._logger.error(`Emergency fallback also failed: ${emergencyErrorMessage}`);
+            this._logger.error(
+              `All fallback attempts failed for country ${sessionStart.countryCode}. This country may not be supported in the current environment (${process.env.NEXT_PUBLIC_BRINK_ENV}).`,
+            );
+            throw new Error(
+              `Store group configuration error: Country ${sessionStart.countryCode} is not supported in the current environment. Please use a supported country or contact support to add ${sessionStart.countryCode} to the store group configuration.`,
+            );
+          }
+        }
       }
 
       // Re-throw if it's a different error
@@ -115,8 +187,8 @@ export class BrinkCommerceRepository implements ICommerceRepository {
   }
 
   public async getPrice(productId: string, countryCode: string): Promise<ICommercePrice[]> {
-    // Use default store group ID to avoid auth() call during SSR
-    const storeGroupId = this.getDefaultStoreGroupId();
+    // Use country-specific store group for the request country
+    const storeGroupId = this.getStoreGroupForCountry(countryCode);
     return this.fetch<IBrink.PriceResponse>(
       `/prices/product-parents/${productId}/store-groups/${storeGroupId}/markets/${countryCode}`,
       { method: 'GET', next: { revalidate: 60 * 5 } },
@@ -124,8 +196,10 @@ export class BrinkCommerceRepository implements ICommerceRepository {
   }
 
   public async getStock(productId: string, countryCode: string): Promise<ICommerceStock[]> {
+    // Use country-specific store group for the request country
+    const storeGroupId = this.getStoreGroupForCountry(countryCode);
     const response = await this.fetch<IBrink.StockResponse>(
-      `/stocks/product-parents/${productId}/store-groups/${this._defaultStoreGroupId}/markets/${countryCode}`,
+      `/stocks/product-parents/${productId}/store-groups/${storeGroupId}/markets/${countryCode}`,
       {
         method: 'GET',
         next: {
@@ -159,7 +233,7 @@ export class BrinkCommerceRepository implements ICommerceRepository {
       ...options,
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': this.apiKey,
+        'x-shopper-api-key': this.apiKey,
         Authorization: authorization ?? '',
       },
     });

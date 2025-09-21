@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import React from 'react';
 import { StockDot } from '@/src/components/product/StockDot';
+import { isStockRulesEnabled } from '@/src/lib/features';
 import { type IProduct } from '@/src/lib/framework/Product/domain/entities/IProduct';
 import { type IProductVariant } from '@/src/lib/framework/Product/domain/entities/IProductVariant';
 import { type IElasticSearch } from '@/src/lib/framework/Product/types/IElasticSearch';
@@ -81,7 +82,9 @@ export const StockStatus: React.FC<StockStatusProps> = ({ selectedVariant, produ
         {stockResult.status}
       </div>
       {/* Debug info showing which rule was applied */}
-      {stockResult.ruleName && <div className={'mt-1 text-xxs italic text-gray-300'}>[{stockResult.ruleName}]</div>}
+      {isStockRulesEnabled() && stockResult.ruleName && (
+        <div className={'mt-1 text-xxs italic text-gray-300'}>[{stockResult.ruleName}]</div>
+      )}
     </div>
   );
 };

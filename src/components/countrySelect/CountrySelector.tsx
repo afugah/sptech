@@ -25,6 +25,7 @@ const languageCodes: Record<string, ILanguageCodesItem> = {
 };
 
 const marketCodes: Record<string, IMarketCodesItem> = {
+  se: { label: 'Sweden', countryCode: 'se', currency: 'SEK' },
   sv: { label: 'Sweden', countryCode: 'se', currency: 'SEK' },
   no: { label: 'Norway', countryCode: 'no', currency: 'NOK' },
   fi: { label: 'Finland', countryCode: 'fi', currency: 'EUR' },

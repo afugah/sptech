@@ -17,35 +17,37 @@ export const ProductInfoData: React.FC<IProductInfoProps> = ({ product }) => {
 
   const { description, attributes = {} } = product;
 
-  const details = {
-    [t('diameter')]: attributes.diameter ? `${attributes.diameter} cm` : undefined,
-    [t('width')]: attributes.width ? `${attributes.width} cm` : undefined,
-    [t('height')]: attributes.height ? `${attributes.height} cm` : undefined,
-    [t('length')]: attributes.length ? `${attributes.length} cm` : undefined,
-    [t('length')]: attributes.homeAccLength ? `${attributes.homeAccLength} cm` : undefined,
-    [t('width')]: attributes.homeAccWidth ? `${attributes.homeAccWidth} cm` : undefined,
-    [t('diameter')]: attributes.homeAccDiameter ? `${attributes.homeAccDiameter} cm` : undefined,
-    [t('height')]: attributes.homeAccHeight ? `${attributes.homeAccHeight} cm` : undefined,
-    [t('country-of-origin')]: attributes.countryOfOrigin,
-    [t('age-category')]: attributes.ageCategory,
-    [t('fit')]: attributes.fit,
-    [t('cut')]: attributes.cut,
-    [t('sleeve-details')]: attributes.sleeveDetails,
-    [t('front')]: attributes.front,
-    [t('neckline')]: attributes.neckline,
-    [t('pockets')]: attributes.pockets,
-    [t('waist')]: attributes.waist,
-    [t('quality')]: attributes.quality,
-    [t('season')]: attributes.season,
-    [t('cord-length')]: attributes.cordLength ? `${attributes.cordLength} cm` : undefined,
+  // Detailed information - includes description, care instructions, and general product details
+  const detailedInformation = {
+    description,
+    careInstructions: attributes.careInstructions,
+    details: {
+      [t('country-of-origin')]: attributes.countryOfOrigin,
+      [t('age-category')]: attributes.ageCategory,
+      [t('fit')]: attributes.fit,
+      [t('cut')]: attributes.cut,
+      [t('sleeve-details')]: attributes.sleeveDetails,
+      [t('front')]: attributes.front,
+      [t('neckline')]: attributes.neckline,
+      [t('pockets')]: attributes.pockets,
+      [t('waist')]: attributes.waist,
+      [t('quality')]: attributes.quality,
+      [t('season')]: attributes.season,
+    },
+  };
+
+  // Material information - all material-related attributes
+  // TODO: Replace with Typesense data when available
+  // This section will be populated from Typesense search index for better performance and filtering
+  const materialInfo = {
     [t('material')]: attributes.materials,
+    [t('material-main')]: attributes.material_main,
     [t('material-back')]: attributes.material_back,
     [t('material-body')]: attributes.material_body,
     [t('material-decoration')]: attributes.material_decoration,
     [t('material-fill')]: attributes.material_fill,
     [t('material-front')]: attributes.material_front,
     [t('material-lining')]: attributes.material_lining,
-    [t('material-main')]: attributes.material_main,
     [t('material-other')]: attributes.material_other,
     [t('material-shell')]: attributes.material_shell,
     [t('material-sleeves')]: attributes.material_sleeves,
@@ -53,9 +55,33 @@ export const ProductInfoData: React.FC<IProductInfoProps> = ({ product }) => {
     [t('material-bottom')]: attributes.material_bottom,
   };
 
-  const washing = [attributes.careInstructions];
+  // Dimensions & weight - measurements and size-related data
+  // TODO: Replace with Typesense data when available
+  // This section will be populated from Typesense search index for improved search and filtering capabilities
+  const dimensionsAndWeight: Record<string, { value: Record<string, string> | string | undefined; unit: string }> = {
+    // Physical dimensions
+    [t('diameter')]: {
+      value: attributes.diameter || attributes.homeAccDiameter,
+      unit: 'cm',
+    },
+    [t('width')]: {
+      value: attributes.width || attributes.homeAccWidth,
+      unit: 'cm',
+    },
+    [t('height')]: {
+      value: attributes.height || attributes.homeAccHeight,
+      unit: 'cm',
+    },
+    [t('length')]: {
+      value: attributes.length || attributes.homeAccLength,
+      unit: 'cm',
+    },
+    [t('cord-length')]: {
+      value: attributes.cordLength,
+      unit: 'cm',
+    },
 
-  const measurements: Record<string, { value: Record<string, string> | string | undefined; unit: string }> = {
+    // Garment measurements
     ...(attributes.model_size && attributes.model_length
       ? {
           '': {
@@ -67,42 +93,62 @@ export const ProductInfoData: React.FC<IProductInfoProps> = ({ product }) => {
     [t('garment-length')]: {
       value:
         attributes.garmentLength &&
-        JSON.stringify(attributes.garmentLength) ===
+        JSON.stringify(attributes.garmentLength) !==
           JSON.stringify({ XS: 0, S: 0, M: 0, L: 0, XL: 0, 'S/M': 0, 'M/L': 0, 'One size': 0 })
-          ? undefined
-          : attributes.garmentLength,
+          ? attributes.garmentLength
+          : undefined,
       unit: 'cm',
     },
     [t('chest-width')]: {
       value:
         attributes.chestWidth &&
-        JSON.stringify(attributes.chestWidth) ===
+        JSON.stringify(attributes.chestWidth) !==
           JSON.stringify({ XS: 0, S: 0, M: 0, L: 0, XL: 0, 'S/M': 0, 'M/L': 0, 'One size': 0 })
-          ? undefined
-          : attributes.chestWidth,
+          ? attributes.chestWidth
+          : undefined,
       unit: 'cm',
     },
     [t('sleeve-length')]: {
       value: attributes.sleeveLength,
       unit: 'cm',
     },
-    // [t('model-length')]: {
-    //   value: `${attributes.model_length} cm`,
-    //   unit: 'cm',
-    // },
-    // [t('model-size')]: {
-    //   value: attributes.model_size,
-    //   unit: '',
-    // },
   };
 
   return (
     <ProductInfo className={'order-11 md:order-8'}>
-      <ProductInfoTab id={'description'} title={t('about-product')} data={description}>
-        {(description) => <ProductInfoDescription description={description} />}
+      {/* Detailed information section */}
+      <ProductInfoTab id={'detailed-information'} title={'Detailed information'} data={detailedInformation}>
+        {(data) => {
+          const hasDescription = data.description;
+          const hasCareInstructions = data.careInstructions;
+          const filteredDetails = Object.entries(data.details).filter(([key, value]) => !isNil(key) && !isNil(value));
+
+          if (!hasDescription && !hasCareInstructions && filteredDetails.length === 0) return null;
+
+          return (
+            <div className={'space-y-4'}>
+              {hasDescription && <ProductInfoDescription description={data.description} />}
+
+              {hasCareInstructions && (
+                <div className={'space-y-2'}>
+                  <h5 className={'uppercase text-black'}>{t('washing')}</h5>
+                  <div className={''}>{data.careInstructions}</div>
+                </div>
+              )}
+
+              {filteredDetails.length > 0 && (
+                <div className={'space-y-2'}>
+                  <h5 className={'uppercase text-black'}>{t('details')}</h5>
+                  <ProductInfoDetails data={filteredDetails} />
+                </div>
+              )}
+            </div>
+          );
+        }}
       </ProductInfoTab>
 
-      <ProductInfoTab id={'details'} title={t('details')} data={details}>
+      {/* Material section */}
+      <ProductInfoTab id={'material'} title={'Material'} data={materialInfo}>
         {(data) => {
           const filteredData = Object.entries(data).filter(([key, value]) => !isNil(key) && !isNil(value));
           if (filteredData.length <= 0) return null;
@@ -111,22 +157,8 @@ export const ProductInfoData: React.FC<IProductInfoProps> = ({ product }) => {
         }}
       </ProductInfoTab>
 
-      <ProductInfoTab id={'washing'} title={t('washing')} data={washing}>
-        {(data) => {
-          const filteredData = data.filter((value) => !isNil(value));
-          if (filteredData.length <= 0) return null;
-
-          return (
-            <div className={'flex flex-col gap-2 text-xs'}>
-              {filteredData.map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </div>
-          );
-        }}
-      </ProductInfoTab>
-
-      <ProductInfoTab id={'measurements'} title={t('measurements')} data={measurements}>
+      {/* Dimensions & weight section */}
+      <ProductInfoTab id={'dimensions-weight'} title={'Dimensions & weight'} data={dimensionsAndWeight}>
         {(data) => {
           const filteredData = Object.entries(data).filter(
             ([key, item]) =>

@@ -1,7 +1,7 @@
 'use client';
 
 import classNames from 'classnames';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Heart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocale } from 'use-intl';
@@ -17,7 +17,6 @@ import SizeSelector from '@/src/components/product/page/SizeSelector';
 import ProductEngagement from '@/src/components/product/ProductEngagement';
 import ProductFacts from '@/src/components/product/ProductFacts';
 import { ProductInfoData } from '@/src/components/product/ProductInfo';
-import ProductPageUsp from '@/src/components/product/ProductPageUsp';
 import ProductQuote from '@/src/components/product/ProductQuote';
 import StockStatus from '@/src/components/product/StockStatus';
 import RecommendationsDrawer from '@/src/components/recommendationsDrawer';
@@ -34,7 +33,14 @@ import { getAmount } from '@/src/helpers/money';
 import { useClipboardWithToast } from '@/src/hooks/useClipboardWithToast';
 import { useRecommendationIds } from '@/src/hooks/useRecommendationIds';
 import useWindowWidthAndHeight from '@/src/hooks/useWindowWidthAndHeight';
+import { useWishlist } from '@/src/hooks/useWishlist';
 import { Link } from '@/src/i18n/navigation';
+import {
+  isDiamondFactsEnabled,
+  isDropAHintEnabled,
+  isStoreAvailabilityEnabled,
+  isWishlistEnabled,
+} from '@/src/lib/features';
 import { type IProduct } from '@/src/lib/framework/Product/domain/entities/IProduct';
 import { type IElasticSearch } from '@/src/lib/framework/Product/types/IElasticSearch';
 import { getLocalizedString } from '@/src/lib/utils/localization';
@@ -187,6 +193,8 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
     variationId: selectedVariantSku || '',
     productName: product.display_name,
   });
+
+  const { isInWishlist, toggleWishlist } = useWishlist();
 
   const formatDate = (date: string | undefined) => {
     if (!date) return '';
@@ -347,7 +355,7 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
 
               {/* Only show size guide section if story exists */}
               {sizeGuideStory && (
-                <div className={'order-9 md:order-6 '}>
+                <div className={'order-9 md:order-6'}>
                   <SizeGuideModal
                     isVisible={showSizeGuideModal}
                     setIsVisible={setShowSizeGuideModal}
@@ -431,14 +439,16 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
                     className={'mb-2 border-t border-t-gray-400 text-xs uppercase md:border-0'}
                   />
                 )}
-                <button
-                  onClick={() => setIsOpen(true)}
-                  className={
-                    'whitespace-nowrap border-y border-y-gray-400 py-2 text-left text-xs uppercase md:ml-auto md:border-0 md:py-0 md:text-right md:underline'
-                  }
-                >
-                  {t('see-availability-in-store')}
-                </button>
+                {isStoreAvailabilityEnabled() && (
+                  <button
+                    onClick={() => setIsOpen(true)}
+                    className={
+                      'whitespace-nowrap border-y border-y-gray-400 py-2 text-left text-xs uppercase md:ml-auto md:border-0 md:py-0 md:text-right md:underline'
+                    }
+                  >
+                    {t('see-availability-in-store')}
+                  </button>
+                )}
               </div>
 
               <div
@@ -470,10 +480,10 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
                 )}
               </div>
               {/* {anyVariantStock && singleLowStock && (
-                <div className={'w-1/2 text-center text-xs text-gray'}>{t('low-stock-warning')}</div>
+                <div className={'w-1/2 text-xs text-center text-gray'}>{t('low-stock-warning')}</div>
               )}
               {anyVariantStock && singleLowStockNumber && (
-                <div className={'w-1/2 text-center text-xs text-gray'}>
+                <div className={'w-1/2 text-xs text-center text-gray'}>
                   {t('low-stock-only') + ' ' + currentVariant?.stock?.quantity + ' ' + t('low-stock-left')}
                 </div>
               )} */}
@@ -491,13 +501,51 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
                 </div>
               )}
               <ProductInfoData product={product} />
-              <ProductFacts product={product} story={diamondInformationStory} />
-              <ProductEngagement product={product} />
-              <ProductPageUsp />
+              {isDiamondFactsEnabled() && <ProductFacts product={product} story={diamondInformationStory} />}
+              {isDropAHintEnabled() ? (
+                <ProductEngagement product={product} />
+              ) : (
+                isWishlistEnabled() && (
+                  <div className={'order-8 my-3 -ml-4 flex flex-row justify-between md:mb-0 md:flex-col'}>
+                    <div>
+                      <Button
+                        onClick={() =>
+                          toggleWishlist({
+                            sku: product.sku,
+                            id: product.id,
+                            title: product.title,
+                            display_name: product.display_name,
+                            thumbnail: {
+                              url: product.thumbnail.url,
+                              hoverUrl: product.images[1]?.src || product.images[3]?.src,
+                            },
+                            description: product.description,
+                            slug: product.slug,
+                            price: product.variants[0].price?.basePriceAmount,
+                            tags: [''],
+                          })
+                        }
+                        aria-label={'Add to wishlist'}
+                        type={'button'}
+                        className={'flex [&_svg]:size-5'}
+                      >
+                        <Heart
+                          className={`mr-1 ${isInWishlist(product.sku) ? ' fill-backgroundAlternative stroke-backgroundAlternative ' : 'stroke-backgroundAlternative'}`}
+                          size={16}
+                          strokeWidth={1}
+                        />
+                        <span className={'text-xs uppercase text-gray-800'}>
+                          {t('product-page.info.add-to-wishlist')}
+                        </span>
+                      </Button>
+                    </div>
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>
-        {(locale === 'sv' || locale === 'fi') && (
+        {isStoreAvailabilityEnabled() && (locale === 'sv' || locale === 'fi') && (
           <AvailabilityInStore product={product} isOpen={isOpen} setIsOpen={setIsOpen} />
         )}
 

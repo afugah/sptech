@@ -89,3 +89,58 @@ export function isShopabMembersEnabled(): boolean {
 export function isMembershipSystemEnabled(): boolean {
   return isVoyadoEnabled() || isShopabMembersEnabled();
 }
+
+/**
+ * Feature flags for product page features
+ */
+export const PRODUCT_PAGE_FEATURES = {
+  // Store availability functionality
+  STORE_AVAILABILITY: false,
+
+  // Stock rules display (technical debug information like rule names)
+  STOCK_RULES: false,
+
+  // Diamond facts modal and section
+  DIAMOND_FACTS: false,
+
+  // Drop a hint functionality
+  DROP_A_HINT: false,
+
+  // Wishlist functionality
+  WISHLIST: false,
+};
+
+/**
+ * Helper function to check if store availability is enabled
+ */
+export function isStoreAvailabilityEnabled(): boolean {
+  return PRODUCT_PAGE_FEATURES.STORE_AVAILABILITY === true;
+}
+
+/**
+ * Helper function to check if stock rules are enabled
+ */
+export function isStockRulesEnabled(): boolean {
+  return PRODUCT_PAGE_FEATURES.STOCK_RULES === true;
+}
+
+/**
+ * Helper function to check if diamond facts are enabled
+ */
+export function isDiamondFactsEnabled(): boolean {
+  return PRODUCT_PAGE_FEATURES.DIAMOND_FACTS === true;
+}
+
+/**
+ * Helper function to check if drop a hint is enabled
+ */
+export function isDropAHintEnabled(): boolean {
+  return PRODUCT_PAGE_FEATURES.DROP_A_HINT === true;
+}
+
+/**
+ * Helper function to check if wishlist is enabled
+ */
+export function isWishlistEnabled(): boolean {
+  return PRODUCT_PAGE_FEATURES.WISHLIST === true;
+}
