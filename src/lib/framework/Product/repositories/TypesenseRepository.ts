@@ -61,7 +61,7 @@ export class TypesenseRepository implements IProductRepository {
         const id = idMatch[1];
         searchParams = {
           q: '*',
-          query_by: 'id,external_id',
+          query_by: 'title,sku', // Use fields that are definitely queryable
           filter_by: `id:${id}`,
           per_page: 1,
         };
@@ -71,7 +71,7 @@ export class TypesenseRepository implements IProductRepository {
         const cleanSlug = slug.replace(/^\/+/, '').replace(/^products\//, '');
         searchParams = {
           q: cleanSlug,
-          query_by: 'sku,title.en',
+          query_by: 'sku,title',
           per_page: 1,
         };
       }
@@ -114,7 +114,7 @@ export class TypesenseRepository implements IProductRepository {
     try {
       const searchParams: Record<string, unknown> = {
         q: '*',
-        query_by: 'id,external_id',
+        query_by: 'title,sku', // Use fields that are definitely queryable
         filter_by: `id:${id}`,
         per_page: 1,
       };

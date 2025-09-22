@@ -18,29 +18,33 @@ export function extractMaterialFromProduct(product: ProductGroupProduct): string
     return product.material.external_id;
   }
 
-  // Pattern matching based on SKU
+  // Pattern matching based on SKU - check if SKU exists first
   const sku = product.product_sku;
 
-  // Pattern: 13-101-XXXXX = Gold, 13-102-XXXXX = White Gold, 13-103-XXXXX = Silver
-  if (sku.includes('-102-') || sku.includes('white-gold')) {
-    return 'VITGULD';
-  }
-  if (sku.includes('-101-') || (sku.includes('-gold') && !sku.includes('white-gold'))) {
-    return 'GULD';
-  }
-  if (sku.includes('-103-') || sku.includes('silver')) {
-    return 'SILVER';
-  }
-  if (sku.includes('-104-') || sku.includes('rose-gold')) {
-    return 'ROSEGULD';
+  if (sku) {
+    // Pattern: 13-101-XXXXX = Gold, 13-102-XXXXX = White Gold, 13-103-XXXXX = Silver
+    if (sku.includes('-102-') || sku.includes('white-gold')) {
+      return 'VITGULD';
+    }
+    if (sku.includes('-101-') || (sku.includes('-gold') && !sku.includes('white-gold'))) {
+      return 'GULD';
+    }
+    if (sku.includes('-103-') || sku.includes('silver')) {
+      return 'SILVER';
+    }
+    if (sku.includes('-104-') || sku.includes('rose-gold')) {
+      return 'ROSEGULD';
+    }
   }
 
-  // Fallback to slug analysis
-  const slug = product.slug.en || product.slug.sv || '';
-  if (slug.includes('white-gold')) return 'VITGULD';
-  if (slug.includes('rose-gold')) return 'ROSEGULD';
-  if (slug.includes('gold')) return 'GULD';
-  if (slug.includes('silver')) return 'SILVER';
+  // Fallback to slug analysis - check if slug exists first
+  const slug = product.slug?.en || product.slug?.sv || '';
+  if (slug) {
+    if (slug.includes('white-gold')) return 'VITGULD';
+    if (slug.includes('rose-gold')) return 'ROSEGULD';
+    if (slug.includes('gold')) return 'GULD';
+    if (slug.includes('silver')) return 'SILVER';
+  }
 
   return null;
 }

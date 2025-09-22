@@ -60,7 +60,8 @@ export class ProductService implements IProductService {
     // Map market codes to actual Brink country codes
     // Brink expects ISO 3166-1 alpha-2 country codes
     const countryCodeMap: Record<string, string> = {
-      sv: 'SE', // Swedish market uses SE country code
+      se: 'SE', // Swedish market uses SE country code
+      sv: 'SE', // Swedish market (legacy support)
       en: 'US', // English market uses US country code
       fi: 'FI', // Finnish market uses FI country code
       no: 'NO', // Norwegian market uses NO country code
@@ -76,8 +77,10 @@ export class ProductService implements IProductService {
     const countryCode = countryCodeMap[marketCode.toLowerCase()] || 'US';
 
     try {
-      const pricesPromise = this._commerceService.getPrice(item.brinkId, countryCode);
-      const stockPromise = this._commerceService.getStock(item.brinkId, countryCode);
+      // Use brinkId if available, otherwise fallback to productGroup, then SKU
+      const productId = item.brinkId || item.productGroup || item.sku;
+      const pricesPromise = this._commerceService.getPrice(productId, countryCode);
+      const stockPromise = this._commerceService.getStock(productId, countryCode);
 
       const [pricesResult, stockResult] = await Promise.allSettled([pricesPromise, stockPromise]);
 
@@ -89,6 +92,16 @@ export class ProductService implements IProductService {
       }
       if (stockResult.status === 'rejected') {
         this._logger.error('Failed to fetch stock:', stockResult.reason);
+      }
+
+      // Debug logging for product 261
+      if (item.id === '261') {
+        this._logger.info('DEBUG: Product 261 pricing data:', {
+          productId,
+          pricesCount: prices.length,
+          prices: prices.map((p) => ({ id: p.id, basePriceAmount: p.basePriceAmount })),
+          variantSkus: item.variants.map((v) => v.sku),
+        });
       }
 
       const sortedMaterials = item.attributes.materials

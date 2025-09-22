@@ -63,9 +63,29 @@ export class SearchConfiguration {
     if (this.Engine === SearchEngineEnum.TYPESENSE) {
       return [
         {
-          code: 'en', // Single English market
+          code: 'se', // Swedish market
+          defaultLanguage: 'en', // Using English as the language for all markets
+          shoplabId: 1,
+        },
+        {
+          code: 'no', // Norwegian market
+          defaultLanguage: 'en', // Using English as the language for all markets
+          shoplabId: 1,
+        },
+        {
+          code: 'dk', // Danish market
+          defaultLanguage: 'en', // Using English as the language for all markets
+          shoplabId: 1,
+        },
+        {
+          code: 'fi', // Finnish market
+          defaultLanguage: 'en', // Using English as the language for all markets
+          shoplabId: 1,
+        },
+        {
+          code: 'en', // English market
           defaultLanguage: this.Typesense.Language,
-          shoplabId: 1, // Default shoplab ID
+          shoplabId: 1,
         },
       ];
     }
