@@ -259,15 +259,14 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div
-      ref={modalRef}
-      className={'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90'}
-      onClick={onClose}
-    >
+    <div ref={modalRef} className={'fixed inset-0 z-50 flex flex-col bg-white'} onClick={onClose}>
       {/* Close button */}
       <button
-        onClick={onClose}
-        className={'z-60 absolute right-4 top-4 text-white transition-colors hover:text-gray-300'}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+        className={'absolute right-4 top-4 z-[70] text-black transition-colors hover:text-gray-600'}
         aria-label={'Close gallery'}
       >
         <svg className={'h-8 w-8'} fill={'none'} stroke={'currentColor'} viewBox={'0 0 24 24'}>
@@ -278,15 +277,26 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
       {/* Counter */}
       <div
         className={
-          'z-60 absolute left-1/2 top-4 -translate-x-1/2 transform rounded bg-black bg-opacity-50 px-3 py-1 text-sm text-white'
+          'bg-gray-100 absolute left-1/2 top-4 z-[60] -translate-x-1/2 transform rounded px-3 py-1 text-sm text-black'
         }
       >
         {selectedIndex + 1} / {images.length}
       </div>
 
-      {/* Main carousel container */}
+      {/* Zoom indicator */}
+      {imageStates[selectedIndex]?.scale > 1 && (
+        <div
+          className={
+            'bg-gray-100 absolute left-1/2 top-16 z-[60] -translate-x-1/2 transform rounded px-2 py-1 text-xs text-black'
+          }
+        >
+          {Math.round(imageStates[selectedIndex].scale * 100)}%
+        </div>
+      )}
+
+      {/* Main image area */}
       <div
-        className={'flex h-full w-full items-center justify-center overflow-hidden'}
+        className={'relative flex flex-1 items-center justify-center overflow-hidden'}
         onClick={(e) => e.stopPropagation()}
       >
         <div ref={emblaRef} className={'h-full w-full overflow-hidden'}>
@@ -299,7 +309,9 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
                   className={'relative flex h-full w-full flex-none items-center justify-center'}
                 >
                   <div
-                    ref={(el) => (imageContainerRefs.current[index] = el)}
+                    ref={(el) => {
+                      imageContainerRefs.current[index] = el;
+                    }}
                     className={'relative max-h-full max-w-full cursor-grab touch-none active:cursor-grabbing'}
                     style={{
                       transform: `scale(${currentState.scale}) translate(${currentState.translateX}px, ${currentState.translateY}px)`,
@@ -315,7 +327,9 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
                       alt={productName ? `${productName} - Image ${index + 1}` : `Product image ${index + 1}`}
                       width={0}
                       height={0}
-                      className={'h-auto max-h-[90vh] w-auto max-w-full select-none object-contain'}
+                      className={
+                        'h-auto max-h-[calc(100vh-140px)] w-auto max-w-full select-none object-contain md:max-h-[calc(100vh-200px)]'
+                      }
                       sizes={'100vw'}
                       priority={Math.abs(index - selectedIndex) <= 1}
                       quality={80}
@@ -334,7 +348,7 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
             <button
               onClick={goToPrevious}
               className={
-                'z-60 absolute left-4 top-1/2 -translate-y-1/2 transform p-2 text-white transition-colors hover:text-gray-300'
+                'absolute left-4 top-1/2 z-[60] -translate-y-1/2 transform p-2 text-black transition-colors hover:text-gray-600'
               }
               aria-label={'Previous image'}
               disabled={!emblaApi?.canScrollPrev()}
@@ -347,7 +361,7 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
             <button
               onClick={goToNext}
               className={
-                'z-60 absolute right-4 top-1/2 -translate-y-1/2 transform p-2 text-white transition-colors hover:text-gray-300'
+                'absolute right-4 top-1/2 z-[60] -translate-y-1/2 transform p-2 text-black transition-colors hover:text-gray-600'
               }
               aria-label={'Next image'}
               disabled={!emblaApi?.canScrollNext()}
@@ -358,20 +372,18 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
             </button>
           </>
         )}
+      </div>
 
-        {/* Thumbnail navigation */}
-        {images.length > 1 && (
-          <div
-            className={
-              'z-60 absolute bottom-4 left-1/2 flex max-w-[90vw] -translate-x-1/2 transform space-x-2 overflow-x-auto rounded bg-black bg-opacity-50 p-2'
-            }
-          >
+      {/* Thumbnail navigation below image */}
+      {images.length > 1 && (
+        <div className={'flex justify-center bg-white p-4'} onClick={(e) => e.stopPropagation()}>
+          <div className={'bg-gray-100 flex max-w-[90vw] space-x-2 overflow-x-auto rounded p-2'}>
             {images.map((image, index) => (
               <button
                 key={`thumb-${index}`}
                 onClick={() => emblaApi?.scrollTo(index)}
                 className={classNames('h-16 w-16 flex-shrink-0 overflow-hidden rounded border-2 transition-all', {
-                  'border-white': index === selectedIndex,
+                  'border-black': index === selectedIndex,
                   'border-transparent opacity-70': index !== selectedIndex,
                 })}
               >
@@ -386,19 +398,8 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
               </button>
             ))}
           </div>
-        )}
-
-        {/* Zoom indicator */}
-        {imageStates[selectedIndex]?.scale > 1 && (
-          <div
-            className={
-              'z-60 absolute left-1/2 top-16 -translate-x-1/2 transform rounded bg-black bg-opacity-50 px-2 py-1 text-xs text-white'
-            }
-          >
-            {Math.round(imageStates[selectedIndex].scale * 100)}%
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

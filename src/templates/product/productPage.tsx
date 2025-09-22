@@ -258,9 +258,9 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
     <>
       <PageHeader hasHeaderFixed={false} />
 
-      <div className={'container mt-48'}>
+      <div className={'mt-20'}>
         {typeof window !== 'undefined' && <Toast message={copiedText} isVisible={isVisible} />}
-        <div className={'mx-auto w-full max-w-screen-2xl'}>
+        <div className={'mx-auto w-full'}>
           <Breadcrumbs>
             {breadcrumbs?.length ? (
               breadcrumbs.map((crumb, idx) => (
@@ -288,7 +288,7 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
             )}
           </Breadcrumbs>
 
-          <div className={'justify-center lg:flex lg:gap-14 lg:py-4 lg:pb-8 lg:pt-4'}>
+          <div className={'justify-center lg:flex'}>
             <div className={'mb-0 block flex-shrink-0 gap-8 lg:mb-0 lg:w-1/2'}>
               <ImageGallery
                 className={'block md:hidden'}
@@ -307,7 +307,7 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
               />
             </div>
 
-            <div className={'mt-4 flex w-full flex-col md:mt-0'}>
+            <div className={'mt-4 flex w-full flex-col md:mt-0 lg:p-16 lg:py-10'}>
               <div className={'space-between mb-4 flex flex-col'}>
                 <h1 className={'order-1 mb-2 flex flex-col'}>
                   <span className={'font-serif text-4xl'}>{title}</span>
@@ -315,7 +315,7 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
 
                 {!!variants.length && !!variantPrice && (
                   <>
-                    <div className={'order-3 text-lg font-bold uppercase tracking-wider md:order-2'}>
+                    <div className={'order-3 text-lg uppercase tracking-wider md:order-2'}>
                       {!!variantPrice?.discountAmount && (
                         <span className={'mr-5 text-red'}>
                           {getAmount(variantPrice.salePriceAmount, currencyCode, locale)}
