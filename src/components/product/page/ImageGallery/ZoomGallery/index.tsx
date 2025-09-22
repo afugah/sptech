@@ -5,6 +5,7 @@ import { type EmblaCarouselType, type EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useResponsiveImageSizes, useUserPreferences, useViewportHeight } from '@/src/hooks/useMediaQuery';
 
 interface IImageZoomGalleryProps {
   images: string[];
@@ -12,6 +13,8 @@ interface IImageZoomGalleryProps {
   isOpen: boolean;
   onClose: () => void;
   productName?: string;
+  aspectRatio?: string;
+  rtl?: boolean;
 }
 
 interface ImageZoomState {
@@ -33,12 +36,27 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
   isOpen,
   onClose,
   productName,
+  aspectRatio = '4/5',
+  rtl = false,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(initialIndex);
   const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
   const [imageStates, setImageStates] = useState<ImageZoomState[]>(
     images.map(() => ({ scale: 1, translateX: 0, translateY: 0 })),
   );
+
+  // Accessibility state
+  const [announcement, setAnnouncement] = useState('');
+  const { prefersReducedMotion } = useUserPreferences();
+
+  // Performance optimizations
+  const imageSizes = useResponsiveImageSizes();
+  const dynamicVh = useViewportHeight();
+
+  // Generate unique IDs for ARIA
+  const galleryId = useRef(`gallery-${Date.now()}`);
+  const carouselId = useRef(`carousel-${Date.now()}`);
+  const liveRegionId = useRef(`live-region-${Date.now()}`);
 
   // Touch handling state
   const touchStateRef = useRef({
@@ -78,6 +96,22 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
       prev.map((state, index) => (index === selectedIndex ? { scale: 1, translateX: 0, translateY: 0 } : state)),
     );
   }, [selectedIndex]);
+
+  // Announce image changes to screen readers
+  useEffect(() => {
+    if (isOpen) {
+      const imageAnnouncement = `${productName ? `${productName} - ` : ''}Image ${selectedIndex + 1} of ${images.length}`;
+      setAnnouncement(imageAnnouncement);
+    }
+  }, [selectedIndex, isOpen, productName, images.length]);
+
+  // Clear announcement after 1 second to allow for new announcements
+  useEffect(() => {
+    if (announcement) {
+      const timer = setTimeout(() => setAnnouncement(''), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [announcement]);
 
   // Touch event handlers
   const getTouchDistance = (touches: TouchList): number => {
@@ -226,21 +260,64 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
     }
   }, [emblaApi]);
 
-  // Keyboard navigation
+  // Enhanced keyboard navigation with accessibility announcements
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
 
       switch (e.key) {
         case 'Escape':
+          e.preventDefault();
           onClose();
           break;
         case 'ArrowLeft':
-          goToPrevious();
+          e.preventDefault();
+          if (rtl) {
+            goToNext();
+          } else {
+            goToPrevious();
+          }
           break;
         case 'ArrowRight':
-          goToNext();
+          e.preventDefault();
+          if (rtl) {
+            goToPrevious();
+          } else {
+            goToNext();
+          }
           break;
+        case 'Home':
+          e.preventDefault();
+          if (emblaApi) {
+            emblaApi.scrollTo(0);
+            setAnnouncement(
+              `Moved to first image: ${productName ? `${productName} - ` : ''}Image 1 of ${images.length}`,
+            );
+          }
+          break;
+        case 'End':
+          e.preventDefault();
+          if (emblaApi) {
+            emblaApi.scrollTo(images.length - 1);
+            setAnnouncement(
+              `Moved to last image: ${productName ? `${productName} - ` : ''}Image ${images.length} of ${images.length}`,
+            );
+          }
+          break;
+        case ' ':
+        case 'Enter': {
+          // Space or Enter to zoom/unzoom
+          e.preventDefault();
+          const currentState = imageStates[selectedIndex];
+          if (currentState.scale === 1) {
+            updateImageState(selectedIndex, { scale: 2, translateX: 0, translateY: 0 });
+            setAnnouncement('Zoomed in to 200%');
+          } else {
+            updateImageState(selectedIndex, { scale: 1, translateX: 0, translateY: 0 });
+            setAnnouncement('Zoomed out to 100%');
+          }
+          break;
+        }
       }
     };
 
@@ -254,19 +331,46 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
     };
-  }, [isOpen, onClose, goToPrevious, goToNext]);
+  }, [
+    isOpen,
+    onClose,
+    goToPrevious,
+    goToNext,
+    rtl,
+    emblaApi,
+    images.length,
+    productName,
+    selectedIndex,
+    imageStates,
+    updateImageState,
+  ]);
 
   if (!isOpen) return null;
 
   return (
-    <div ref={modalRef} className={'fixed inset-0 z-50 flex flex-col bg-white'} onClick={onClose}>
-      {/* Close button */}
+    <div
+      ref={modalRef}
+      className={'fixed inset-0 z-50 flex flex-col bg-white'}
+      onClick={onClose}
+      role={'dialog'}
+      aria-modal={'true'}
+      aria-labelledby={galleryId.current}
+      aria-describedby={liveRegionId.current}
+      dir={rtl ? 'rtl' : 'ltr'}
+    >
+      {/* Screen reader live region for announcements */}
+      <div id={liveRegionId.current} aria-live={'polite'} aria-atomic={'true'} className={'sr-only'}>
+        {announcement}
+      </div>
+      {/* Close button with larger touch target */}
       <button
         onClick={(e) => {
           e.stopPropagation();
           onClose();
         }}
-        className={'absolute right-4 top-4 z-[70] text-black transition-colors hover:text-gray-600'}
+        className={
+          'absolute right-2 top-2 z-[70] min-h-[44px] min-w-[44px] p-3 text-black transition-colors hover:text-gray-600'
+        }
         aria-label={'Close gallery'}
       >
         <svg className={'h-8 w-8'} fill={'none'} stroke={'currentColor'} viewBox={'0 0 24 24'}>
@@ -299,42 +403,66 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
         className={'relative flex flex-1 items-center justify-center overflow-hidden'}
         onClick={(e) => e.stopPropagation()}
       >
-        <div ref={emblaRef} className={'h-full w-full overflow-hidden'}>
-          <div className={'flex h-full'}>
+        <div
+          ref={emblaRef}
+          className={'h-full w-full overflow-hidden'}
+          role={'region'}
+          aria-label={`${productName || 'Product'} image gallery`}
+          id={galleryId.current}
+        >
+          <div className={'flex h-full'} role={'group'} aria-live={'polite'}>
             {images.map((image, index) => {
               const currentState = imageStates[index];
+              const isVisible = index === selectedIndex;
               return (
                 <div
                   key={`zoom-${index}`}
                   className={'relative flex h-full w-full flex-none items-center justify-center'}
+                  role={'group'}
+                  aria-roledescription={'slide'}
+                  aria-label={`Image ${index + 1} of ${images.length}${productName ? `: ${productName}` : ''}`}
+                  aria-hidden={!isVisible}
+                  tabIndex={isVisible ? 0 : -1}
                 >
+                  {/* Aspect ratio container to prevent CLS */}
                   <div
-                    ref={(el) => {
-                      imageContainerRefs.current[index] = el;
-                    }}
-                    className={'relative max-h-full max-w-full cursor-grab touch-none active:cursor-grabbing'}
+                    className={`relative w-full max-w-full`}
                     style={{
-                      transform: `scale(${currentState.scale}) translate(${currentState.translateX}px, ${currentState.translateY}px)`,
-                      transition: touchStateRef.current.isDragging ? 'none' : 'transform 0.2s ease-out',
+                      aspectRatio: aspectRatio,
+                      maxHeight: `calc(${dynamicVh} - 140px)`,
                     }}
-                    onTouchStart={(e) => handleTouchStart(e, index)}
-                    onTouchMove={(e) => handleTouchMove(e, index)}
-                    onTouchEnd={(e) => handleTouchEnd(e, index)}
-                    onWheel={(e) => handleWheel(e, index)}
                   >
-                    <Image
-                      src={image}
-                      alt={productName ? `${productName} - Image ${index + 1}` : `Product image ${index + 1}`}
-                      width={0}
-                      height={0}
-                      className={
-                        'h-auto max-h-[calc(100vh-140px)] w-auto max-w-full select-none object-contain md:max-h-[calc(100vh-200px)]'
-                      }
-                      sizes={'100vw'}
-                      priority={Math.abs(index - selectedIndex) <= 1}
-                      quality={80}
-                      draggable={false}
-                    />
+                    <div
+                      ref={(el) => {
+                        imageContainerRefs.current[index] = el;
+                      }}
+                      className={'relative h-full w-full cursor-grab touch-none active:cursor-grabbing'}
+                      style={{
+                        transform: `scale(${currentState.scale}) translate(${currentState.translateX}px, ${currentState.translateY}px)`,
+                        transition:
+                          prefersReducedMotion || touchStateRef.current.isDragging ? 'none' : 'transform 0.2s ease-out',
+                      }}
+                      onTouchStart={(e) => handleTouchStart(e, index)}
+                      onTouchMove={(e) => handleTouchMove(e, index)}
+                      onTouchEnd={(e) => handleTouchEnd(e, index)}
+                      onWheel={(e) => handleWheel(e, index)}
+                    >
+                      <Image
+                        src={image}
+                        alt={productName ? `${productName} - Image ${index + 1}` : `Product image ${index + 1}`}
+                        fill
+                        className={'select-none object-contain'}
+                        sizes={imageSizes.galleryMain}
+                        priority={index === 0 || Math.abs(index - selectedIndex) <= 1}
+                        quality={index === selectedIndex ? 80 : 75}
+                        loading={index === 0 || Math.abs(index - selectedIndex) <= 1 ? 'eager' : 'lazy'}
+                        draggable={false}
+                        placeholder={'blur'}
+                        blurDataURL={
+                          'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHh8P/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
               );
@@ -348,9 +476,10 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
             <button
               onClick={goToPrevious}
               className={
-                'absolute left-4 top-1/2 z-[60] -translate-y-1/2 transform p-2 text-black transition-colors hover:text-gray-600'
+                'absolute left-2 top-1/2 z-[60] min-h-[44px] min-w-[44px] -translate-y-1/2 transform p-3 text-black transition-colors hover:text-gray-600 disabled:opacity-50'
               }
-              aria-label={'Previous image'}
+              aria-label={rtl ? 'Next image' : 'Previous image'}
+              aria-controls={carouselId.current}
               disabled={!emblaApi?.canScrollPrev()}
             >
               <svg className={'h-8 w-8'} fill={'none'} stroke={'currentColor'} viewBox={'0 0 24 24'}>
@@ -361,9 +490,10 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
             <button
               onClick={goToNext}
               className={
-                'absolute right-4 top-1/2 z-[60] -translate-y-1/2 transform p-2 text-black transition-colors hover:text-gray-600'
+                'absolute right-2 top-1/2 z-[60] min-h-[44px] min-w-[44px] -translate-y-1/2 transform p-3 text-black transition-colors hover:text-gray-600 disabled:opacity-50'
               }
-              aria-label={'Next image'}
+              aria-label={rtl ? 'Previous image' : 'Next image'}
+              aria-controls={carouselId.current}
               disabled={!emblaApi?.canScrollNext()}
             >
               <svg className={'h-8 w-8'} fill={'none'} stroke={'currentColor'} viewBox={'0 0 24 24'}>
@@ -374,18 +504,31 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
         )}
       </div>
 
-      {/* Thumbnail navigation below image */}
+      {/* Thumbnail navigation below image with safe area support */}
       {images.length > 1 && (
-        <div className={'flex justify-center bg-white p-4'} onClick={(e) => e.stopPropagation()}>
+        <nav
+          className={'flex justify-center bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))]'}
+          onClick={(e) => e.stopPropagation()}
+          role={'tablist'}
+          aria-label={'Image thumbnails'}
+        >
           <div className={'bg-gray-100 flex max-w-[90vw] space-x-2 overflow-x-auto rounded p-2'}>
             {images.map((image, index) => (
               <button
                 key={`thumb-${index}`}
                 onClick={() => emblaApi?.scrollTo(index)}
-                className={classNames('h-16 w-16 flex-shrink-0 overflow-hidden rounded border-2 transition-all', {
-                  'border-black': index === selectedIndex,
-                  'border-transparent opacity-70': index !== selectedIndex,
-                })}
+                className={classNames(
+                  'h-16 min-h-[44px] w-16 min-w-[44px] flex-shrink-0 touch-manipulation overflow-hidden rounded border-2 transition-all',
+                  {
+                    'border-black': index === selectedIndex,
+                    'border-transparent opacity-70 hover:opacity-90': index !== selectedIndex,
+                  },
+                )}
+                role={'tab'}
+                aria-selected={index === selectedIndex}
+                aria-controls={carouselId.current}
+                aria-label={`Go to image ${index + 1}${productName ? ` of ${productName}` : ''}`}
+                tabIndex={index === selectedIndex ? 0 : -1}
               >
                 <Image
                   src={image}
@@ -398,7 +541,7 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
               </button>
             ))}
           </div>
-        </div>
+        </nav>
       )}
     </div>
   );
