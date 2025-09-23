@@ -17,6 +17,32 @@ export const ProductInfoData: React.FC<IProductInfoProps> = ({ product }) => {
 
   const { description, attributes = {} } = product;
 
+  // Helper function to format dimensional values from millimeters to centimeters
+  const formatDimension = (value: string | undefined): string | undefined => {
+    if (!value || isNaN(Number(value))) return value;
+    const numValue = Number(value);
+    return `${(numValue / 10).toFixed(1)} cm`;
+  };
+
+  // Helper function to format weight with unit
+  const formatWeight = (value: string | undefined): string | undefined => {
+    if (!value || isNaN(Number(value))) return value;
+    return `${value} g`;
+  };
+
+  // Helper function to format material content by removing HTML tags and formatting
+  const formatMaterial = (value: string | undefined): string | undefined => {
+    if (!value) return value;
+
+    // Remove HTML tags and extract text content
+    const withoutTags = value.replace(/<[^>]*>/g, '');
+
+    // If it starts with "Material:" remove that prefix since we already have it in the label
+    const withoutMaterialPrefix = withoutTags.replace(/^Material:\s*/, '');
+
+    return withoutMaterialPrefix.trim();
+  };
+
   // Detailed information - includes description, care instructions, and general product details
   const detailedInformation = {
     description,
@@ -37,50 +63,39 @@ export const ProductInfoData: React.FC<IProductInfoProps> = ({ product }) => {
   };
 
   // Material information - all material-related attributes
-  // TODO: Replace with Typesense data when available
-  // This section will be populated from Typesense search index for better performance and filtering
+  // Primary source from Typesense, fallback to existing attributes
   const materialInfo = {
-    [t('material')]: attributes.materials,
-    [t('material-main')]: attributes.material_main,
-    [t('material-back')]: attributes.material_back,
-    [t('material-body')]: attributes.material_body,
-    [t('material-decoration')]: attributes.material_decoration,
-    [t('material-fill')]: attributes.material_fill,
-    [t('material-front')]: attributes.material_front,
-    [t('material-lining')]: attributes.material_lining,
-    [t('material-other')]: attributes.material_other,
-    [t('material-shell')]: attributes.material_shell,
-    [t('material-sleeves')]: attributes.material_sleeves,
-    [t('material-upper')]: attributes.material_upper,
-    [t('material-bottom')]: attributes.material_bottom,
+    // Use Typesense material data if available, otherwise fallback to existing data
+    // Don't format if it contains HTML tags (to preserve paragraph formatting)
+    [t('material')]: attributes.material_typesense?.includes('<')
+      ? attributes.material_typesense
+      : formatMaterial(attributes.material_typesense) || attributes.materials,
   };
 
   // Dimensions & weight - measurements and size-related data
-  // TODO: Replace with Typesense data when available
-  // This section will be populated from Typesense search index for improved search and filtering capabilities
+  // Primary source from Typesense, fallback to existing attributes
   const dimensionsAndWeight: Record<string, { value: Record<string, string> | string | undefined; unit: string }> = {
-    // Physical dimensions
+    // Physical dimensions - use Typesense data if available
     [t('diameter')]: {
       value: attributes.diameter || attributes.homeAccDiameter,
       unit: 'cm',
     },
     [t('width')]: {
-      value: attributes.width || attributes.homeAccWidth,
-      unit: 'cm',
+      value: formatDimension(attributes.width_typesense) || attributes.width || attributes.homeAccWidth,
+      unit: formatDimension(attributes.width_typesense) ? '' : 'cm',
     },
     [t('height')]: {
-      value: attributes.height || attributes.homeAccHeight,
-      unit: 'cm',
+      value: formatDimension(attributes.height_typesense) || attributes.height || attributes.homeAccHeight,
+      unit: formatDimension(attributes.height_typesense) ? '' : 'cm',
     },
-    [t('length')]: {
-      value: attributes.length || attributes.homeAccLength,
-      unit: 'cm',
+    [t('depth')]: {
+      value: formatDimension(attributes.length_typesense) || attributes.length || attributes.homeAccLength,
+      unit: formatDimension(attributes.length_typesense) ? '' : 'cm',
     },
-    [t('cord-length')]: {
-      value: attributes.cordLength,
-      unit: 'cm',
+    [t('weight')]: {
+      value: formatWeight(attributes.weight_typesense),
+      unit: '',
     },
-
     // Garment measurements
     ...(attributes.model_size && attributes.model_length
       ? {
@@ -90,28 +105,6 @@ export const ProductInfoData: React.FC<IProductInfoProps> = ({ product }) => {
           },
         }
       : {}),
-    [t('garment-length')]: {
-      value:
-        attributes.garmentLength &&
-        JSON.stringify(attributes.garmentLength) !==
-          JSON.stringify({ XS: 0, S: 0, M: 0, L: 0, XL: 0, 'S/M': 0, 'M/L': 0, 'One size': 0 })
-          ? attributes.garmentLength
-          : undefined,
-      unit: 'cm',
-    },
-    [t('chest-width')]: {
-      value:
-        attributes.chestWidth &&
-        JSON.stringify(attributes.chestWidth) !==
-          JSON.stringify({ XS: 0, S: 0, M: 0, L: 0, XL: 0, 'S/M': 0, 'M/L': 0, 'One size': 0 })
-          ? attributes.chestWidth
-          : undefined,
-      unit: 'cm',
-    },
-    [t('sleeve-length')]: {
-      value: attributes.sleeveLength,
-      unit: 'cm',
-    },
   };
 
   return (
@@ -128,6 +121,17 @@ export const ProductInfoData: React.FC<IProductInfoProps> = ({ product }) => {
           return (
             <div className={'space-y-4'}>
               {hasDescription && <ProductInfoDescription description={data.description} />}
+
+              {/* USP bullet points from Typesense data */}
+              {(product.attributes?.usp1 || product.attributes?.usp2 || product.attributes?.usp3) && (
+                <div className={'space-y-2'}>
+                  <ul className={'list-disc space-y-1 pl-5'}>
+                    {product.attributes?.usp1 && <li className={'text-sm'}>{product.attributes.usp1}</li>}
+                    {product.attributes?.usp2 && <li className={'text-sm'}>{product.attributes.usp2}</li>}
+                    {product.attributes?.usp3 && <li className={'text-sm'}>{product.attributes.usp3}</li>}
+                  </ul>
+                </div>
+              )}
 
               {hasCareInstructions && (
                 <div className={'space-y-2'}>

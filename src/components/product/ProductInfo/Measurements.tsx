@@ -4,10 +4,10 @@ interface IProductInfoMeasurementsProps {
 
 export const ProductInfoMeasurements: React.FC<IProductInfoMeasurementsProps> = ({ data }) => {
   return (
-    <div className={'flex flex-col gap-2 text-xs'}>
+    <div className={'flex flex-col gap-2'}>
       {data.map(([title, item]) => (
-        <div key={title}>
-          <div className={'pb-1'}>{title}</div>
+        <div key={title} className={'flex flex-row'}>
+          <div className={'basis-16 pb-1'}>{title}</div>
           <div>
             {typeof item.value === 'object'
               ? Object.entries(item.value).map(([key, value]) => {
@@ -16,8 +16,7 @@ export const ProductInfoMeasurements: React.FC<IProductInfoMeasurementsProps> = 
                     <span key={key} className={'mr-2'}>
                       <span className={'pr-0.5'}>{key}: </span>
                       <span className={'text-gray-800'}>
-                        {value}
-                        {item.unit}
+                        {value} {item.unit}
                       </span>
                     </span>
                   );

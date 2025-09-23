@@ -502,6 +502,7 @@
       "front": "Fram",
       "garment-length": "Plaggets längd",
       "height": "Höjd",
+      "depth": "Djup",
       "length": "Längd",
       "material": "Material",
       "material-back": "Bakstycke",
@@ -533,7 +534,8 @@
       "variant-id": "Variant-id",
       "waist": "Midja",
       "washing": "Skötselråd",
-      "width": "Bredd"
+      "width": "Bredd",
+      "weight": "Vikt"
     },
     "last-lowest-price": "Senaste lägsta pris",
     "low-stock-left": "kvar i lager",

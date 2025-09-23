@@ -47,7 +47,7 @@ export const ProductInfo: React.FC<IProductInfoProps> = ({ children, className }
   };
 
   return (
-    <div className={`mx-auto mb-6 w-full md:mb-2 ${className}`}>
+    <div className={`mx-auto mb-6 w-full border-b border-gray-300 md:mb-2 ${className}`}>
       {tabs.map((child) => {
         const props = child.props;
         const isOpen = openSections.has(props.id);
@@ -56,7 +56,7 @@ export const ProductInfo: React.FC<IProductInfoProps> = ({ children, className }
           <div key={props.id} className={'w-full'}>
             <button
               onClick={() => toggleSection(props.id)}
-              className={'flex w-full items-center justify-between border-b border-gray-300 py-4 text-left'}
+              className={'flex w-full items-center justify-between border-t border-gray-300 py-4 text-left'}
             >
               <span className={'text-sm text-black'}>{props.title}</span>
               <Plus
@@ -66,7 +66,7 @@ export const ProductInfo: React.FC<IProductInfoProps> = ({ children, className }
               />
             </button>
             {isOpen && (
-              <div className={'border-b border-gray-300 pb-4 pt-2'}>
+              <div className={'pb-4 pt-2'}>
                 <div className={'text-md'}>{props.children(props.data)}</div>
               </div>
             )}

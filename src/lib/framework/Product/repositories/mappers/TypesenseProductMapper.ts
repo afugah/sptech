@@ -211,6 +211,16 @@ export class TypesenseProductMapper {
       // Attributes - include custom attributes if available
       attributes: {
         materials: document.material,
+        // Extract custom attributes from Typesense document
+        usp1: document.custom_attributes?.usp1?.[language] || document.custom_attributes?.usp1?.en,
+        usp2: document.custom_attributes?.usp2?.[language] || document.custom_attributes?.usp2?.en,
+        usp3: document.custom_attributes?.usp3?.[language] || document.custom_attributes?.usp3?.en,
+        material_typesense:
+          document.custom_attributes?.material?.[language] || document.custom_attributes?.material?.en,
+        width_typesense: document.custom_attributes?.width,
+        height_typesense: document.custom_attributes?.height,
+        length_typesense: document.custom_attributes?.lenght, // Note: typo in source data
+        weight_typesense: document.custom_attributes?.weight,
         ...(document.custom_attributes && Array.isArray(document.custom_attributes)
           ? document.custom_attributes.reduce((acc, attr) => ({ ...acc, ...attr }), {})
           : {}),

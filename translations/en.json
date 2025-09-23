@@ -502,6 +502,7 @@
       "front": "Front",
       "garment-length": "Garment length",
       "height": "Height",
+      "depth": "Depth",
       "length": "Length",
       "material": "Material",
       "material-back": "Back",
@@ -533,7 +534,8 @@
       "variant-id": "Variant id",
       "waist": "Waist",
       "washing": "Washing",
-      "width": "Width"
+      "width": "Width",
+      "weight": "Weight"
     },
     "last-lowest-price": "Last lowest price",
     "low-stock-left": "left in stock",
