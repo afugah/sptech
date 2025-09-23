@@ -3,7 +3,6 @@
 import 'reflect-metadata';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { Amplify } from 'aws-amplify';
-import localFont from 'next/font/local';
 import { SessionProvider } from 'next-auth/react';
 import React, { type PropsWithChildren } from 'react';
 import MarketAutoDetector from '@/src/components/MarketAutoDetector';
@@ -23,37 +22,6 @@ import SizeGuideDrawerProvider from '../context/sizeGuideDrawer';
 import UserDrawerProvider from '../context/userDrawerContext';
 import { WishlistProvider } from '../context/wishlistContext';
 
-const sohne = localFont({
-  src: [
-    {
-      path: '../fonts/sohnebuchLeicht.otf',
-      weight: '300',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/sohnebuch.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/sohnebuchKraftig.ttf',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/sohnebuchHalbfett.otf',
-      weight: '600',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/sohnebuchDreiviertelfett.otf',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-sohne',
-});
-
 const queryClient = new QueryClient();
 // const amplifyConfig = {
 //   Auth: {
@@ -70,13 +38,6 @@ const queryClient = new QueryClient();
 // Amplify.configure(amplifyConfig, { ssr: true });
 
 export function Providers({ children }: PropsWithChildren) {
-  // Apply font classes directly to html element via CSS instead of inline string interpolation
-  // This ensures consistent rendering between server and client
-  React.useEffect(() => {
-    // Add font variables to document after client-side hydration
-    document.documentElement.classList.add(sohne.variable);
-  }, []);
-
   return (
     <div className={'font-sans tracking-wider'}>
       <QueryClientProvider client={queryClient}>
