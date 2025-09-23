@@ -134,7 +134,7 @@ const HeaderInlineComponent = ({ header_menu, hasHeaderFixed = true }: IProps) =
 
           {/* Centered Menu - Hidden on mobile */}
           <nav className={'hidden flex-1 justify-center lg:flex'}>
-            <div className={'flex items-center gap-8 text-sm font-medium uppercase tracking-wider'}>
+            <div className={'flex items-center gap-8 text-sm font-medium uppercase'}>
               <StaticMenu headerMenu={header_menu} />
             </div>
           </nav>
@@ -207,7 +207,7 @@ const HeaderInlineComponent = ({ header_menu, hasHeaderFixed = true }: IProps) =
 
         {/* Mobile Menu - Simple horizontal scroll */}
         <div className={`mt-2 border-t px-4 py-2 lg:hidden ${bgColor ? 'border-white/20' : 'border-gray-200'}`}>
-          <div className={'flex gap-4 overflow-x-auto text-xs font-medium uppercase tracking-wider'}>
+          <div className={'flex gap-4 overflow-x-auto text-xs font-medium uppercase'}>
             <StaticMenu headerMenu={header_menu} />
           </div>
         </div>

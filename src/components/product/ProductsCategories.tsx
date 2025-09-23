@@ -35,7 +35,7 @@ const ProductsCategories = ({ searchText, locale }: { searchText?: string; local
 
   function CategorySkeletonCard() {
     return (
-      <div className={' mt-6 flex flex-col gap-y-2  text-left uppercase tracking-widest'}>
+      <div className={' mt-6 flex flex-col gap-y-2  text-left uppercase'}>
         {[...Array(4)].map((_, index) => (
           <div className={'flex max-h-max flex-col  space-y-3'} key={index}>
             <div className={'flex flex-col gap-y-4  '}>
@@ -50,10 +50,8 @@ const ProductsCategories = ({ searchText, locale }: { searchText?: string; local
 
   return (
     <div className={' mt-[5.5rem]'}>
-      <p className={' font-sans tracking-widest '}>
-        {searchText ? t('search.search-suggestions') : t('search.trending-searchs')}
-      </p>
-      <div className={' mt-6 flex flex-col gap-y-2  text-left uppercase tracking-widest'}>
+      <p className={' font-sans '}>{searchText ? t('search.search-suggestions') : t('search.trending-searchs')}</p>
+      <div className={' mt-6 flex flex-col gap-y-2  text-left uppercase'}>
         {loading && items?.length === 0 && <CategorySkeletonCard />}
         {categories?.values?.slice(0, 6)?.map((item) => {
           const value = item.value;

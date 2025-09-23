@@ -57,7 +57,7 @@ const FaqPage: React.FC<FaqPageProps> = ({ story }) => {
           <h1
             aria-hidden={'true'}
             className={
-              'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase tracking-widest text-black sm:text-md lg:text-lg'
+              'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase text-black sm:text-md lg:text-lg'
             }
           >
             {t('metadata.faq')}
@@ -67,9 +67,7 @@ const FaqPage: React.FC<FaqPageProps> = ({ story }) => {
           </h2>
         </div>
       </div>
-      <Breadcrumbs
-        className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase tracking-widest'}
-      >
+      <Breadcrumbs className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase'}>
         <li>
           <a href={'/'} className={'uppercase hover:underline'}>
             {t('common.home')}
@@ -94,9 +92,9 @@ const FaqPage: React.FC<FaqPageProps> = ({ story }) => {
                     />
                   </div>
                   <div className={'px-8 py-12 text-center'}>
-                    <h3 className={'mb-6 text-4xl font-light tracking-wider'}>{block.title}</h3>
+                    <h3 className={'mb-6 text-4xl font-light'}>{block.title}</h3>
                     <p className={'mb-8 text-lg font-light leading-relaxed'}>{block.description}</p>
-                    <Button asChild className={'bg-gray-900 px-8 py-4 text-sm uppercase tracking-wider'} size={'xl'}>
+                    <Button asChild className={'bg-gray-900 px-8 py-4 text-sm uppercase'} size={'xl'}>
                       <Link href={getFaqUrl(block.title)}>{t('common.read-more')}</Link>
                     </Button>
                   </div>
@@ -108,7 +106,7 @@ const FaqPage: React.FC<FaqPageProps> = ({ story }) => {
                   }
                 >
                   <div className={'flex w-full max-w-lg flex-col'}>
-                    <h3 className={'mb-4 text-5xl font-light tracking-wider'}>{block.title}</h3>
+                    <h3 className={'mb-4 text-5xl font-light'}>{block.title}</h3>
                     <p className={'mb-6 font-light'}>{block.description}</p>
                     <Button asChild className={'w-48 bg-gray-900 py-4'} size={'xl'}>
                       <Link href={getFaqUrl(block.title)}>{t('common.read-more')}</Link>
@@ -163,9 +161,9 @@ const FaqPage: React.FC<FaqPageProps> = ({ story }) => {
                     />
                   </div>
                   <div className={'px-8 py-12 text-center'}>
-                    <h3 className={'mb-6 text-4xl font-light tracking-wider'}>{block.title}</h3>
+                    <h3 className={'mb-6 text-4xl font-light'}>{block.title}</h3>
                     <p className={'mb-8 text-lg font-light leading-relaxed'}>{block.description}</p>
-                    <Button asChild className={'bg-gray-900 px-8 py-4 text-sm uppercase tracking-wider'} size={'xl'}>
+                    <Button asChild className={'bg-gray-900 px-8 py-4 text-sm uppercase'} size={'xl'}>
                       <Link href={getFaqUrl(block.title)}>{t('common.read-more')}</Link>
                     </Button>
                   </div>
@@ -177,7 +175,7 @@ const FaqPage: React.FC<FaqPageProps> = ({ story }) => {
                   }
                 >
                   <div className={'flex w-full max-w-lg flex-col'}>
-                    <h3 className={'mb-4 text-5xl font-light tracking-wider'}>{block.title}</h3>
+                    <h3 className={'mb-4 text-5xl font-light'}>{block.title}</h3>
                     <p className={'mb-6 font-light'}>{block.description}</p>
                     <Button asChild className={'w-48 bg-gray-900 py-4'} size={'xl'}>
                       <Link href={getFaqUrl(block.title)}>{t('common.read-more')}</Link>

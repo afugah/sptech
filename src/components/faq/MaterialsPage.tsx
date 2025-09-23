@@ -54,7 +54,7 @@ const MaterialsPage: React.FC<MaterialsPageProps> = ({ story }) => {
           <h1
             aria-hidden={'true'}
             className={
-              'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase tracking-widest text-black sm:text-md lg:text-lg'
+              'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase text-black sm:text-md lg:text-lg'
             }
           >
             {t('faq.materials')}
@@ -65,9 +65,7 @@ const MaterialsPage: React.FC<MaterialsPageProps> = ({ story }) => {
           {description as string}
         </p>
       </div>
-      <Breadcrumbs
-        className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase tracking-widest'}
-      >
+      <Breadcrumbs className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase'}>
         <li>
           <a href={'/'} className={'uppercase hover:underline'}>
             {t('common.home')}
@@ -89,9 +87,9 @@ const MaterialsPage: React.FC<MaterialsPageProps> = ({ story }) => {
                 />
               </div>
               <div className={'px-8 py-12 text-center'}>
-                <h3 className={'mb-6 text-4xl font-light tracking-wider'}>{silverBlock.title}</h3>
+                <h3 className={'mb-6 text-4xl font-light'}>{silverBlock.title}</h3>
                 <p className={'mb-8 text-lg font-light leading-relaxed'}>{silverBlock.description}</p>
-                <Button asChild className={'bg-gray-900 px-8 py-4 text-sm uppercase tracking-wider'} size={'xl'}>
+                <Button asChild className={'bg-gray-900 px-8 py-4 text-sm uppercase'} size={'xl'}>
                   <Link href={getMaterialsUrl(silverBlock.slug || '')}>{t('common.read-more')}</Link>
                 </Button>
               </div>
@@ -157,9 +155,9 @@ const MaterialsPage: React.FC<MaterialsPageProps> = ({ story }) => {
                 />
               </div>
               <div className={'px-8 py-12 text-center'}>
-                <h3 className={'mb-6 text-4xl font-light tracking-wider'}>{fairtradeGoldBlock.title}</h3>
+                <h3 className={'mb-6 text-4xl font-light'}>{fairtradeGoldBlock.title}</h3>
                 <p className={'mb-8 text-lg font-light leading-relaxed'}>{fairtradeGoldBlock.description}</p>
-                <Button asChild className={'bg-gray-900 px-8 py-4 text-sm uppercase tracking-wider'} size={'xl'}>
+                <Button asChild className={'bg-gray-900 px-8 py-4 text-sm uppercase'} size={'xl'}>
                   <Link href={getMaterialsUrl(fairtradeGoldBlock.slug || '')}>{t('common.read-more')}</Link>
                 </Button>
               </div>
@@ -179,7 +177,7 @@ const MaterialsPage: React.FC<MaterialsPageProps> = ({ story }) => {
               />
               <div className={'flex w-full max-w-xl flex-col font-bold'}>
                 <div className={'mb-3'}>
-                  <span className={'px-1 uppercase tracking-widest'}>CSR</span>
+                  <span className={'px-1 uppercase'}>CSR</span>
                 </div>
                 <h3 className={'mb-4 text-5xl font-light tracking-tight'}>{fairtradeGoldBlock.title}</h3>
                 <p className={'mb-6 font-light'}>{fairtradeGoldBlock.description}</p>

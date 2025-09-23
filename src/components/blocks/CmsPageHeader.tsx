@@ -57,7 +57,7 @@ const CmsPageHeaderComponent: IStoryblok.FC<CmsPageHeader> = ({ blok, ...props }
               <h1
                 aria-hidden={'true'}
                 className={
-                  'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase tracking-widest text-black sm:text-md lg:text-lg'
+                  'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase text-black sm:text-md lg:text-lg'
                 }
               >
                 {subtitle}
@@ -79,9 +79,7 @@ const CmsPageHeaderComponent: IStoryblok.FC<CmsPageHeader> = ({ blok, ...props }
           )}
           {showBreadcrumbs && (
             <nav
-              className={
-                'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase tracking-widest'
-              }
+              className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase'}
               aria-label={'Breadcrumb'}
             >
               <ol className={'flex items-center space-x-2'}>
@@ -134,9 +132,7 @@ const CmsPageHeaderComponent: IStoryblok.FC<CmsPageHeader> = ({ blok, ...props }
         )}
         {showBreadcrumbs && (
           <nav
-            className={
-              'mb-6 flex items-center justify-center text-center text-xs font-bold uppercase tracking-widest md:mb-10'
-            }
+            className={'mb-6 flex items-center justify-center text-center text-xs font-bold uppercase md:mb-10'}
             aria-label={'Breadcrumb'}
           >
             <ol className={'flex items-center space-x-2'}>

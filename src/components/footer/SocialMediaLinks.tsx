@@ -39,7 +39,7 @@ export const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({ socialMediaL
           target={'_blank'}
           rel={'noopener noreferrer'}
           className={
-            'flex items-center justify-center text-xs font-bold uppercase tracking-wider text-white transition-opacity hover:bg-opacity-30'
+            'flex items-center justify-center text-xs font-bold uppercase text-white transition-opacity hover:bg-opacity-30'
           }
           aria-label={`Visit us on ${socialMedia.platform}`}
         >

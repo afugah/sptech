@@ -96,9 +96,7 @@ const SplitSectionBlockComponent: IStoryblok.FC<SplitSectionBlock> = ({ blok, ..
 
         <div className={classNames(dynamicPaddingTop, 'lg:flex', isImageLeft ? 'lg:justify-end' : 'lg:justify-start')}>
           <div className={classNames('max-w-md lg:max-w-lg', isImageLeft ? '-mr-6 lg:-mr-28' : '-ml-6 lg:-ml-28')}>
-            {title && (
-              <h3 className={'mb-6 text-2xl font-light tracking-wider md:text-4xl lg:text-5xl'}>{safeString(title)}</h3>
-            )}
+            {title && <h3 className={'mb-6 text-2xl font-light md:text-4xl lg:text-5xl'}>{safeString(title)}</h3>}
             <div className={'mx-6 space-y-4 md:mx-0'}>
               {contents?.map((block) => <StoryblokComponent blok={block} key={block._uid} />)}
             </div>
@@ -159,7 +157,7 @@ const SplitSectionBlockComponent: IStoryblok.FC<SplitSectionBlock> = ({ blok, ..
         {/* Content Area */}
         <div className={contentClasses}>
           <div className={'max-w-lg'}>
-            {title && <h3 className={'mb-6 text-2xl font-light tracking-wider md:text-4xl'}>{safeString(title)}</h3>}
+            {title && <h3 className={'mb-6 text-2xl font-light md:text-4xl'}>{safeString(title)}</h3>}
             {contents?.map((block) => <StoryblokComponent blok={block} key={block._uid} />)}
           </div>
         </div>

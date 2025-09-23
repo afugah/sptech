@@ -205,11 +205,7 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
                 })}
               </span>
             )}
-            <h2
-              className={
-                'mb-1 truncate px-1 font-sans text-xs font-bold  uppercase tracking-wider lg:mb-3 lg:px-3 lg:text-md'
-              }
-            >
+            <h2 className={'mb-1 truncate px-1 font-sans text-xs font-bold  uppercase lg:mb-3 lg:px-3 lg:text-md'}>
               {title}
             </h2>
 

@@ -62,9 +62,7 @@ const WhiteGoldPage: React.FC<WhiteGoldPageProps> = ({ story }) => {
             {description as string}
           </p>
           <Breadcrumbs
-            className={
-              'mb-6 flex items-center justify-center text-center text-xs font-bold uppercase tracking-widest md:mb-10'
-            }
+            className={'mb-6 flex items-center justify-center text-center text-xs font-bold uppercase md:mb-10'}
           >
             <li>
               <a href={'/'} className={'uppercase hover:underline'}>
@@ -161,7 +159,7 @@ const WhiteGoldPage: React.FC<WhiteGoldPageProps> = ({ story }) => {
             <div className={'mx-4 flex flex-col pt-80 md:pt-0 lg:flex-row lg:items-center lg:gap-16 '}>
               <div className={'flex-1 px-4 md:px-0 lg:order-2'}>
                 <div className={'ml-auto max-w-lg'}>
-                  <h3 className={'mb-6 text-2xl font-light tracking-wider md:text-4xl lg:text-5xl'}>
+                  <h3 className={'mb-6 text-2xl font-light md:text-4xl lg:text-5xl'}>
                     {onlyPreciousMetalsBlock.title}
                   </h3>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>
@@ -194,7 +192,7 @@ const WhiteGoldPage: React.FC<WhiteGoldPageProps> = ({ story }) => {
             <div className={'mx-auto px-4 md:px-12'}>
               <div className={'grid grid-cols-1 gap-12 md:ml-20 lg:grid-cols-2 lg:gap-16'}>
                 <div className={'order-2 flex flex-col justify-center lg:order-1'}>
-                  <h3 className={'mb-6 text-3xl font-light tracking-wider md:text-5xl'}>{rhodiumPlatingBlock.title}</h3>
+                  <h3 className={'mb-6 text-3xl font-light md:text-5xl'}>{rhodiumPlatingBlock.title}</h3>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>
                     {rhodiumPlatingBlock.description}
                   </p>
@@ -241,9 +239,7 @@ const WhiteGoldPage: React.FC<WhiteGoldPageProps> = ({ story }) => {
                   </div>
                 )}
                 <div className={'order-2 flex flex-col justify-center lg:order-2'}>
-                  <h3 className={'mb-6 text-3xl font-light tracking-wider md:text-5xl'}>
-                    {careInstructionsBlock.title}
-                  </h3>
+                  <h3 className={'mb-6 text-3xl font-light md:text-5xl'}>{careInstructionsBlock.title}</h3>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>
                     {careInstructionsBlock.description}
                   </p>
@@ -282,9 +278,9 @@ const WhiteGoldPage: React.FC<WhiteGoldPageProps> = ({ story }) => {
                 />
               </div>
               <div className={'px-8 py-12 text-center'}>
-                <h3 className={'mt-2 text-2xl font-light tracking-wider  md:text-4xl'}>{yellowGoldBlock.title}</h3>
+                <h3 className={'mt-2 text-2xl font-light  md:text-4xl'}>{yellowGoldBlock.title}</h3>
                 <p className={'mb-8 text-xs font-light leading-relaxed md:text-lg'}>{yellowGoldBlock.description}</p>
-                <Button asChild className={'bg-gray-900 px-8 py-4 text-sm uppercase tracking-wider'} size={'xl'}>
+                <Button asChild className={'bg-gray-900 px-8 py-4 text-sm uppercase'} size={'xl'}>
                   <Link href={yellowGoldBlock.slug || ''}>{t('common.read-more')}</Link>
                 </Button>
               </div>
@@ -296,7 +292,7 @@ const WhiteGoldPage: React.FC<WhiteGoldPageProps> = ({ story }) => {
               }
             >
               <div className={'flex w-full max-w-lg flex-col'}>
-                <h3 className={'mb-4 text-5xl font-light tracking-wider'}>{yellowGoldBlock.title}</h3>
+                <h3 className={'mb-4 text-5xl font-light'}>{yellowGoldBlock.title}</h3>
                 <p className={'mb-6 font-light'}>{yellowGoldBlock.description}</p>
                 <Button asChild className={'w-48 bg-gray-900 py-4'} size={'xl'}>
                   <Link href={yellowGoldBlock.slug || ''}>{t('common.read-more')}</Link>

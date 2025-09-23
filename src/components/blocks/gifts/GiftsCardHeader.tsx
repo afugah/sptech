@@ -57,7 +57,7 @@ const GiftsHeader: IStoryblok.FC<GiftsCardHeader> = ({ blok }) => {
       {/* <div className={' mt-14 bg-alabaster px-6 py-10'}>
         <div className={' space-y-10'}>
           <div className={' flex w-full items-center justify-center'}>
-            <p className={' text-xl font-bold tracking-widest'}>YOU MIGHT ALSO LIKE</p>
+            <p className={' text-xl font-bold'}>YOU MIGHT ALSO LIKE</p>
           </div>
           <DefaultProductsInCarousel />
         </div>

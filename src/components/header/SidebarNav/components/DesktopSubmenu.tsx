@@ -77,7 +77,7 @@ const DesktopSubmenu = ({ desktopSubMenu }: { desktopSubMenu?: IShoplab.Children
                           <CardContent className={' flex items-center justify-center px-0 py-0 text-center'}>
                             <Link
                               href={item?.imageWithUrl?.url}
-                              className={' px-4  text-lg font-semibold uppercase tracking-wider  transition-colors'}
+                              className={' px-4  text-lg font-semibold uppercase  transition-colors'}
                             >
                               {item?.imageWithUrl?.linkText || 'Learn More'}
                             </Link>

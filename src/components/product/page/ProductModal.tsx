@@ -27,10 +27,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
         {showHeader && (
           <DialogHeader className={'bg-creme/40 py-4'}>
             <DialogTitle
-              className={classNames(
-                'mx-auto font-sans font-bold uppercase tracking-widest',
-                titleClassName || 'blink text-sm',
-              )}
+              className={classNames('mx-auto font-sans font-bold uppercase', titleClassName || 'blink text-sm')}
             >
               {title}
             </DialogTitle>

@@ -61,7 +61,7 @@ export const StoreCard: React.FC<StoreCardProps> = ({ store, index, setMapCenter
         </div>
 
         <div className={'bg-white p-6 sm:p-8'}>
-          <p className={'mb-2 text-xs font-bold uppercase tracking-widest'}>{location}</p>
+          <p className={'mb-2 text-xs font-bold uppercase'}>{location}</p>
           <h2 className={'mb-3 font-serif text-2xl font-light leading-tight text-black sm:text-3xl'}>{name}</h2>
           <div className={'mb-4 border-b border-gray-300'}></div>
 
@@ -142,7 +142,7 @@ export const StoreCard: React.FC<StoreCardProps> = ({ store, index, setMapCenter
           <div
             className={`pt-12 xl:pt-16 ${imageOnLeft ? 'pl-80 xl:pl-[450px]' : 'pl-8 pr-80 xl:pl-12 xl:pr-[450px]'}`}
           >
-            <p className={'mb-2 text-xs font-bold uppercase tracking-widest'}>{location}</p>
+            <p className={'mb-2 text-xs font-bold uppercase'}>{location}</p>
             <h2 className={'mb-3 font-serif text-3xl font-light leading-tight text-black xl:text-4xl'}>{name}</h2>
             <div className={'mb-4 border-b border-gray-300'}></div>
 

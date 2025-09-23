@@ -15,9 +15,7 @@ export const PayloadFooterLink: React.FC<IPayloadFooterLinkProps> = ({ footerLin
   return (
     <LinkComponent
       {...linkProps}
-      className={classNames(
-        'block text-center text-xs uppercase tracking-widest transition-opacity hover:opacity-70 lg:text-left',
-      )}
+      className={classNames('block text-center text-xs uppercase transition-opacity hover:opacity-70 lg:text-left')}
     >
       {footerLink.label}
     </LinkComponent>

@@ -36,7 +36,7 @@ const SubMenu = ({
           aria-label={t('accessibility.back-to-menu')}
           variant={'custom'}
           onClick={() => setShowSubMenu(false)}
-          className={'px-0 py-0 font-sans text-md uppercase tracking-widest [&_svg]:size-7'}
+          className={'px-0 py-0 font-sans text-md uppercase [&_svg]:size-7'}
         >
           <ArrowLeft strokeWidth={1} size={34} className={'mr-2 h-8 w-8 text-gray-600'} />
           {t('common.back')}
@@ -55,7 +55,7 @@ const SubMenu = ({
                       <Link
                         key={item.id}
                         href={item?.url?.toLowerCase()}
-                        className={'block px-0 py-1 font-medium tracking-widest hover:text-gray-900'}
+                        className={'block px-0 py-1 font-medium hover:text-gray-900'}
                       >
                         {item.label}
                       </Link>

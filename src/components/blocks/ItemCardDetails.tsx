@@ -34,7 +34,7 @@ const ItemCardDetailsComponent = ({ blok, backgroundColor }: Props) => {
         <div className={cn('relative -top-10 h-full   md:min-h-[5rem] ', itemBackgroundColorClass || 'bg-[#ece0db]')}>
           <div className={'px-2'}>
             <CardContent className={' mb-4 space-y-2 p-4  text-center'}>
-              <p className={'mb-0 font-serif text-2xl font-medium uppercase tracking-wider'}>{title}</p>
+              <p className={'mb-0 font-serif text-2xl font-medium uppercase'}>{title}</p>
               {description && <p className={' font-light leading-relaxed'}>{description}</p>}
             </CardContent>
             {ctaButtons?.map((button, index: number) => (
@@ -42,7 +42,7 @@ const ItemCardDetailsComponent = ({ blok, backgroundColor }: Props) => {
                 <Link
                   href={`/${((button?.url as StoryblokContent)?.url as string) || ''}`}
                   className={
-                    'bg-gray-800 px-3 py-3 text-sm font-medium uppercase tracking-wider text-white transition-colors hover:bg-gray-800'
+                    'bg-gray-800 px-3 py-3 text-sm font-medium uppercase text-white transition-colors hover:bg-gray-800'
                   }
                 >
                   {(button?.text as string) || ''}

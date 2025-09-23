@@ -35,7 +35,7 @@ const SearchProductList = ({ searchString }: { searchString: string }) => {
   return (
     <div>
       <div className={'mb-4 flex items-center justify-between'}>
-        <p className={'font-sans tracking-widest text-black'}>
+        <p className={'font-sans text-black'}>
           {searchString ? t('search.product-matches') : t('search.trending-products')}
         </p>
         {searchString && productList?.length > 0 && !isLoading && (

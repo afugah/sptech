@@ -136,7 +136,7 @@ const FindStore: React.FC<Props> = ({ stores, initialFilters }) => {
           <h1
             aria-hidden={'true'}
             className={
-              'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase tracking-widest text-black sm:text-md lg:text-lg'
+              'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase text-black sm:text-md lg:text-lg'
             }
           >
             {t('menu.store-locator')}
@@ -146,9 +146,7 @@ const FindStore: React.FC<Props> = ({ stores, initialFilters }) => {
           </h2>
         </div>
       </div>
-      <Breadcrumbs
-        className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase tracking-widest'}
-      >
+      <Breadcrumbs className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase'}>
         <li>
           <button onClick={handleHomeClick} className={'uppercase hover:underline'}>
             {t('common.home')}
@@ -173,9 +171,7 @@ const FindStore: React.FC<Props> = ({ stores, initialFilters }) => {
           <div className={'flex w-full'}>
             <div className={'w-full'}>
               <div className={'mt-10 py-8'}>
-                <h2 className={'text-center font-sans text-lg font-bold tracking-widest'}>
-                  {t('findstore.concept-stores')}
-                </h2>
+                <h2 className={'text-center font-sans text-lg font-bold'}>{t('findstore.concept-stores')}</h2>
               </div>
               <div className={'mx-4 sm:mx-6 lg:mx-8'}>
                 <StoreList data={filteredStores} setCenter={setCenter} />
@@ -227,7 +223,7 @@ const FindStore: React.FC<Props> = ({ stores, initialFilters }) => {
                         onClick={() => handleStoreClick(store.slug)}
                       >
                         <h4
-                          className={`mb-1 font-sans text-sm font-bold uppercase tracking-widest ${expandedStore === store.id ? 'text-white' : ''}`}
+                          className={`mb-1 font-sans text-sm font-bold uppercase ${expandedStore === store.id ? 'text-white' : ''}`}
                         >
                           {store.name}
                         </h4>

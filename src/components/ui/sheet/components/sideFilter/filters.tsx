@@ -4,7 +4,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Checkbox } from '@/src/components/shadcn/checkbox';
 
 const SHARED_STYLES = {
-  trigger: 'font-sans text-black text-lg uppercase tracking-wider hover:no-underline',
+  trigger: 'font-sans text-black text-lg uppercase hover:no-underline',
   content: 'flex flex-col gap-4 text-balance',
   container: 'space-y-1 text-xs',
   optionWrapper: 'h-full w-full px-3 hover:bg-alabaster',

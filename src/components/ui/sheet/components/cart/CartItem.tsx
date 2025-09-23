@@ -160,7 +160,7 @@ const CartItem = ({ item }: Props) => {
           </Link>
         </div>
 
-        <div className={'flex w-3/4 flex-1 flex-col gap-5 pt-3 tracking-widest'}>
+        <div className={'flex w-3/4 flex-1 flex-col gap-5 pt-3'}>
           <Link href={slug}>
             <div className={classNames('flex flex-col gap-1', outOfStock ? 'opacity-40' : 'truncate')}>
               <span className={'mb-2 truncate text-sm font-semibold uppercase '}>{item.displayName}</span>

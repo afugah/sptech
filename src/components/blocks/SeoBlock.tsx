@@ -17,7 +17,7 @@ const SeoBlockComponent: IStoryblok.FC<SeoBlock> = ({ blok, ...props }) => {
       {...props}
     >
       <div className={'mx-auto max-w-6xl'}>
-        {title && <h1 className={'mb-2 text-lg font-light uppercase tracking-widest md:text-xl'}>{title}</h1>}
+        {title && <h1 className={'mb-2 text-lg font-light uppercase md:text-xl'}>{title}</h1>}
         <div className={'columns-1 gap-8 text-xs leading-relaxed md:columns-3 md:gap-12'}>
           {blocks?.map((block) => <StoryblokComponent blok={block} key={block._uid} />)}
         </div>

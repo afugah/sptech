@@ -52,7 +52,7 @@ module.exports = {
         '11xl': '10rem',
         '12xl': '11rem',
         '13xl': '12rem',
-        md: '0.875rem',
+        md: '1rem',
         xxs: '0.7rem',
       },
       backgroundImage: {

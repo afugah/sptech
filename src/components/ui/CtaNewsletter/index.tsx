@@ -77,7 +77,7 @@ export const CtaNewsletter: React.FC<ICtaNewsletter> = (props) => {
               required
               autoComplete={'off'}
               className={
-                'h-10 w-full bg-white px-2 py-1.5 text-xs uppercase tracking-wider text-black placeholder:text-gray-500 focus:outline-none md:px-4 md:py-2'
+                'h-10 w-full bg-white px-2 py-1.5 text-xs uppercase text-black placeholder:text-gray-500 focus:outline-none md:px-4 md:py-2'
               }
             />
           </div>
@@ -87,7 +87,7 @@ export const CtaNewsletter: React.FC<ICtaNewsletter> = (props) => {
             loading={isLoading}
             size={'lg'}
             disabled={isSubscribed}
-            className={'w-full bg-creme font-medium uppercase tracking-wider text-black hover:bg-creme sm:w-auto'}
+            className={'w-full bg-creme font-medium uppercase text-black hover:bg-creme sm:w-auto'}
           >
             {isSubscribed ? 'SUBSCRIBED!' : 'SUBSCRIBE'}
           </Button>

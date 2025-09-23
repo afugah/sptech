@@ -66,9 +66,7 @@ const ClarityPage: React.FC<ClarityPageProps> = ({ story }) => {
             {description as string}
           </p>
           <Breadcrumbs
-            className={
-              'mb-6 flex items-center justify-center text-center text-xs font-bold uppercase tracking-widest md:mb-10'
-            }
+            className={'mb-6 flex items-center justify-center text-center text-xs font-bold uppercase md:mb-10'}
           >
             <li>
               <a href={'/'} className={'uppercase hover:underline'}>
@@ -153,7 +151,7 @@ const ClarityPage: React.FC<ClarityPageProps> = ({ story }) => {
             <div className={'mx-4 flex flex-col pt-72 md:pt-40 lg:flex-row lg:items-center lg:gap-16 '}>
               <div className={'flex-1 px-4 md:px-0 lg:order-2'}>
                 <div className={'ml-auto max-w-xl'}>
-                  <h3 className={'mb-6 text-3xl font-light tracking-wider md:text-4xl lg:text-5xl'}>
+                  <h3 className={'mb-6 text-3xl font-light md:text-4xl lg:text-5xl'}>
                     {clarityGradingScaleBlock.title}
                   </h3>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>
@@ -182,7 +180,7 @@ const ClarityPage: React.FC<ClarityPageProps> = ({ story }) => {
         {clarityScaleBlock && (
           <div className={'bg-seashell px-4 py-8 md:px-28 md:py-44'}>
             <div className={'mx-auto max-w-6xl'}>
-              <h3 className={'mb-4 text-left text-3xl font-light tracking-wider md:mb-12 md:text-4xl lg:text-5xl'}>
+              <h3 className={'mb-4 text-left text-3xl font-light md:mb-12 md:text-4xl lg:text-5xl'}>
                 {clarityScaleBlock.title}
               </h3>
               <div className={'grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-16'}>

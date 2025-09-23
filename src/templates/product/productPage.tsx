@@ -267,7 +267,7 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
                 <React.Fragment key={idx}>
                   <Link
                     href={crumb.full_slug}
-                    className={`duration-800 font-bold uppercase tracking-wider decoration-0 transition-all ${
+                    className={`duration-800 font-bold uppercase decoration-0 transition-all ${
                       idx === 0 ? 'text-gray-800 hover:text-black' : 'text-gray-900 hover:text-black'
                     }`}
                   >
@@ -315,7 +315,7 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
 
                 {!!variants.length && !!variantPrice && (
                   <>
-                    <div className={'order-3 text-lg uppercase tracking-wider md:order-2'}>
+                    <div className={'order-3 text-lg uppercase md:order-2'}>
                       {!!variantPrice?.discountAmount && (
                         <span className={'mr-5 text-red'}>
                           {getAmount(variantPrice.salePriceAmount, currencyCode, locale)}

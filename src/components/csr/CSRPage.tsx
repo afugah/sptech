@@ -72,7 +72,7 @@ const CSRPage: React.FC<CSRPageProps> = ({ story }) => {
           )}
           <Breadcrumbs
             className={
-              'mb-6 flex flex-wrap items-center justify-center text-center text-xs font-bold uppercase tracking-widest md:mb-10'
+              'mb-6 flex flex-wrap items-center justify-center text-center text-xs font-bold uppercase md:mb-10'
             }
           >
             <li>
@@ -269,9 +269,7 @@ const CSRPage: React.FC<CSRPageProps> = ({ story }) => {
                 <div className={'space-y-8'}>
                   {responsibleJewelleryCouncilBlock && (
                     <div>
-                      <h3 className={'font-sans text-sm font-medium tracking-wider'}>
-                        {responsibleJewelleryCouncilBlock.title}
-                      </h3>
+                      <h3 className={'font-sans text-sm font-medium'}>{responsibleJewelleryCouncilBlock.title}</h3>
                       <p className={'mb-4 text-sm font-light leading-relaxed text-gray-900'}>
                         {responsibleJewelleryCouncilBlock.description}
                       </p>
@@ -290,7 +288,7 @@ const CSRPage: React.FC<CSRPageProps> = ({ story }) => {
 
                   {organicCottonBlock && (
                     <div>
-                      <h3 className={'font-sans text-sm font-medium tracking-wider'}>{organicCottonBlock.title}</h3>
+                      <h3 className={'font-sans text-sm font-medium'}>{organicCottonBlock.title}</h3>
                       <p className={'mb-4 text-sm font-light leading-relaxed text-gray-900'}>
                         {organicCottonBlock.description}
                       </p>
@@ -311,7 +309,7 @@ const CSRPage: React.FC<CSRPageProps> = ({ story }) => {
                 <div>
                   {colourStonesBlock && (
                     <div>
-                      <h3 className={'font-sans text-sm font-medium tracking-wider'}>{colourStonesBlock.title}</h3>
+                      <h3 className={'font-sans text-sm font-medium'}>{colourStonesBlock.title}</h3>
                       {colourStonesBlock.paragraph3 &&
                         renderRichContent(colourStonesBlock.paragraph3, richContentPresets.csr)}
                     </div>
@@ -356,9 +354,7 @@ const CSRPage: React.FC<CSRPageProps> = ({ story }) => {
             <div className={'mx-4 flex flex-col pt-80 md:pt-0 lg:flex-row lg:items-center lg:gap-16 '}>
               <div className={'flex-1 px-4 md:px-0 lg:order-2'}>
                 <div className={'ml-auto max-w-lg'}>
-                  <h3 className={'mb-6 text-2xl font-light tracking-wider md:text-4xl lg:text-5xl'}>
-                    {perfumesBlock.title}
-                  </h3>
+                  <h3 className={'mb-6 text-2xl font-light md:text-4xl lg:text-5xl'}>{perfumesBlock.title}</h3>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>
                     {perfumesBlock.description}
                   </p>
@@ -428,9 +424,9 @@ const CSRPage: React.FC<CSRPageProps> = ({ story }) => {
                 />
               </div>
               <div className={'px-8 py-12 text-center'}>
-                <h3 className={'mb-6 text-4xl font-light tracking-wider'}>{BehindBeautyWithAThoughtBlock.title}</h3>
+                <h3 className={'mb-6 text-4xl font-light'}>{BehindBeautyWithAThoughtBlock.title}</h3>
                 <p className={'mb-8 text-lg font-light leading-relaxed'}>{BehindBeautyWithAThoughtBlock.description}</p>
-                <Button asChild className={'bg-creme px-8 py-4 text-sm uppercase tracking-wider'} size={'xl'}>
+                <Button asChild className={'bg-creme px-8 py-4 text-sm uppercase'} size={'xl'}>
                   <Link href={BehindBeautyWithAThoughtBlock.title}>{t('common.read-more')}</Link>
                 </Button>
               </div>

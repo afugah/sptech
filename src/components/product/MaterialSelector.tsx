@@ -63,7 +63,7 @@ export const MaterialSelector: React.FC<MaterialSelectorProps> = ({
 
   return (
     <div className={classNames('material-selector', className)}>
-      <h3 className={'mb-4 font-sans text-xs uppercase tracking-wider text-gray-700'}>
+      <h3 className={'mb-4 font-sans text-xs uppercase text-gray-700'}>
         {locale === 'sv' ? 'MATERIAL' : locale === 'fi' ? 'MATERIAALI' : 'MATERIAL'}
       </h3>
 
@@ -108,9 +108,7 @@ export const MaterialSelector: React.FC<MaterialSelectorProps> = ({
               </div>
 
               {/* Material name */}
-              <span className={'text-nowrap text-sm font-medium uppercase tracking-wider text-gray-900'}>
-                {displayName}
-              </span>
+              <span className={'text-nowrap text-sm font-medium uppercase text-gray-900'}>{displayName}</span>
             </button>
           );
         })}

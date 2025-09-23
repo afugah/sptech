@@ -47,14 +47,14 @@ const HeroComponent: IStoryblok.FC<Hero> = ({ blok }) => {
 
       <div className={`absolute flex flex-col text-white ${placementClass}`}>
         <p
-          className={'mb-8 text-[1.3rem] font-bold tracking-wider lg:mb-12 lg:text-[1.5rem]'}
+          className={'mb-8 text-[1.3rem] font-bold lg:mb-12 lg:text-[1.5rem]'}
           style={{ textShadow: 'rgba(0, 0, 0, 0.4) 0 0 2rem' }}
         >
           <span className={'bg-turquoise-dark rounded-[0.3rem] px-4 py-2 lg:px-6 lg:py-4'}>{preamble}</span>
         </p>
         <h1
           className={
-            'font-heading m-0 mb-4 max-w-[70rem] pr-8 text-[4rem] uppercase leading-[4.5rem] tracking-tight lg:mb-8 lg:text-[8rem] lg:leading-[8rem] lg:tracking-wider'
+            'font-heading m-0 mb-4 max-w-[70rem] pr-8 text-[4rem] uppercase leading-[4.5rem] tracking-tight lg:mb-8 lg:text-[8rem] lg:leading-[8rem]'
           }
           style={{ textShadow: 'rgba(0, 0, 0, 0.2) 0 0 1.5rem' }}
         >

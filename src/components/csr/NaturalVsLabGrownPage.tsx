@@ -60,7 +60,7 @@ const NaturalVsLabGrownPage: React.FC<NaturalVsLabGrownPageProps> = ({ story }) 
           </p>
           <Breadcrumbs
             className={
-              'mb-6 flex flex-wrap items-center justify-center text-center text-xs font-bold uppercase tracking-widest md:mb-10'
+              'mb-6 flex flex-wrap items-center justify-center text-center text-xs font-bold uppercase md:mb-10'
             }
           >
             <li>
@@ -149,13 +149,11 @@ const NaturalVsLabGrownPage: React.FC<NaturalVsLabGrownPageProps> = ({ story }) 
               <div className={'lg:flex-1'}></div>
               <div className={'flex-1 px-4 text-center md:px-0 md:text-left lg:order-2'}>
                 <div className={'mx-auto max-w-lg lg:mx-0'}>
-                  <h3 className={'mb-6 text-xl font-light tracking-wider md:text-2xl'}>{sustainabilityBlock.title}</h3>
+                  <h3 className={'mb-6 text-xl font-light md:text-2xl'}>{sustainabilityBlock.title}</h3>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>
                     {sustainabilityBlock.description}
                   </p>
-                  <h3 className={'mb-6 text-xl font-light tracking-wider md:text-2xl'}>
-                    {sustainabilityBlock.paragraph1}
-                  </h3>
+                  <h3 className={'mb-6 text-xl font-light md:text-2xl'}>{sustainabilityBlock.paragraph1}</h3>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>
                     {sustainabilityBlock.paragraph2}
                   </p>
@@ -182,9 +180,7 @@ const NaturalVsLabGrownPage: React.FC<NaturalVsLabGrownPageProps> = ({ story }) 
           <div className={'px-4 py-10 md:px-8 md:py-20'}>
             <div className={'flex flex-col items-center gap-8 md:flex-row md:gap-16 md:pl-20'}>
               <div className={'flex-1 text-center md:text-left'}>
-                <h3 className={'mb-8 text-3xl font-light tracking-wider md:text-4xl lg:text-5xl'}>
-                  {realDiamondsBlock.title}
-                </h3>
+                <h3 className={'mb-8 text-3xl font-light md:text-4xl lg:text-5xl'}>{realDiamondsBlock.title}</h3>
                 <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>
                   {realDiamondsBlock.description}
                 </p>
@@ -221,9 +217,9 @@ const NaturalVsLabGrownPage: React.FC<NaturalVsLabGrownPageProps> = ({ story }) 
                 />
               </div>
               <div className={'px-8 py-12 text-center'}>
-                <h3 className={'mb-6 text-4xl font-light tracking-wider'}>{diamondsFactBlock.title}</h3>
+                <h3 className={'mb-6 text-4xl font-light'}>{diamondsFactBlock.title}</h3>
                 <p className={'mb-8 text-lg font-light leading-relaxed'}>{diamondsFactBlock.description}</p>
-                <Button asChild className={'bg-creme px-8 py-4 text-sm uppercase tracking-wider'} size={'xl'}>
+                <Button asChild className={'bg-creme px-8 py-4 text-sm uppercase'} size={'xl'}>
                   <Link href={diamondsFactBlock.title}>{t('common.read-more')}</Link>
                 </Button>
               </div>
@@ -235,7 +231,7 @@ const NaturalVsLabGrownPage: React.FC<NaturalVsLabGrownPageProps> = ({ story }) 
               }
             >
               <div className={'flex w-full max-w-lg flex-col'}>
-                <h3 className={'mb-4 text-5xl font-light tracking-wider'}>{diamondsFactBlock.title}</h3>
+                <h3 className={'mb-4 text-5xl font-light'}>{diamondsFactBlock.title}</h3>
                 <p className={'mb-6 font-light'}>{diamondsFactBlock.description}</p>
                 <Button asChild className={'w-48 bg-creme py-4 uppercase'} size={'xl'}>
                   <Link href={diamondsFactBlock.title}>{t('common.read-more')}</Link>

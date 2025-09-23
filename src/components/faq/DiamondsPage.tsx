@@ -163,9 +163,7 @@ const DiamondsPage: React.FC<DiamondsPageProps> = ({ story }) => {
               <div className={'lg:flex-1'}></div>
               <div className={'flex-1 px-4 text-center md:px-0 md:text-left lg:order-2'}>
                 <div className={'mx-auto max-w-lg lg:mx-0'}>
-                  <h3 className={'mb-6 text-2xl font-light tracking-wider md:text-4xl lg:text-5xl'}>
-                    {brilliantDiamondsBlock.title}
-                  </h3>
+                  <h3 className={'mb-6 text-2xl font-light md:text-4xl lg:text-5xl'}>{brilliantDiamondsBlock.title}</h3>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>
                     {brilliantDiamondsBlock.description}
                   </p>
@@ -197,7 +195,7 @@ const DiamondsPage: React.FC<DiamondsPageProps> = ({ story }) => {
             <div className={'flex flex-col gap-12 md:flex-row md:justify-between md:gap-20'}>
               {diamondGuideContent.map((block) => (
                 <div key={block._uid} className={'mb-8 text-center md:mb-0 md:text-left'}>
-                  <h3 className={'mb-4 text-3xl font-light tracking-wider md:text-4xl'}>{block.title}</h3>
+                  <h3 className={'mb-4 text-3xl font-light md:text-4xl'}>{block.title}</h3>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>{block.description}</p>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>{block.paragraph1}</p>
                 </div>
@@ -222,7 +220,7 @@ const DiamondsPage: React.FC<DiamondsPageProps> = ({ story }) => {
               </div>
             )}
             <div className={'order-2 flex flex-col items-center justify-center md:order-1 md:mb-0 md:items-start'}>
-              <h3 className={'mb-6 text-center text-3xl font-light tracking-wider md:text-left md:text-4xl'}>
+              <h3 className={'mb-6 text-center text-3xl font-light md:text-left md:text-4xl'}>
                 {learnMoreBlock.title}
               </h3>
               <div className={'flex flex-col gap-6 md:flex-row'}>
@@ -242,7 +240,7 @@ const DiamondsPage: React.FC<DiamondsPageProps> = ({ story }) => {
             <div className={'flex flex-col gap-12 md:flex-row md:justify-between md:gap-20'}>
               {cutAndCaratContentBlock.map((block) => (
                 <div key={block._uid} className={'mb-8 text-center md:mb-0 md:text-left'}>
-                  <h3 className={'mb-4 text-3xl font-light tracking-wider md:text-4xl'}>{block.title}</h3>
+                  <h3 className={'mb-4 text-3xl font-light md:text-4xl'}>{block.title}</h3>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>{block.description}</p>
                   <p className={'mb-6 text-sm font-light leading-6 text-gray-900 md:text-base'}>{block.paragraph1}</p>
                 </div>
@@ -267,7 +265,7 @@ const DiamondsPage: React.FC<DiamondsPageProps> = ({ story }) => {
               </div>
             )}
             <div className={'order-2 flex flex-col items-center justify-center md:order-1 md:mb-0 md:items-start'}>
-              <h3 className={'mb-6 text-center text-3xl font-light tracking-wider md:text-left md:text-4xl'}>
+              <h3 className={'mb-6 text-center text-3xl font-light md:text-left md:text-4xl'}>
                 {longVersionBlock.title}
               </h3>
               <div className={'flex flex-col gap-6 md:flex-row'}>
@@ -299,7 +297,7 @@ const DiamondsPage: React.FC<DiamondsPageProps> = ({ story }) => {
         {realDiamondsBlock && (
           <div className={'px-4 py-10 md:px-32 md:py-20'}>
             <div className={'mb-8'}>
-              <h3 className={'mb-8 text-3xl font-light tracking-wider md:text-4xl'}>{realDiamondsBlock.title}</h3>
+              <h3 className={'mb-8 text-3xl font-light md:text-4xl'}>{realDiamondsBlock.title}</h3>
             </div>
             <div className={'flex flex-col md:flex-row md:gap-20'}>
               <div className={'mb-8 flex-1 md:mb-0'}>

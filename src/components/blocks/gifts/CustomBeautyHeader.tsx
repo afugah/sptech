@@ -22,9 +22,7 @@ const CustomBeautyHeaderComponent: IStoryblok.FC<CustomBeautyHeader> = ({ blok }
         <div className={'flex h-screen items-center justify-center pt-10 lg:h-[40rem]'}>
           <div className={'flex w-full flex-col items-center gap-y-7 px-10  font-light  sm:px-16 lg:px-72'}>
             <div className={'space-y-8'}>
-              <p className={' text-center  font-serif text-3xl font-bold tracking-wider md:text-4xl lg:text-5xl'}>
-                {title}
-              </p>
+              <p className={' text-center  font-serif text-3xl font-bold md:text-4xl lg:text-5xl'}>{title}</p>
               <p className={'text-center uppercase leading-7 '}>{description}</p>
             </div>
 

@@ -142,6 +142,16 @@ export interface IProduct {
     homeAccWidth?: string;
     homeAccDiameter?: string;
     homeAccHeight?: string;
+    // Typesense-specific properties
+    material_typesense?: string;
+    width_typesense?: string;
+    height_typesense?: string;
+    length_typesense?: string;
+    weight_typesense?: string;
+    // USP properties
+    usp1?: string;
+    usp2?: string;
+    usp3?: string;
   };
 
   // Will be hydrated from ReviewService

@@ -12,8 +12,7 @@ export const PaginationButton: React.FC<IPaginationButtonProps> = ({ page, activ
   const className = 'box-content flex justify-center rounded-full transition-colors max-w-[10px]';
   const hoverClassName = 'hover:bg-black hover:text-white';
 
-  if (typeof page === 'string')
-    return <div className={classNames(className, 'flex h-[42px] items-end tracking-widest')}>{page}</div>;
+  if (typeof page === 'string') return <div className={classNames(className, 'flex h-[42px] items-end')}>{page}</div>;
 
   if (active)
     return (

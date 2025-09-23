@@ -58,7 +58,7 @@ const FairtradeGoldPage: React.FC<FairtradeGoldPageProps> = ({ story }) => {
           </p>
           <Breadcrumbs
             className={
-              'mb-6 flex flex-wrap items-center justify-center text-center text-xs font-bold uppercase tracking-widest md:mb-10'
+              'mb-6 flex flex-wrap items-center justify-center text-center text-xs font-bold uppercase md:mb-10'
             }
           >
             <li>
@@ -146,9 +146,9 @@ const FairtradeGoldPage: React.FC<FairtradeGoldPageProps> = ({ story }) => {
                 />
               </div>
               <div className={'px-8 py-12 text-center'}>
-                <h3 className={'mb-6 text-4xl font-light tracking-wider'}>{materialsFactsBlock.title}</h3>
+                <h3 className={'mb-6 text-4xl font-light'}>{materialsFactsBlock.title}</h3>
                 <p className={'mb-8 text-lg font-light leading-relaxed'}>{materialsFactsBlock.description}</p>
-                <Button asChild className={'bg-creme px-8 py-4 text-sm uppercase tracking-wider'} size={'xl'}>
+                <Button asChild className={'bg-creme px-8 py-4 text-sm uppercase'} size={'xl'}>
                   <Link href={materialsFactsBlock.title}>{t('common.read-more')}</Link>
                 </Button>
               </div>
@@ -160,7 +160,7 @@ const FairtradeGoldPage: React.FC<FairtradeGoldPageProps> = ({ story }) => {
               }
             >
               <div className={'flex w-full max-w-lg flex-col'}>
-                <h3 className={'mb-4 text-5xl font-light tracking-wider'}>{materialsFactsBlock.title}</h3>
+                <h3 className={'mb-4 text-5xl font-light'}>{materialsFactsBlock.title}</h3>
                 <p className={'mb-6 font-light'}>{materialsFactsBlock.description}</p>
                 <Button asChild className={'w-48 bg-gray-900 py-4 uppercase text-gray-200'} size={'xl'}>
                   <Link href={materialsFactsBlock.title}>{t('common.read-more')}</Link>

@@ -39,7 +39,7 @@ const queryClient = new QueryClient();
 
 export function Providers({ children }: PropsWithChildren) {
   return (
-    <div className={'font-sans tracking-wider'}>
+    <div className={'font-sans'}>
       <QueryClientProvider client={queryClient}>
         <StoryblokProvider>
           <SessionProvider>

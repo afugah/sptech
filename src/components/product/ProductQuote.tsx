@@ -34,11 +34,7 @@ const ProductQuote = ({ quote, quoteBy }: IProductQuoteProps) => {
             </button>
           )}
         </span>
-        {quoteBy && (
-          <p className={'mt-2 text-xs uppercase tracking-widest text-gray-800'}>
-            {getLocalizedString(quoteBy, locale)}
-          </p>
-        )}
+        {quoteBy && <p className={'mt-2 text-xs uppercase text-gray-800'}>{getLocalizedString(quoteBy, locale)}</p>}
       </div>
     </div>
   );

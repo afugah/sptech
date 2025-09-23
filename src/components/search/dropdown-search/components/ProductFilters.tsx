@@ -284,17 +284,17 @@ export const FilterGrid = ({
           <div className={' w-full px-2 pt-6  sm:px-24'}>
             <div className={'flex w-full justify-between gap-x-4 '}>
               <div className={'text-xs font-semibold uppercase sm:text-sm '}>
-                <p className={'tracking-widest text-black'}>
+                <p className={'text-black'}>
                   {t('product-page.products')} <span className={'ml-1 '}>({total})</span>
                 </p>
               </div>
               <div className={' text-xs uppercase  sm:text-sm '}>
-                <p className={'tracking-widest text-black'}>
+                <p className={'text-black'}>
                   {t('product-page.collections')} <span className={'ml-1 '}>()</span>
                 </p>
               </div>
               <div className={' text-xs uppercase sm:block  sm:text-sm '}>
-                <p className={'tracking-widest text-black'}>
+                <p className={'text-black'}>
                   {t('product-page.articles')} <span className={'ml-1 '}>()</span>
                 </p>
               </div>
@@ -309,9 +309,7 @@ export const FilterGrid = ({
               {selectedFilters?.map((filterValue, index) => (
                 <div
                   key={index}
-                  className={
-                    'bg-gray-100 flex items-center gap-1 rounded-full px-2 py-1 text-xs uppercase tracking-widest'
-                  }
+                  className={'bg-gray-100 flex items-center gap-1 rounded-full px-2 py-1 text-xs uppercase'}
                 >
                   {filterValue}
                   <button

@@ -35,7 +35,7 @@ const LiveShoppingPage: React.FC<IProps> = ({ story }) => {
             ?.map((block) => <StoryblokComponent blok={block} key={block._uid} />)}
       </div>
       {isLoadMoreVisible && (
-        <LoadMore onLoadMore={onLoadMore} title={t('product.list.load-more')} className={'uppercase tracking-widest'} />
+        <LoadMore onLoadMore={onLoadMore} title={t('product.list.load-more')} className={'uppercase'} />
       )}
     </div>
   );

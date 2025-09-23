@@ -33,7 +33,7 @@ const WishListItem = ({ item }: Props) => {
           </div>
         </div>
 
-        <div className={'flex w-3/4 flex-1 flex-col gap-5 pt-1 tracking-widest'}>
+        <div className={'flex w-3/4 flex-1 flex-col gap-5 pt-1'}>
           <div className={classNames('flex flex-col gap-1 truncate')}>
             <span className={'mb-2 truncate text-sm font-semibold uppercase text-black'}>{title}</span>
             <span className={' truncate text-xxs  text-black'}>{description}</span>

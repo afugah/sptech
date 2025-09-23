@@ -86,7 +86,7 @@ const HeroHighlight: IStoryblok.FC<HeroHighlightStoryblok> = ({ blok }) => {
         </div>
 
         <div className={'w-full lg:w-1/2'}>
-          <div className={'pb-8 pt-3 text-center font-light leading-7 tracking-widest lg:px-20 lg:pb-10 lg:text-left'}>
+          <div className={'pb-8 pt-3 text-center font-light leading-7 lg:px-20 lg:pb-10 lg:text-left'}>
             {!!blocks?.length && (
               <div className={''}>
                 {blok.blocks?.map((block) => <StoryblokComponent blok={block} key={block._uid} />)}

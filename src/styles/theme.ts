@@ -26,7 +26,7 @@ export const theme = {
       '"PT Serif", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
   },
   bold: `
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: 0.05rem;
   `,
   mQ: {

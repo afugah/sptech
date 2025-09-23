@@ -74,9 +74,7 @@ const DiscountVoucherCode = () => {
         </DialogTrigger>
         <DialogContent className={' bg-white p-0  sm:max-w-[425px]  sm:rounded-none'}>
           <DialogHeader className={' flex items-center justify-center bg-alabaster py-5'}>
-            <DialogTitle className={' font-sans text-sm uppercase tracking-wider'}>
-              {t('discount-code.dialog-title')}
-            </DialogTitle>
+            <DialogTitle className={' font-sans text-sm uppercase'}>{t('discount-code.dialog-title')}</DialogTitle>
           </DialogHeader>
           <div className={'grid gap-4 bg-white px-3 py-4'}>
             <div className={'grid gap-3'}>

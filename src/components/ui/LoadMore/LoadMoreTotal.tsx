@@ -18,7 +18,7 @@ export const LoadMoreTotal: React.FC<ILoadMoreTotalProps> = (props) => {
         <span className={'block h-0.5 rounded-full bg-black'} style={{ width: `${(current / total) * 100}%` }}></span>
       </div>
 
-      <div className={'mt-7 text-xs uppercase tracking-widest text-secondary'}>
+      <div className={'mt-7 text-xs uppercase text-secondary'}>
         {t('showing')} {current} {t('oaut_of')} {total} {t('products')}
       </div>
     </div>

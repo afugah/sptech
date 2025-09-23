@@ -127,14 +127,8 @@ const FaqCarousel: React.FC<FaqCarouselProps> = ({
                           'absolute -bottom-20 left-1/2 z-10 w-11/12 -translate-x-1/2 bg-backgroundAlternative p-4'
                         }
                       >
-                        <h4 className={'mb-4 text-center text-xl font-normal uppercase tracking-wider'}>
-                          {item.title}
-                        </h4>
-                        <Button
-                          asChild
-                          className={'w-full bg-gray-800 py-3 text-xs font-normal uppercase tracking-wider'}
-                          size={'lg'}
-                        >
+                        <h4 className={'mb-4 text-center text-xl font-normal uppercase'}>{item.title}</h4>
+                        <Button asChild className={'w-full bg-gray-800 py-3 text-xs font-normal uppercase'} size={'lg'}>
                           <Link href={`${urlPath}/${item.slug}`}>{buttonText}</Link>
                         </Button>
                       </div>
@@ -201,12 +195,8 @@ const FaqCarousel: React.FC<FaqCarouselProps> = ({
                 )}
               </div>
               <div className={'absolute -bottom-20 left-1/2 w-11/12 -translate-x-1/2 bg-backgroundAlternative p-4'}>
-                <h4 className={'mb-4 text-center text-2xl font-bold uppercase tracking-wider'}>{item.title}</h4>
-                <Button
-                  asChild
-                  className={'w-full bg-gray-800 py-3 text-xs font-normal uppercase tracking-wider'}
-                  size={'lg'}
-                >
+                <h4 className={'mb-4 text-center text-2xl font-bold uppercase'}>{item.title}</h4>
+                <Button asChild className={'w-full bg-gray-800 py-3 text-xs font-normal uppercase'} size={'lg'}>
                   <Link href={`${urlPath}/${item.slug}`}>{buttonText}</Link>
                 </Button>
               </div>

@@ -188,7 +188,7 @@ const CollectionPageTemplate: React.FC<ICategoryPageProps> = async (props) => {
               <h1
                 aria-hidden={'true'}
                 className={
-                  'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-md font-bold uppercase tracking-widest text-black lg:text-lg'
+                  'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-md font-bold uppercase text-black lg:text-lg'
                 }
               >
                 {customTitle || title}
@@ -209,9 +209,7 @@ const CollectionPageTemplate: React.FC<ICategoryPageProps> = async (props) => {
           </div>
         </div>
         {!hideBreadcrumbs && (
-          <Breadcrumbs
-            className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase tracking-widest'}
-          >
+          <Breadcrumbs className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase'}>
             <li>
               <Link href={'/'} className={'uppercase'}>
                 {t('common.home')}

@@ -62,9 +62,7 @@ const SilverPage: React.FC<SilverPageProps> = ({ story }) => {
             {description as string}
           </p>
           <Breadcrumbs
-            className={
-              'mb-6 flex items-center justify-center text-center text-xs font-bold uppercase tracking-widest md:mb-10'
-            }
+            className={'mb-6 flex items-center justify-center text-center text-xs font-bold uppercase md:mb-10'}
           >
             <li>
               <a href={'/'} className={'uppercase hover:underline'}>
