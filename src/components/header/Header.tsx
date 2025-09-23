@@ -152,7 +152,7 @@ const HeaderComponent = ({ header_menu, hasHeaderFixed = true }: IProps) => {
                 />
               </Button>
             )}
-            <div className={'ml-5 hidden gap-5 text-xs uppercase lg:flex'}>
+            <div className={'ml-5 hidden gap-5 text-sm uppercase lg:flex'}>
               <StaticMenu headerMenu={header_menu} />
             </div>
           </div>

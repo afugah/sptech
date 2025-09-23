@@ -35,7 +35,7 @@ const FloatingLabelInput: React.FC<IProps> = React.forwardRef<HTMLInputElement, 
       <label className={'block text-gray-600'}>
         <span
           className={`absolute left-0 transition-all duration-200 ease-in-out ${
-            isFocused || value ? 'top-[-20px] text-xs text-black opacity-50' : 'top-[-5px] text-base text-gray-500'
+            isFocused || value ? 'top-[-20px] text-sm text-black opacity-50' : 'top-[-5px] text-base text-gray-500'
           } ${labelUppercase ? 'uppercase' : ''}`}
         >
           {label}

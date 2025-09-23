@@ -13,7 +13,7 @@ export const CartSummary = ({ cart }: CartSummaryProps) => {
   const locale = useLocale();
 
   return (
-    <div className={'h-full px-3 pt-3 text-xs uppercase xs:px-8 lg:px-12'}>
+    <div className={'h-full px-3 pt-3 text-sm uppercase xs:px-8 lg:px-12'}>
       {/* <div className={'flex justify-between'}>
         <span>
           {itemsCount} {itemsCount > 1 ? t('cart.items') : t('cart.item')}
@@ -29,7 +29,7 @@ export const CartSummary = ({ cart }: CartSummaryProps) => {
       )} */}
 
       <div className={'mt-2 flex items-center justify-between bg-white px-6 py-8'}>
-        <span className={'text-xs'}>{t('cart.total-price')}</span>
+        <span className={'text-sm'}>{t('cart.total-price')}</span>
         <span className={'text-2xl uppercase'}>
           {getAmount(Number(cart?.totals.grandTotal), cart?.currencyCode ?? '', locale)}
         </span>

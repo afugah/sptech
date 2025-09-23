@@ -15,9 +15,9 @@ interface IStockAvailability {
 export const StockAvailability: React.FC<IStockAvailability> = ({ className, title, data, displaySize }) => {
   return (
     !!data.length && (
-      <div className={'flex items-center gap-x-2.5 text-xs'}>
+      <div className={'flex items-center gap-x-2.5 text-sm'}>
         <div className={classNames('h-[10px] w-[10px] rounded-lg', className)} />
-        <span className={'text-xs text-gray-800'}>{title}</span>
+        <span className={'text-sm text-gray-800'}>{title}</span>
         <div className={'flex gap-x-2'}>
           {data.map((i, j) => (
             <span key={j}>{displaySize ? i.size : ''}</span>

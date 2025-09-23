@@ -22,7 +22,7 @@ export const StoreDetailBreadcrumbs: React.FC<StoreDetailBreadcrumbsProps> = Rea
   }, [router]);
 
   return (
-    <Breadcrumbs className={'flex items-center justify-center text-center text-xs font-bold uppercase'}>
+    <Breadcrumbs className={'flex items-center justify-center text-center text-sm font-bold uppercase'}>
       <li className={'text-gray-700'}>
         <button onClick={handleHomeClick} className={'uppercase hover:underline'}>
           {t('common.home')}

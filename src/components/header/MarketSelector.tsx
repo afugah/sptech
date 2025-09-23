@@ -31,7 +31,7 @@ const MarketSelector: React.FC<IMarketSelectorProps> = ({ hasHeaderFixed, bgColo
   return (
     <Select value={selectedCountry} onValueChange={handleCountrySelect}>
       <SelectTrigger
-        className={`flex h-auto w-auto min-w-0 items-center gap-1 rounded-sm border-0 bg-transparent px-2 py-1 text-xs font-medium transition-colors ${
+        className={`flex h-auto w-auto min-w-0 items-center gap-1 rounded-sm border-0 bg-transparent px-2 py-1 text-sm font-medium transition-colors ${
           hasHeaderFixed && bgColor ? 'text-white' : 'text-black'
         }`}
       >

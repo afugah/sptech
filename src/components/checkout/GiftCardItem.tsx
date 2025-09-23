@@ -33,7 +33,7 @@ const GiftCardItem: React.FC<IGiftCardItemProps> = ({ className, card }) => {
   };
 
   return (
-    <div className={classNames('flex flex-row items-center gap-5 text-xs', className)}>
+    <div className={classNames('flex flex-row items-center gap-5 text-sm', className)}>
       {isLoading && <Loader overlay={'rgba(250, 249, 248, 0.8)'} inverted />}
       <Image src={'/giftCard.jpg'} alt={card.name} unoptimized width={100} height={150} />
 

@@ -287,7 +287,7 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
                 >
                   <div className={'text-red-700 text-center'}>
                     <h3 className={'text-sm font-bold'}>Product Not Found</h3>
-                    <p className={'mt-2 text-xs'}>Product ID: {product.id}</p>
+                    <p className={'mt-2 text-sm'}>Product ID: {product.id}</p>
                   </div>
                 </div>
               );
@@ -407,7 +407,7 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
 
           {/* Discount Badge */}
           {formattedPrice?.hasDiscount && (
-            <div className={'bg-red-500 absolute right-2 top-2 z-10 rounded px-2 py-1 text-xs text-white'}>
+            <div className={'bg-red-500 absolute right-2 top-2 z-10 rounded px-2 py-1 text-sm text-white'}>
               -{formattedPrice.discountPercentage}%
             </div>
           )}
@@ -416,7 +416,7 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
           <div className={classNames('absolute bottom-4 left-4 flex flex-col', contentClassName)}>
             {/* Date (if enabled) */}
             {showDates && product.created_at && (
-              <span className={'text-xs text-gray-500'}>
+              <span className={'text-sm text-gray-500'}>
                 {format.dateTime(new Date(product.created_at), {
                   year: 'numeric',
                   month: 'short',

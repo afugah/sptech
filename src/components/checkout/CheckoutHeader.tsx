@@ -11,7 +11,7 @@ export const CheckoutHeader = () => {
   return (
     <div className={'flex w-full flex-col items-center p-0'}>
       <div className={'flex w-full items-center justify-between px-6 py-6 md:px-20'}>
-        <Link href={'/'} className={'cursor-pointer text-xs uppercase text-gray'}>
+        <Link href={'/'} className={'cursor-pointer text-sm uppercase text-gray'}>
           {t('cart.back')}
         </Link>
 

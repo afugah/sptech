@@ -445,7 +445,7 @@ export const marginTopDesktopConst: Record<number, string> = {
 };
 export const styleConst: Record<string, string> = { filled: '', outline: 'border' };
 export const buttonSizeConst: Record<string, string> = {
-  xsmall: 'text-xs px-16 py-6 tracking-[0.15em]',
+  xsmall: 'text-sm px-16 py-6 tracking-[0.15em]',
   small: 'text-sm px-8 py-5 tracking-[0.02em]',
   medium: 'text-lg px-10 py-6 tracking-[0.02em]',
   large: 'text-4xl px-14 py-7 tracking-[0.01em]',

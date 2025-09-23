@@ -27,7 +27,7 @@ export const Footer: React.FC<IFooterProps> = async ({ footerData, socialMediaLi
         <CtaNewsletter title={t('title')} subtitle={t('sub-title')} socialMediaLinks={socialMediaLinks} />
       )}
       <div className={'px-5'}>
-        <div className={'mb-5 flex flex-col gap-y-16 text-xs uppercase'}>
+        <div className={'mb-5 flex flex-col gap-y-16 text-sm uppercase'}>
           <PayloadFooterMenu footerData={footerData ?? null} />
 
           <div className={'flex flex-row flex-wrap items-center justify-center gap-8 lg:flex-row'}>

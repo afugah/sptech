@@ -55,7 +55,7 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
         data-test-id={'quantity-input'}
         style={{ appearance: 'none', MozAppearance: 'textfield' }}
         className={
-          'h-[20px] border-none p-0 text-center text-xs outline-none hover:border-none hover:outline-none focus:border-none focus:outline-none'
+          'h-[20px] border-none p-0 text-center text-sm outline-none hover:border-none hover:outline-none focus:border-none focus:outline-none'
         }
         value={quantity}
         onChange={handleInputChange}

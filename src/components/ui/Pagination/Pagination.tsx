@@ -142,7 +142,7 @@ const PaginationComponent: React.FC<IPaginationProps> = (props) => {
 
   return (
     <div className={classNames('mx-6', className)}>
-      <p className={'mb-6 text-center text-xs'}>{showingText}</p>
+      <p className={'mb-6 text-center text-sm'}>{showingText}</p>
       <div
         className={classNames('flex flex-row items-center gap-2', {
           'justify-start': align === PaginationAlign.Start,

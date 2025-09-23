@@ -53,12 +53,12 @@ const FairtradeGoldPage: React.FC<FairtradeGoldPageProps> = ({ story }) => {
         <PageHeader component={'config'} hasHeaderFixed={false} />
         <div className={'space-y-6 px-4 pb-10 pt-40 sm:pt-44 md:space-y-10 md:pb-0 lg:pt-48'}>
           <p className={'text-center font-serif text-3xl tracking-tight md:text-5xl'}>{title}</p>
-          <p className={'mx-auto max-w-xl text-center text-xs uppercase leading-6 md:text-sm md:leading-8'}>
+          <p className={'mx-auto max-w-xl text-center text-sm uppercase leading-6 md:text-sm md:leading-8'}>
             {isValidStringNode(description) ? description : ''}
           </p>
           <Breadcrumbs
             className={
-              'mb-6 flex flex-wrap items-center justify-center text-center text-xs font-bold uppercase md:mb-10'
+              'mb-6 flex flex-wrap items-center justify-center text-center text-sm font-bold uppercase md:mb-10'
             }
           >
             <li>

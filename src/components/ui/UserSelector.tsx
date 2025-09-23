@@ -28,7 +28,7 @@ const UserSelector = () => {
             <></>
             // <div
             //   className={
-            //     'flex absolute -top-1 -right-3 justify-center items-center w-5 h-5 text-xs text-white rounded-full bg-green'
+            //     'flex absolute -top-1 -right-3 justify-center items-center w-5 h-5 text-sm text-white rounded-full bg-green'
             //   }
             // >
             //   <span>{displayName.slice(0, 1).toUpperCase()}</span>

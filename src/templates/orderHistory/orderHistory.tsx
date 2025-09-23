@@ -34,7 +34,7 @@ const OrderHistoryPage: React.FC = () => {
           <Loader inverted />
         </div>
       ) : orders.length ? (
-        <div className={'mx-auto max-w-screen-lg text-xs md:text-sm'}>
+        <div className={'mx-auto max-w-screen-lg text-sm md:text-sm'}>
           <div className={'flex justify-between px-6 pb-6 pt-10 text-gray'}>
             <div className={'basis-1/5 uppercase'}>{t('member.date')}</div>
             <div className={'basis-1/5 uppercase'}>{t('member.order-no')}</div>

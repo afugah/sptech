@@ -46,7 +46,7 @@ const ImageWithTextComponent: IStoryblok.FC<ImageWithText> = ({ blok }) => {
               <p className={' text-xl font-medium italic text-white sm:text-3xl lg:text-4xl'}>{title}</p>
               <p className={'break-words text-3xl font-bold uppercase text-white sm:text-6xl'}>{subTitle}</p>
             </div>
-            <Link className={'bg-[#D9C2B6] p-4 px-14 text-xs font-semibold uppercase text-black'} href={'#'}>
+            <Link className={'bg-[#D9C2B6] p-4 px-14 text-sm font-semibold uppercase text-black'} href={'#'}>
               {linkText || 'Learn more'}
             </Link>
           </div>

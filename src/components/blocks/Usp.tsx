@@ -33,7 +33,7 @@ const Usps: IStoryblok.FC<Usp> = ({ blok, ...props }) => {
           return (
             <div
               className={
-                'embla__slide flex min-w-0 flex-[0_0_100%] items-center justify-center text-xs uppercase lg:flex-1'
+                'embla__slide flex min-w-0 flex-[0_0_100%] items-center justify-center text-sm uppercase lg:flex-1'
               }
               key={uuidv4()}
             >

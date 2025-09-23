@@ -26,7 +26,7 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
   price,
   compareAt,
   pricing,
-  className = 'flex h-5 flex-col text-xs uppercase tracking-wide lg:text-sm',
+  className = 'flex h-5 flex-col text-sm uppercase tracking-wide lg:text-sm',
   showSalePrice = true,
   customFields,
 }) => {

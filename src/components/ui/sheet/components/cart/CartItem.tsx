@@ -145,7 +145,7 @@ const CartItem = ({ item }: Props) => {
   }, [currentStock, validateStock, item.customAttributes, t]);
 
   return (
-    <div className={'border-b border-gray-400 pb-5 text-xs sm:gap-5'}>
+    <div className={'border-b border-gray-400 pb-5 text-sm sm:gap-5'}>
       <div className={'mt-5 flex flex-row items-start gap-4'}>
         <div className={' border border-gray-300'}>
           <Link href={slug}>
@@ -168,14 +168,14 @@ const CartItem = ({ item }: Props) => {
                 <span className={'font-semibold uppercase'}>{t('product-page.size')}</span>:{' '}
                 {item.customAttributes.size}
               </span>
-              <span className={classNames('text-xs ', outOfStock ? 'opacity-40' : '')}>
+              <span className={classNames('text-sm ', outOfStock ? 'opacity-40' : '')}>
                 <span className={'font-semibold uppercase '}>{t('product-page.info.material')}</span>: {material}
               </span>
               {/* Stock status display */}
               {stockResult?.status && (
-                <div className={'mt-1 flex items-center gap-1.5 text-xs'}>
+                <div className={'mt-1 flex items-center gap-1.5 text-sm'}>
                   <StockDot dotColor={stockResult.dotColor} />
-                  <span className={classNames('text-xs italic text-gray-800', outOfStock ? 'opacity-40' : '')}>
+                  <span className={classNames('text-sm italic text-gray-800', outOfStock ? 'opacity-40' : '')}>
                     {stockResult.status}
                   </span>
                 </div>
@@ -212,7 +212,7 @@ const CartItem = ({ item }: Props) => {
         <div className={classNames('', outOfStock ? 'opacity-40' : '')}>
           <span className={classNames('', { 'text-red': hasSalePrice })}>
             <span className={'pr-2 text-sm text-black/65'}>x</span>
-            <span className={'text-sm uppercase text-black/80 lg:text-md'}>
+            <span className={'text-sm uppercase text-black/80 lg:text-sm'}>
               {getAmount(item.salePriceAmount * item.quantity, cart?.currencyCode ?? '', locale)}
             </span>
           </span>

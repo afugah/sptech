@@ -39,7 +39,7 @@ export const ReviewDrawer: React.FC<IReviewDrawerProps> = ({ open, ean, product,
           <RatingStars rating={rating} />
         </div>
 
-        <p className={'text-xs'}>
+        <p className={'text-sm'}>
           Based on {voteCount} ratings and {reviewsCount} reviews
         </p>
       </div>

@@ -43,7 +43,7 @@ const SortFilter = ({
             variant={'custom'}
             aria-label={label}
             className={
-              ' flex h-full w-full items-center gap-x-2 gap-y-1 py-4 text-xs font-semibold hover:bg-[#f5efec43] lg:grid lg:place-content-center lg:place-items-center lg:gap-0 lg:py-4 [&_svg]:size-5'
+              ' flex h-full w-full items-center gap-x-2 gap-y-1 py-4 text-sm font-semibold hover:bg-[#f5efec43] lg:grid lg:place-content-center lg:place-items-center lg:gap-0 lg:py-4 [&_svg]:size-5'
             }
           >
             <p className={'w-fit  uppercase text-black lg:w-full'}>{label}</p>
@@ -57,7 +57,7 @@ const SortFilter = ({
         <DropdownMenuContent
           className={'text-sans -mt-2 w-44 min-w-[10rem] border-none bg-white p-0 sm:w-60 lg:w-52 xl:w-60'}
         >
-          <div className={'space-y-1 text-xs'}>
+          <div className={'space-y-1 text-sm'}>
             <div className={'h-full w-full px-3 hover:bg-alabaster'}>
               <label
                 htmlFor={`${filterName}-recommended`}
@@ -71,7 +71,7 @@ const SortFilter = ({
                 />
                 <p
                   className={
-                    'text-xs font-medium uppercase leading-none text-black peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                    'text-sm font-medium uppercase leading-none text-black peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
                   }
                 >
                   {t('product.filter.default-filter-title')}
@@ -92,7 +92,7 @@ const SortFilter = ({
                   />
                   <p
                     className={
-                      'text-xs font-medium uppercase leading-none text-black peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                      'text-sm font-medium uppercase leading-none text-black peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
                     }
                   >
                     {option.label}

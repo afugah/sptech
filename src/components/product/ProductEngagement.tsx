@@ -48,7 +48,7 @@ export const ProductEngagement: React.FC<IProductEngagementProps> = ({ product }
               size={16}
               strokeWidth={1}
             />
-            <span className={'text-xs uppercase text-gray-800'}>{t('product-page.info.add-to-wishlist')}</span>
+            <span className={'text-sm uppercase text-gray-800'}>{t('product-page.info.add-to-wishlist')}</span>
           </Button>
         </div>
       )}
@@ -61,7 +61,7 @@ export const ProductEngagement: React.FC<IProductEngagementProps> = ({ product }
           onClick={() => setShowModal(true)}
         >
           <EyeIcon className={'h-6 w-6 stroke-creme'} />
-          <span className={'ml-2 text-xs uppercase text-gray-800'}>Drop a hint</span>
+          <span className={'ml-2 text-sm uppercase text-gray-800'}>Drop a hint</span>
         </Button>
       </div>
       <DropAHintModal product={product} isVisible={showModal} setIsVisible={setShowModal} />

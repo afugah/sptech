@@ -36,7 +36,7 @@ export const ProductTag: React.FC<IProductTagProps> = (props) => {
 
     // <span
     //   className={classNames(
-    //     'pointer-events-none rounded-3xl px-3 py-2 text-center text-xs uppercase leading-none tracking-wide',
+    //     'pointer-events-none rounded-3xl px-3 py-2 text-center text-sm uppercase leading-none tracking-wide',
     //   )}
     //   style={{ backgroundColor: tag.backgroundColor, color: tag.textColor }}
     // >

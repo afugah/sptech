@@ -95,9 +95,9 @@ const PersonalDetailsForm: React.FC<IPersonalDetailsForm> = ({ firstName, lastNa
               required: { value: true, message: t('account.validation.first-name-required') },
             })}
             label={t('member.first-name')}
-            className={'text-xs'}
+            className={'text-sm'}
             inputClassName={'bg-white text-sm'}
-            labelClassName={'bg-white text-xs'}
+            labelClassName={'bg-white text-sm'}
             value={getValues('firstName') || ''}
             error={errors.firstName?.message}
           />
@@ -107,9 +107,9 @@ const PersonalDetailsForm: React.FC<IPersonalDetailsForm> = ({ firstName, lastNa
               required: { value: true, message: t('account.validation.last-name-required') },
             })}
             label={t('member.last-name')}
-            className={'text-xs'}
+            className={'text-sm'}
             inputClassName={'text-sm'}
-            labelClassName={'bg-white text-xs'}
+            labelClassName={'bg-white text-sm'}
             value={getValues('lastName') || ''}
             error={errors.lastName?.message}
           />
@@ -120,9 +120,9 @@ const PersonalDetailsForm: React.FC<IPersonalDetailsForm> = ({ firstName, lastNa
             })}
             label={t('account.email')}
             type={'email'}
-            className={'text-xs'}
+            className={'text-sm'}
             inputClassName={'bg-white text-sm'}
-            labelClassName={'bg-white text-xs'}
+            labelClassName={'bg-white text-sm'}
             value={getValues('email')}
             error={errors.email?.message}
           />
@@ -132,9 +132,9 @@ const PersonalDetailsForm: React.FC<IPersonalDetailsForm> = ({ firstName, lastNa
               required: { value: true, message: t('account.validation.phone-number-required') },
             })}
             label={t('member.mobile-number')}
-            className={'text-xs'}
+            className={'text-sm'}
             inputClassName={'bg-white text-sm'}
-            labelClassName={'bg-white text-xs'}
+            labelClassName={'bg-white text-sm'}
             value={getValues('mobilePhone')}
             error={errors.mobilePhone?.message}
           />

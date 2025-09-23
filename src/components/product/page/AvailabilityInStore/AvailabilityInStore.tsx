@@ -131,7 +131,7 @@ const AvailabilityInStore: React.FC<IAvailabilityInStore> = (props) => {
         />
         <div className={'mb-7 mt-5 flex items-center gap-x-2.5 bg-seashell p-5'}>
           <InfoIcon />
-          <div className={'font-sans text-xs'}>{t('all-stock-balance-is-an-estimation')}</div>
+          <div className={'font-sans text-sm'}>{t('all-stock-balance-is-an-estimation')}</div>
         </div>
         {isLoading ? (
           <div className={'flex justify-center'}>

@@ -126,7 +126,7 @@ const NotifyMe: React.FC<INotifyMe> = ({ product, isOpen, setIsOpen, selectedVar
                 required: { value: true, message: `${t('gift-card.validation.this-field-is-required')}` },
               })}
               label={
-                <div className={'text-xs'}>
+                <div className={'text-sm'}>
                   {t('newsletter.terms-label')}{' '}
                   <Link href={'#'} target={'_blank'} rel={'noopener noreferrer'} className={'text-black underline'}>
                     {t('newsletter.terms-link')}

@@ -6,11 +6,11 @@ import { Checkbox } from '@/src/components/shadcn/checkbox';
 const SHARED_STYLES = {
   trigger: 'font-sans text-black text-lg uppercase hover:no-underline',
   content: 'flex flex-col gap-4 text-balance',
-  container: 'space-y-1 text-xs',
+  container: 'space-y-1 text-sm',
   optionWrapper: 'h-full w-full px-3 hover:bg-alabaster',
   label: 'flex  h-full w-full cursor-pointer flex-row items-center space-x-3 py-4',
   checkbox: 'size-6 border-[#D9C2B6] data-[state=checked]:bg-[#D9C2B6]',
-  text: 'text-xs text-black font-medium uppercase leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
+  text: 'text-sm text-black font-medium uppercase leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
 } as const;
 
 interface FilterConfig {

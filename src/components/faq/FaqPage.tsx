@@ -57,7 +57,7 @@ const FaqPage: React.FC<FaqPageProps> = ({ story }) => {
           <h1
             aria-hidden={'true'}
             className={
-              'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase text-black sm:text-md lg:text-lg'
+              'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase text-black sm:text-sm lg:text-lg'
             }
           >
             {t('metadata.faq')}
@@ -67,7 +67,7 @@ const FaqPage: React.FC<FaqPageProps> = ({ story }) => {
           </h2>
         </div>
       </div>
-      <Breadcrumbs className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase'}>
+      <Breadcrumbs className={'mb-10 flex items-center justify-center text-center text-sm font-bold uppercase'}>
         <li>
           <a href={'/'} className={'uppercase hover:underline'}>
             {t('common.home')}

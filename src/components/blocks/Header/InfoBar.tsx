@@ -22,7 +22,7 @@ const InfoBarComponent: IStoryblok.FC<InfoBar> = ({ blok }) => {
     (blok?.colorPickerBackground as StoryblokColorPicker)?.color ? '' : 'bg-black',
   );
   const infoBarTextClasses = classNames(
-    'px-5 text-xs text-center uppercase',
+    'px-5 text-sm text-center uppercase',
     (blok?.colorPickerText as StoryblokColorPicker)?.color ? '' : 'text-white',
   );
 

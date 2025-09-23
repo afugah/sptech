@@ -181,7 +181,7 @@ export const FilterGrid = ({
                 variant={'custom'}
                 aria-label={label}
                 className={
-                  'flex h-full w-full items-center  gap-x-2 gap-y-1 text-xs font-semibold hover:bg-[#f5efec43] [&_svg]:size-5'
+                  'flex h-full w-full items-center  gap-x-2 gap-y-1 text-sm font-semibold hover:bg-[#f5efec43] [&_svg]:size-5'
                 }
               >
                 <p className={'mx-0 w-fit  p-0 uppercase'}>{label}</p>
@@ -229,7 +229,7 @@ export const FilterGrid = ({
                 variant={'custom'}
                 aria-label={label}
                 className={
-                  'grid h-full w-full place-content-center place-items-center gap-0 gap-y-1 text-xs font-semibold hover:bg-[#f5efec43] lg:py-4 [&_svg]:size-5'
+                  'grid h-full w-full place-content-center place-items-center gap-0 gap-y-1 text-sm font-semibold hover:bg-[#f5efec43] lg:py-4 [&_svg]:size-5'
                 }
               >
                 <p className={'w-full uppercase text-black'}>{label}</p>
@@ -243,7 +243,7 @@ export const FilterGrid = ({
             <DropdownMenuContent
               className={'text-sans -mt-2 w-44 min-w-[10rem] border-none bg-white p-0 sm:w-60 lg:w-52 xl:w-60'}
             >
-              <div className={'space-y-1 text-xs'}>
+              <div className={'space-y-1 text-sm'}>
                 {(filterData as FilterItem)?.values?.map((option) => (
                   <div key={option.value} className={'h-full w-full px-3  hover:bg-alabaster'}>
                     <label
@@ -260,7 +260,7 @@ export const FilterGrid = ({
                       />
                       <p
                         className={
-                          'text-xs font-medium uppercase leading-none text-black peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                          'text-sm font-medium uppercase leading-none text-black peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
                         }
                       >
                         {option.value}
@@ -283,17 +283,17 @@ export const FilterGrid = ({
           <SearchFilter setFilterState={setFilterState} />
           <div className={' w-full px-2 pt-6  sm:px-24'}>
             <div className={'flex w-full justify-between gap-x-4 '}>
-              <div className={'text-xs font-semibold uppercase sm:text-sm '}>
+              <div className={'text-sm font-semibold uppercase sm:text-sm '}>
                 <p className={'text-black'}>
                   {t('product-page.products')} <span className={'ml-1 '}>({total})</span>
                 </p>
               </div>
-              <div className={' text-xs uppercase  sm:text-sm '}>
+              <div className={' text-sm uppercase  sm:text-sm '}>
                 <p className={'text-black'}>
                   {t('product-page.collections')} <span className={'ml-1 '}>()</span>
                 </p>
               </div>
-              <div className={' text-xs uppercase sm:block  sm:text-sm '}>
+              <div className={' text-sm uppercase sm:block  sm:text-sm '}>
                 <p className={'text-black'}>
                   {t('product-page.articles')} <span className={'ml-1 '}>()</span>
                 </p>
@@ -309,7 +309,7 @@ export const FilterGrid = ({
               {selectedFilters?.map((filterValue, index) => (
                 <div
                   key={index}
-                  className={'bg-gray-100 flex items-center gap-1 rounded-full px-2 py-1 text-xs uppercase'}
+                  className={'bg-gray-100 flex items-center gap-1 rounded-full px-2 py-1 text-sm uppercase'}
                 >
                   {filterValue}
                   <button
@@ -333,7 +333,7 @@ export const FilterGrid = ({
                   setFilterState({});
                   // onFiltersChange({ gender: [], category: [], material: [], categorycode: [] });
                 }}
-                className={'ml-2 h-6 bg-secondary-600 px-2 py-0  text-xs uppercase text-white hover:bg-gray-800 '}
+                className={'ml-2 h-6 bg-secondary-600 px-2 py-0  text-sm uppercase text-white hover:bg-gray-800 '}
               >
                 {t('product.filters.clear-all')}
               </Button>

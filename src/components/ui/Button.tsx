@@ -92,7 +92,7 @@ export const Button: IButtonComponent = (props) => {
   const isDisabled = disabled || loading;
 
   const buttonClassName = classNames(
-    'box-border flex-shrink-0 relative border px-6 text-xs font-bold uppercase tracking-wide transition-colors duration-200 ease-in-out',
+    'box-border flex-shrink-0 relative border px-6 text-sm font-bold uppercase tracking-wide transition-colors duration-200 ease-in-out',
     {
       'py-1.5': buttonSize === ButtonSizeEnum.Small,
       'py-4': buttonSize === ButtonSizeEnum.Medium,

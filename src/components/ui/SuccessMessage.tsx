@@ -14,7 +14,7 @@ export const SuccessMessage: React.FC<ISuccessMessage> = (props) => {
   return (
     <div
       className={classNames(
-        'text-green-500 flex items-center justify-center rounded-lg border border-green bg-backgroundAlternative p-2 text-xs',
+        'text-green-500 flex items-center justify-center rounded-lg border border-green bg-backgroundAlternative p-2 text-sm',
         className,
       )}
     >

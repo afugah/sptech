@@ -27,7 +27,7 @@ const ShoplabCollectionItem: React.FC<ShoplabCollectionItemProps> = ({ blok, tit
         />
         <div className={'absolute -left-2 top-0 z-20 flex h-full w-12 items-center justify-center md:left-2'}>
           <span
-            className={'z-20 block -rotate-90 transform whitespace-pre text-xs font-bold tracking-wide'}
+            className={'z-20 block -rotate-90 transform whitespace-pre text-sm font-bold tracking-wide'}
             style={{ color: (collectionTitleColor as { value?: string })?.value || fallbackTitleColor }}
           >
             {title as string}

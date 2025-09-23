@@ -92,8 +92,8 @@ const InputImpl: React.FC<IInputProps> = React.forwardRef<HTMLInputElement, IInp
         <span
           className={`absolute left-2.5 translate-y-[20%]  transition-all duration-300 ease-in-out ${
             isFocused || type === 'date' || type === 'datetime-local' || innerValue
-              ? '-top-1 text-xs font-medium text-gray-800 '
-              : 'top-3 text-xs font-medium text-gray-800 '
+              ? '-top-1 text-sm font-medium text-gray-800 '
+              : 'top-3 text-sm font-medium text-gray-800 '
           }`}
         >
           {label}

@@ -22,8 +22,8 @@ const SizeChartsComponent: IStoryblok.FC<SizeCharts> = ({ blok }) => {
 
   return (
     <CollapseRounded titleClassName={'text-black text-left text-sm'} title={blok.title}>
-      <div className={'mt-1 text-xs'}>
-        <h2 className={'mb-4 text-left text-xs text-secondary'}>{blok.description}</h2>
+      <div className={'mt-1 text-sm'}>
+        <h2 className={'mb-4 text-left text-sm text-secondary'}>{blok.description}</h2>
         <div className={'overflow-x-auto'}>
           <table className={'w-full table-auto border-collapse text-left'}>
             <tbody>

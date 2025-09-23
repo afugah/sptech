@@ -39,7 +39,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ points }) => {
         <div className={'h-full bg-black'} style={{ width: `${progress}%` }} />
       </div>
 
-      <div className={'mt-2 flex justify-between text-xs'}>
+      <div className={'mt-2 flex justify-between text-sm'}>
         <div
           className={classNames('flex flex-col items-start text-gray', {
             '!text-black': points > levels.member.min,

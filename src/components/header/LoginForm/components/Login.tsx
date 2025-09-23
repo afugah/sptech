@@ -138,7 +138,7 @@ const Login: React.FC = () => {
               <button
                 type={'button'}
                 onClick={() => setShowView(UserModalViewEnum.FORGOT_PASSWORD)}
-                className={'font-sans text-xs text-black underline'}
+                className={'font-sans text-sm text-black underline'}
               >
                 {t('forgot-your-password')}
               </button>

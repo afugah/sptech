@@ -33,8 +33,8 @@ const ProductPageUsp: React.FC = () => {
           </div>
 
           <div className={'flex flex-col items-center justify-center'}>
-            <div className={'text-center text-xs font-normal uppercase text-gray-800'}>{usp.title}</div>
-            <p className={'mt-1 text-center text-xs text-gray-700'}>{usp.description}</p>
+            <div className={'text-center text-sm font-normal uppercase text-gray-800'}>{usp.title}</div>
+            <p className={'mt-1 text-center text-sm text-gray-700'}>{usp.description}</p>
           </div>
         </li>
       ))}

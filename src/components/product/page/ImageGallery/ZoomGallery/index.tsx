@@ -391,7 +391,7 @@ export const ImageZoomGallery: React.FC<IImageZoomGalleryProps> = ({
       {imageStates[selectedIndex]?.scale > 1 && (
         <div
           className={
-            'bg-gray-100 absolute left-1/2 top-16 z-[60] -translate-x-1/2 transform rounded px-2 py-1 text-xs text-black'
+            'bg-gray-100 absolute left-1/2 top-16 z-[60] -translate-x-1/2 transform rounded px-2 py-1 text-sm text-black'
           }
         >
           {Math.round(imageStates[selectedIndex].scale * 100)}%

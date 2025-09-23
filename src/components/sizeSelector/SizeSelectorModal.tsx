@@ -80,7 +80,7 @@ const SizeSelectorModal: React.FC<SizeSelectorModalProps> = ({
       isVisible={isVisible}
       setIsVisible={setIsVisible}
       title={modalTitle}
-      titleClassName={selectedStockStatus ? 'text-xs' : undefined}
+      titleClassName={selectedStockStatus ? 'text-sm' : undefined}
     >
       <div className={'mb-6'}>
         <div className={'flex flex-col items-center gap-y-3'}>
@@ -100,7 +100,7 @@ const SizeSelectorModal: React.FC<SizeSelectorModalProps> = ({
                     lowStockNumber={false}
                     onClick={() => handleVariantClick(variant.sku, stockResult)}
                     className={classNames(
-                      'relative !min-w-12 border border-black bg-white !px-2.5 text-center text-xs font-normal !text-black',
+                      'relative !min-w-12 border border-black bg-white !px-2.5 text-center text-sm font-normal !text-black',
                       {
                         '!bg-creme !bg-opacity-30':
                           variant.sku === selectedVariantSku && variant.sku === selectedVariantByUser,

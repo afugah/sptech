@@ -31,7 +31,7 @@ export const RecommendationsDrawerItem: React.FC<IRecommendationDrawerItemProps>
 
         <div className={'flex flex-1 flex-col justify-center'}>
           <div className={'font-sm truncate font-sans'}>{display_name}</div>
-          <span className={'mb-1 text-xs uppercase text-secondary'}>{title.split(' ')[0]}</span>
+          <span className={'mb-1 text-sm uppercase text-secondary'}>{title.split(' ')[0]}</span>
           <div className={'flex flex-row gap-5'}>
             <span className={hasSalePrice ? 'text-red-500' : 'text-black'}>
               {getAmount(price * 100, currencyCode, locale)}

@@ -184,7 +184,7 @@ function CacheTagsCard() {
       <div className={'grid grid-cols-2 gap-2 md:grid-cols-3'}>
         {tags.map(([key, value]) => (
           <div key={key} className={'bg-gray-100 rounded p-2 text-center'}>
-            <div className={'text-xs uppercase text-gray-600'}>{key}</div>
+            <div className={'text-sm uppercase text-gray-600'}>{key}</div>
             <div className={'font-mono text-sm text-gray-800'}>{value}</div>
           </div>
         ))}

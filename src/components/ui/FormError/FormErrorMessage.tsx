@@ -9,7 +9,7 @@ const FormErrorMessage = ({ message, className }: { message: string; className?:
       <div className={'mr-2 text-red-600'}>
         <ErrorCircleIcon />
       </div>
-      <span className={'text-xs font-bold text-red-600 '}>{message}</span>
+      <span className={'text-sm font-bold text-red-600 '}>{message}</span>
     </div>
   );
 };

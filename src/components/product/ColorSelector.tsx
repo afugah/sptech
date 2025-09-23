@@ -103,7 +103,7 @@ export function ColorSelector({
           );
         })}
         {displayProducts.length > 5 && (
-          <span className={'self-center text-xs text-gray-500'}>+{displayProducts.length - 5}</span>
+          <span className={'self-center text-sm text-gray-500'}>+{displayProducts.length - 5}</span>
         )}
       </div>
     );
@@ -160,7 +160,7 @@ export function ColorSelector({
               <span
                 className={classNames(
                   'absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap',
-                  'rounded bg-gray-900 px-2 py-1 text-xs text-white',
+                  'rounded bg-gray-900 px-2 py-1 text-sm text-white',
                   'opacity-0 transition-opacity duration-200',
                   'pointer-events-none z-10',
                   {

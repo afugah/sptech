@@ -77,7 +77,7 @@ export const StockStatus: React.FC<StockStatusProps> = ({ selectedVariant, produ
 
   return (
     <div className={className}>
-      <div className={'mt-2 flex items-center gap-1.5 text-xs md:mt-0'}>
+      <div className={'mt-2 flex items-center gap-1.5 text-sm md:mt-0'}>
         <StockDot dotColor={stockResult.dotColor} />
         {stockResult.status}
       </div>

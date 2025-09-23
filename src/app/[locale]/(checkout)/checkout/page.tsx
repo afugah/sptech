@@ -225,7 +225,7 @@ const Page: React.FC<IProps> = () => {
                   </Dialog>
                 </div>
                 <div className={'mt-0 flex items-center justify-between py-1 pt-3 md:mt-3'}>
-                  <span className={'text-xs font-semibold uppercase'}>{t('checkout-page.items-total')}</span>
+                  <span className={'text-sm font-semibold uppercase'}>{t('checkout-page.items-total')}</span>
                   <div className={'hidden lg:block'}>
                     <Dialog>
                       <DiscountVoucherCode />
@@ -246,7 +246,7 @@ const Page: React.FC<IProps> = () => {
         <div className={' border-b pb-3'}>
           <p className={'font-serif text-xl capitalize sm:text-2xl'}>{t('checkout-page.order-summary')}</p>
           <div className={'mt-2 flex items-center justify-between  py-1 pt-3'}>
-            <span className={'text-xs font-semibold uppercase'}>{t('checkout-page.items-total')}</span>
+            <span className={'text-sm font-semibold uppercase'}>{t('checkout-page.items-total')}</span>
 
             <span className={'text-sm font-medium uppercase'}>
               {getAmount(Number(cart?.totals.grandTotal), cart?.currencyCode ?? '', locale)}
@@ -264,7 +264,7 @@ const Page: React.FC<IProps> = () => {
 
       {(checkout && !shouldBlockCheckout) || allowedDespiteStock ? (
         <div>
-          <div className={'grid grid-cols-1 gap-2 text-xs uppercase sm:grid-cols-2 sm:gap-4'}>
+          <div className={'grid grid-cols-1 gap-2 text-sm uppercase sm:grid-cols-2 sm:gap-4'}>
             {/* FEATURE: VOUCHERS - Ony show voucher for se */}
             {customer?.vouchers?.items && (cart?.items?.length ?? 0) > 0 && <BonusVoucherOptions />}
             {/* END FEATURE: VOUCHERS */}

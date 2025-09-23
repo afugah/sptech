@@ -18,13 +18,13 @@ const SeoBlockComponent: IStoryblok.FC<SeoBlock> = ({ blok, ...props }) => {
     >
       <div className={'mx-auto max-w-6xl'}>
         {title && <h1 className={'mb-2 text-lg font-light uppercase md:text-xl'}>{title}</h1>}
-        <div className={'columns-1 gap-8 text-xs leading-relaxed md:columns-3 md:gap-12'}>
+        <div className={'columns-1 gap-8 text-sm leading-relaxed md:columns-3 md:gap-12'}>
           {blocks?.map((block) => <StoryblokComponent blok={block} key={block._uid} />)}
         </div>
 
         {seoLinks && seoLinks.length > 0 && (
           <div className={'mt-8 border-t border-backgroundAlternative pt-6'}>
-            <div className={'grid grid-cols-1 gap-x-8 gap-y-1 text-xs md:grid-cols-3 md:gap-x-12'}>
+            <div className={'grid grid-cols-1 gap-x-8 gap-y-1 text-sm md:grid-cols-3 md:gap-x-12'}>
               {seoLinks.map((link) => (
                 <div key={link._uid}>
                   <StoryblokComponent blok={link} />

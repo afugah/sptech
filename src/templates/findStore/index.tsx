@@ -136,7 +136,7 @@ const FindStore: React.FC<Props> = ({ stores, initialFilters }) => {
           <h1
             aria-hidden={'true'}
             className={
-              'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase text-black sm:text-md lg:text-lg'
+              'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase text-black sm:text-sm lg:text-lg'
             }
           >
             {t('menu.store-locator')}
@@ -146,7 +146,7 @@ const FindStore: React.FC<Props> = ({ stores, initialFilters }) => {
           </h2>
         </div>
       </div>
-      <Breadcrumbs className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase'}>
+      <Breadcrumbs className={'mb-10 flex items-center justify-center text-center text-sm font-bold uppercase'}>
         <li>
           <button onClick={handleHomeClick} className={'uppercase hover:underline'}>
             {t('common.home')}
@@ -187,25 +187,25 @@ const FindStore: React.FC<Props> = ({ stores, initialFilters }) => {
                     {t('findstore.filter-stores')}
                   </h3>
 
-                  <label htmlFor={'storeType'} className={'mb-4 text-xs font-medium '}>
+                  <label htmlFor={'storeType'} className={'mb-4 text-sm font-medium '}>
                     {t('findstore.store-type')}
                   </label>
                   <Select value={filters.storeType} onValueChange={(value) => setStoreType(value)}>
                     <SelectTrigger
                       className={
-                        'w-full rounded-none !border-0 !border-b !border-solid !border-gray-300 bg-transparent py-6 text-xs uppercase tracking-wide focus:outline-none focus:ring-0'
+                        'w-full rounded-none !border-0 !border-b !border-solid !border-gray-300 bg-transparent py-6 text-sm uppercase tracking-wide focus:outline-none focus:ring-0'
                       }
                     >
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={'all'} className={'text-xs uppercase'}>
+                      <SelectItem value={'all'} className={'text-sm uppercase'}>
                         {t('findstore.all-stores')}
                       </SelectItem>
-                      <SelectItem value={'concept store'} className={'text-xs uppercase'}>
+                      <SelectItem value={'concept store'} className={'text-sm uppercase'}>
                         {t('findstore.concept-stores')}
                       </SelectItem>
-                      <SelectItem value={'reseller'} className={'text-xs uppercase'}>
+                      <SelectItem value={'reseller'} className={'text-sm uppercase'}>
                         {t('findstore.resellers')}
                       </SelectItem>
                     </SelectContent>
@@ -238,13 +238,13 @@ const FindStore: React.FC<Props> = ({ stores, initialFilters }) => {
 
                         {expandedStore === store.id ? (
                           <div className={'mt-4 space-y-1'}>
-                            <div className={'flex items-center space-x-2 text-xs font-light'}>
+                            <div className={'flex items-center space-x-2 text-sm font-light'}>
                               <Mobile className={'h-4 w-4 stroke-white'} />
                               <span>{store.contact}</span>
                             </div>
 
                             <button
-                              className={'flex items-center space-x-2 text-xs font-light uppercase tracking-wide'}
+                              className={'flex items-center space-x-2 text-sm font-light uppercase tracking-wide'}
                               onClick={() => {
                                 setCenter({ lat: store.position.lat, lng: store.position.lng });
                                 window.open(
@@ -259,7 +259,7 @@ const FindStore: React.FC<Props> = ({ stores, initialFilters }) => {
                           </div>
                         ) : (
                           <button
-                            className={'mt-4 text-xs font-bold text-black'}
+                            className={'mt-4 text-sm font-bold text-black'}
                             onClick={(e) => {
                               e.stopPropagation();
                               handleExpandStore(store);

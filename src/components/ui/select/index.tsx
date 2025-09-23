@@ -40,7 +40,7 @@ export const Select = <T,>({
 
   return (
     <div className={'relative w-full'}>
-      <h3 className={'mb-2 w-full font-sans text-xs uppercase'}>{label}</h3>
+      <h3 className={'mb-2 w-full font-sans text-sm uppercase'}>{label}</h3>
 
       <div ref={selectRef} className={'contents'}>
         <div

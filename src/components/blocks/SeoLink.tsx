@@ -17,7 +17,7 @@ const SeoLinkComponent: IStoryblok.FC<SeoLink> = ({ blok, ...props }) => {
   return (
     <LinkComponent
       {...linkProps}
-      className={'block text-xs font-bold tracking-wide text-gray-800 transition-colors hover:text-black'}
+      className={'block text-sm font-bold tracking-wide text-gray-800 transition-colors hover:text-black'}
       {...storyblokEditable(blok)}
       {...props}
     >

@@ -40,7 +40,7 @@ export const Tag: React.FC<ITagButtonProps> = (props) => {
         onClick={onClick}
         role={onClick ? 'button' : undefined}
         className={classNames(
-          'max-h-12 min-w-72 cursor-pointer justify-center bg-[#444444] bg-opacity-50 p-4 text-center text-xs font-bold uppercase tracking-wide transition-colors hover:bg-opacity-70',
+          'max-h-12 min-w-72 cursor-pointer justify-center bg-[#444444] bg-opacity-50 p-4 text-center text-sm font-bold uppercase tracking-wide transition-colors hover:bg-opacity-70',
           templateClass,
           className,
         )}
@@ -48,14 +48,14 @@ export const Tag: React.FC<ITagButtonProps> = (props) => {
         {lowStock && (
           <div
             className={
-              'absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-orange-600 text-xs text-white'
+              'absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-orange-600 text-sm text-white'
             }
           ></div>
         )}
         {lowStockNumber && (
           <div
             className={
-              'absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-red-600 text-xs text-white'
+              'absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-red-600 text-sm text-white'
             }
           ></div>
         )}

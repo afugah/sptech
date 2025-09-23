@@ -103,7 +103,7 @@ const PasswordChangeForm: React.FC = () => {
               className={'bg-white'}
               type={'password'}
               inputClassName={'text-sm'}
-              labelClassName={'text-xs'}
+              labelClassName={'text-sm'}
               error={errors.currentPassword?.message}
             />
 
@@ -116,7 +116,7 @@ const PasswordChangeForm: React.FC = () => {
               className={'bg-white'}
               type={'password'}
               inputClassName={'text-sm'}
-              labelClassName={'text-xs'}
+              labelClassName={'text-sm'}
               error={errors.newPassword?.message}
             />
 
@@ -129,7 +129,7 @@ const PasswordChangeForm: React.FC = () => {
               className={'bg-white'}
               type={'password'}
               inputClassName={'text-sm'}
-              labelClassName={'text-xs'}
+              labelClassName={'text-sm'}
               error={errors.repeatNewPassword?.message}
             />
           </div>

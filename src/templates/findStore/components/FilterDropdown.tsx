@@ -30,14 +30,14 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
       <Select value={value} onValueChange={onChange} disabled={disabled}>
         <SelectTrigger
           className={
-            'w-full rounded-none !border-0 !border-b !border-solid !border-gray-400 bg-white px-4 py-6 text-xs font-medium uppercase focus:ring-0 data-[placeholder]:text-black'
+            'w-full rounded-none !border-0 !border-b !border-solid !border-gray-400 bg-white px-4 py-6 text-sm font-medium uppercase focus:ring-0 data-[placeholder]:text-black'
           }
         >
-          <SelectValue placeholder={label} className={'text-xs'} />
+          <SelectValue placeholder={label} className={'text-sm'} />
         </SelectTrigger>
         <SelectContent>
           {options.map((option) => (
-            <SelectItem key={option.value} value={option.value} className={'my-1 text-xs uppercase'}>
+            <SelectItem key={option.value} value={option.value} className={'my-1 text-sm uppercase'}>
               {option.label}
             </SelectItem>
           ))}

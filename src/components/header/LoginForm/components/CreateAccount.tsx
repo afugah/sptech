@@ -245,7 +245,7 @@ const Register: React.FC<IRegister> = ({ withHeaderImage = true, withDescription
                 label={t('i-agree-to-the-terms-and-conditions')}
               />
               <Link href={t('need-help-link')}>
-                <button type={'button'} className={'font-sans text-xs text-black underline'}>
+                <button type={'button'} className={'font-sans text-sm text-black underline'}>
                   {t('need-help')}
                 </button>
               </Link>

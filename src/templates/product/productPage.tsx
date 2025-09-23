@@ -367,7 +367,7 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
                     }
                   >
                     <span
-                      className={'w-full cursor-pointer text-xs uppercase md:underline'}
+                      className={'w-full cursor-pointer text-sm uppercase md:underline'}
                       onClick={() => setShowSizeGuideModal(true)}
                     >
                       {t('view-size-guide')}
@@ -436,14 +436,14 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
                     selectedVariant={currentVariant}
                     product={product}
                     elasticData={elasticData}
-                    className={'mb-2 border-t border-t-gray-400 text-xs uppercase md:border-0'}
+                    className={'mb-2 border-t border-t-gray-400 text-sm uppercase md:border-0'}
                   />
                 )}
                 {isStoreAvailabilityEnabled() && (
                   <button
                     onClick={() => setIsOpen(true)}
                     className={
-                      'whitespace-nowrap border-y border-y-gray-400 py-2 text-left text-xs uppercase md:ml-auto md:border-0 md:py-0 md:text-right md:underline'
+                      'whitespace-nowrap border-y border-y-gray-400 py-2 text-left text-sm uppercase md:ml-auto md:border-0 md:py-0 md:text-right md:underline'
                     }
                   >
                     {t('see-availability-in-store')}
@@ -480,10 +480,10 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
                 )}
               </div>
               {/* {anyVariantStock && singleLowStock && (
-                <div className={'w-1/2 text-xs text-center text-gray'}>{t('low-stock-warning')}</div>
+                <div className={'w-1/2 text-sm text-center text-gray'}>{t('low-stock-warning')}</div>
               )}
               {anyVariantStock && singleLowStockNumber && (
-                <div className={'w-1/2 text-xs text-center text-gray'}>
+                <div className={'w-1/2 text-sm text-center text-gray'}>
                   {t('low-stock-only') + ' ' + currentVariant?.stock?.quantity + ' ' + t('low-stock-left')}
                 </div>
               )} */}
@@ -534,7 +534,7 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
                           size={16}
                           strokeWidth={1}
                         />
-                        <span className={'text-xs uppercase text-gray-800'}>
+                        <span className={'text-sm uppercase text-gray-800'}>
                           {t('product-page.info.add-to-wishlist')}
                         </span>
                       </Button>

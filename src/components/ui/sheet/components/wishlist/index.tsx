@@ -28,7 +28,7 @@ const Wishlist = () => {
               <Button
                 variant={'custom'}
                 onClick={handleClearAll}
-                className={'ml-2 h-6 bg-secondary-600 px-2 py-0  text-xs uppercase text-white hover:bg-gray-800'}
+                className={'ml-2 h-6 bg-secondary-600 px-2 py-0  text-sm uppercase text-white hover:bg-gray-800'}
                 type={'button'}
               >
                 {t('clear-all')}

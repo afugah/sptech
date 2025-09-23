@@ -188,7 +188,7 @@ const CollectionPageTemplate: React.FC<ICategoryPageProps> = async (props) => {
               <h1
                 aria-hidden={'true'}
                 className={
-                  'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-md font-bold uppercase text-black lg:text-lg'
+                  'absolute left-1/2 top-[45%] mb-0 block w-full -translate-x-1/2 -translate-y-1/2 transform font-sans text-sm font-bold uppercase text-black lg:text-lg'
                 }
               >
                 {customTitle || title}
@@ -209,7 +209,7 @@ const CollectionPageTemplate: React.FC<ICategoryPageProps> = async (props) => {
           </div>
         </div>
         {!hideBreadcrumbs && (
-          <Breadcrumbs className={'mb-10 flex items-center justify-center text-center text-xs font-bold uppercase'}>
+          <Breadcrumbs className={'mb-10 flex items-center justify-center text-center text-sm font-bold uppercase'}>
             <li>
               <Link href={'/'} className={'uppercase'}>
                 {t('common.home')}
@@ -240,7 +240,7 @@ const CollectionPageTemplate: React.FC<ICategoryPageProps> = async (props) => {
         <TagList tags={subCategories} className={'mt-8'} template={'square'} />
         {releaseDate && typeof releaseDate === 'string' && isFutureDate(releaseDate) ? (
           // TODO: Add countdown?
-          // <div className={'py-10 text-xs text-center text-gray-300'}>{releaseDate}</div>
+          // <div className={'py-10 text-sm text-center text-gray-300'}>{releaseDate}</div>
           <div></div>
         ) : (
           <ProductGridLoader

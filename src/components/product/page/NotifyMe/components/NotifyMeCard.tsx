@@ -20,7 +20,7 @@ export const NotifyMeCard: React.FC<INotifyMeCard> = ({ product, selectedVariant
     <div className={'flex items-center justify-center gap-x-5'}>
       <Image src={images[0]?.src} width={100} height={146} alt={title} />
 
-      <div className={'flex w-full flex-col justify-between gap-y-2 text-xs'}>
+      <div className={'flex w-full flex-col justify-between gap-y-2 text-sm'}>
         <div className={'flex justify-between'}>
           <div className={'font-sans text-sm'}>{title}</div>
         </div>

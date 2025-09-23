@@ -14,7 +14,7 @@ const BonusCheck: React.FC<BonusCheckProps> = ({ bonusAmount }) => {
   return (
     <div className={'flex gap-4 p-6 max-md:flex-col'}>
       <div className={'max-w-[300px]'}>
-        <h3 className={'mb-2 font-sans text-xs uppercase text-gray-600'}>{t('member.bonus-check')}</h3>
+        <h3 className={'mb-2 font-sans text-sm uppercase text-gray-600'}>{t('member.bonus-check')}</h3>
         <p className={'text-2xl font-normal'}>{t('member.bonus-message')}</p>
       </div>
 

@@ -173,31 +173,31 @@ export const CheckoutCartItem: React.FC<ICheckoutCartItemProps> = ({ item }) => 
             </Link>
             <div className={'flex min-w-0 flex-1 flex-col items-start justify-start gap-y-2 text-xxs'}>
               <div>
-                <p className={'truncate break-words text-xs font-semibold uppercase leading-tight sm:text-xxs'}>
+                <p className={'truncate break-words text-sm font-semibold uppercase leading-tight sm:text-xxs'}>
                   {item.displayName}
                 </p>
-                <p className={'mt-1.5 text-xs text-gray-600 sm:text-xxs'}>
+                <p className={'mt-1.5 text-sm text-gray-600 sm:text-xxs'}>
                   {t('cart-item.art-no')}: {item.productVariantId}
                 </p>
                 {stockResult?.status && (
                   <div className={'mb-2 mt-1.5 flex items-center gap-1'}>
                     <StockDot dotColor={stockResult.dotColor} size={'small'} />
-                    <span className={'text-xs text-gray-600 sm:text-xxs'}>{stockResult.status}</span>
+                    <span className={'text-sm text-gray-600 sm:text-xxs'}>{stockResult.status}</span>
                   </div>
                 )}
               </div>
               <div className={'space-y-1.5 uppercase sm:space-y-1'}>
                 <div className={'flex flex-wrap gap-x-1'}>
-                  <span className={' text-xs font-semibold uppercase text-black sm:text-xxs'}>
+                  <span className={' text-sm font-semibold uppercase text-black sm:text-xxs'}>
                     {t('cart-item.size-label')}
                   </span>
-                  <span className={'text-xs sm:text-xxs'}>{item.customAttributes.size}</span>
+                  <span className={'text-sm sm:text-xxs'}>{item.customAttributes.size}</span>
                 </div>
                 <div className={'flex flex-wrap gap-x-1'}>
-                  <span className={' text-xs font-semibold uppercase text-black sm:text-xxs'}>
+                  <span className={' text-sm font-semibold uppercase text-black sm:text-xxs'}>
                     {t('cart-item.material-label')}
                   </span>
-                  <span className={'break-words text-xs sm:text-xxs'}>{material}</span>
+                  <span className={'break-words text-sm sm:text-xxs'}>{material}</span>
                 </div>
               </div>
             </div>
@@ -229,18 +229,18 @@ export const CheckoutCartItem: React.FC<ICheckoutCartItemProps> = ({ item }) => 
           )}
         </div>
       </div>
-      <div className={' hidden items-center justify-center text-xs font-medium lg:flex'}>
+      <div className={' hidden items-center justify-center text-sm font-medium lg:flex'}>
         <span> {material}</span>
       </div>
-      <div className={' hidden items-center justify-center text-xs font-medium lg:flex'}>
+      <div className={' hidden items-center justify-center text-sm font-medium lg:flex'}>
         {item.customAttributes.size}
       </div>
-      <div className={' hidden items-center justify-center text-xs font-medium lg:flex'}>
-        <span className={'text-sm uppercase text-black/80 lg:text-md'}>
+      <div className={' hidden items-center justify-center text-sm font-medium lg:flex'}>
+        <span className={'text-sm uppercase text-black/80 lg:text-sm'}>
           {getAmount(item.salePriceAmount * 1, cart?.currencyCode ?? '', locale)}
         </span>
       </div>
-      <div className={' hidden items-center justify-center text-xs font-medium lg:flex'}>
+      <div className={' hidden items-center justify-center text-sm font-medium lg:flex'}>
         {outOfStock ? (
           <div className={'uppercase text-red'}>{t('common.out-of-stock')}</div>
         ) : (
@@ -255,12 +255,12 @@ export const CheckoutCartItem: React.FC<ICheckoutCartItemProps> = ({ item }) => 
       </div>
       <div
         className={classNames(
-          ' hidden items-center justify-center text-xs font-medium lg:flex',
+          ' hidden items-center justify-center text-sm font-medium lg:flex',
           outOfStock ? 'opacity-40' : '',
         )}
       >
         <span className={classNames('', { 'text-red': hasSalePrice })}>
-          <span className={'text-sm uppercase text-black/80 lg:text-md'}>
+          <span className={'text-sm uppercase text-black/80 lg:text-sm'}>
             {getAmount(item.salePriceAmount * item.quantity, cart?.currencyCode ?? '', locale)}
           </span>
         </span>
@@ -271,7 +271,7 @@ export const CheckoutCartItem: React.FC<ICheckoutCartItemProps> = ({ item }) => 
           </span>
         )}
       </div>
-      <div className={' hidden items-center justify-center text-xs lg:flex'}>
+      <div className={' hidden items-center justify-center text-sm lg:flex'}>
         {' '}
         <Button
           variant={'custom'}
@@ -288,10 +288,10 @@ export const CheckoutCartItem: React.FC<ICheckoutCartItemProps> = ({ item }) => 
         <div className={' flex items-center'}>
           {!open && (
             <div className={' flex gap-1'}>
-              <p className={' text-xs font-semibold uppercase tracking-wide sm:text-xxs'}>
+              <p className={' text-sm font-semibold uppercase tracking-wide sm:text-xxs'}>
                 {t('cart-item.quantity-label')}
               </p>
-              <p className={' text-xs font-semibold sm:text-xxs'}>{item?.quantity}</p>
+              <p className={' text-sm font-semibold sm:text-xxs'}>{item?.quantity}</p>
             </div>
           )}
           {/* <div className={' flex gap-1'}>
@@ -305,7 +305,7 @@ export const CheckoutCartItem: React.FC<ICheckoutCartItemProps> = ({ item }) => 
                   <div></div>
                 ) : (
                   <div>
-                    <Button className={' py-0 text-xs uppercase underline sm:text-xxs'} variant={'custom'}>
+                    <Button className={' py-0 text-sm uppercase underline sm:text-xxs'} variant={'custom'}>
                       {t('cart-item.change-button')}
                     </Button>
                   </div>

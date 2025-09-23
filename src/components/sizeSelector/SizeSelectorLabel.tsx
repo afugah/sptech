@@ -35,7 +35,7 @@ const SizeSelectorLabel: React.FC<ISizeSelectorLabelProps> = (props) => {
   return (
     <div className={'order-5 mb-3 md:hidden'}>
       <div className={'flex items-center justify-between border border-gray-500 p-4'}>
-        <span className={'w-full cursor-pointer text-xs uppercase'} onClick={() => setShowModal(true)}>
+        <span className={'w-full cursor-pointer text-sm uppercase'} onClick={() => setShowModal(true)}>
           {selectedVariant?.size || selectedVariant?.title || defaultText}
         </span>
         <ChevronRight className={'h-3 w-3 md:hidden'} />

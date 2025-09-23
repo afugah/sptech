@@ -6,20 +6,6 @@ import { Input } from '../shadcn/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../shadcn/select-custom';
 
 const Newsletters = () => {
-  //   const locale = useLocale();
-  //   useEffect(() => {
-  //     const fetchNewsletters = async () => {
-  //       try {
-  //         const response = await fetchPageData(locale, 'beauty-with-a-thought');
-
-  //         console.log(response);
-  //       } catch (error) {
-  //         console.error('Error fetching newsletters:', error);
-  //       }
-  //     };
-  //     fetchNewsletters();
-  //   }, [locale]);
-
   return (
     <div className={'grid sm:grid-cols-2'}>
       <div className={'hidden sm:block'}>
@@ -29,41 +15,41 @@ const Newsletters = () => {
           width={1000}
           height={1000}
           quality={80}
-          className={'h-full w-full'}
+          className={'h-full w-full object-cover'}
         />
       </div>
-      <div className={'px-2 py-3 pl-6'}>
-        <div className={'flex flex-col justify-center gap-y-3'}>
-          <div className={'space-y-2 text-center'}>
-            <p className={'text-xl font-medium uppercase text-black/75'}>
+      <div className={'px-4 py-6 sm:px-6 lg:px-8'}>
+        <div className={'flex h-full flex-col justify-center gap-y-4'}>
+          <div className={'space-y-3 text-center'}>
+            <h2 className={'text-xl font-medium uppercase leading-tight text-black/75 sm:text-2xl'}>
               subscribe to our <br /> newsletter & get 10% off
-            </p>
-            <p className={'track leading-relaxed text-gray-600'}>
+            </h2>
+            <p className={'text-sm leading-relaxed text-gray-600 sm:text-base'}>
               Be the first on getting the latest news, exclusive promotions and inspiration.
             </p>
           </div>
-          <div>
-            <form action={''} className={'w-full'}>
-              <div className={'w-full space-y-2'}>
+          <div className={'w-full'}>
+            <form className={'w-full space-y-4'}>
+              <div className={'space-y-3'}>
                 <Input
                   className={
-                    'h-10 w-full rounded-none bg-white px-2 text-gray-700 outline-none placeholder:text-sm placeholder:text-gray-700 focus:ring-0 focus-visible:ring-0'
+                    'h-11 w-full rounded-none border-gray-300 bg-white px-3 text-gray-700 placeholder:text-sm placeholder:text-gray-500 focus:border-gray-500 focus:ring-0 focus-visible:ring-0'
                   }
                   id={'firstName'}
                   name={'firstName'}
                   placeholder={'First name'}
-                  defaultValue={''}
+                  type={'text'}
+                  required
                 />
-                <Select onValueChange={() => {}}>
+                <Select>
                   <SelectTrigger
-                    className={`h-10 bg-white px-2 text-sm text-gray-700 outline-none placeholder:text-xxs placeholder:uppercase placeholder:text-gray-700 focus:ring-0 focus-visible:ring-0`}
+                    className={
+                      'h-11 w-full rounded-none border-gray-300 bg-white px-3 text-sm text-gray-700 focus:border-gray-500 focus:ring-0 focus-visible:ring-0'
+                    }
                   >
-                    <SelectValue
-                      placeholder={'Gender'}
-                      className={'text-xxs placeholder:text-xxs placeholder:text-gray-600'}
-                    />
+                    <SelectValue placeholder={'Gender'} />
                   </SelectTrigger>
-                  <SelectContent className={'cursor-pointer'}>
+                  <SelectContent>
                     <SelectItem value={'male'}>Male</SelectItem>
                     <SelectItem value={'female'}>Female</SelectItem>
                     <SelectItem value={'other'}>Other</SelectItem>
@@ -71,22 +57,27 @@ const Newsletters = () => {
                 </Select>
                 <Input
                   className={
-                    'h-10 w-full rounded-none bg-white px-2 text-gray-700 outline-none placeholder:text-sm placeholder:text-gray-700 focus:ring-0 focus-visible:ring-0'
+                    'h-11 w-full rounded-none border-gray-300 bg-white px-3 text-gray-700 placeholder:text-sm placeholder:text-gray-500 focus:border-gray-500 focus:ring-0 focus-visible:ring-0'
                   }
                   id={'email'}
                   name={'email'}
                   placeholder={'Email'}
-                  defaultValue={''}
+                  type={'email'}
+                  required
                 />
               </div>
-              <div>
-                <Button variant={'custom'} className={'mt-2 w-full bg-backgroundAlternative py-4 uppercase text-white'}>
-                  Subscribe
-                </Button>
-              </div>
+              <Button
+                type={'submit'}
+                variant={'custom'}
+                className={
+                  'w-full bg-backgroundAlternative py-3 text-sm font-medium uppercase text-white transition-colors hover:bg-backgroundAlternative/90 focus:ring-2 focus:ring-backgroundAlternative/20'
+                }
+              >
+                Subscribe
+              </Button>
             </form>
           </div>
-          <p className={'pt-0 text-xxs text-gray-600'}>
+          <p className={'text-sm leading-relaxed text-gray-500'}>
             *Valid on first-time and cannot be combined with other promotions or past purchase. Jewellery that are made
             to order, &quot;for a good cause&quot;, the HOGDALEN and giftcards are excluded from this discount.
           </p>

@@ -29,10 +29,10 @@ export const SizeSelector: React.FC<SizeSelectorProps> = ({ variants, selectedVa
   return (
     <>
       {isDropdownOpen && (
-        <div className={'fixed inset-0 z-20 bg-black bg-opacity-50 text-xs uppercase underline'}>View Size guide</div>
+        <div className={'fixed inset-0 z-20 bg-black bg-opacity-50 text-sm uppercase underline'}>View Size guide</div>
       )}
       <div ref={ref} className={'relative z-20 mr-3 w-auto py-4'}>
-        <span className={'cursor-pointer text-xs uppercase underline'} onClick={() => setIsDropdownOpen(true)}>
+        <span className={'cursor-pointer text-sm uppercase underline'} onClick={() => setIsDropdownOpen(true)}>
           {t('view-size-guide')}
         </span>
         {isDropdownOpen && (

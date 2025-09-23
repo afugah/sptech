@@ -25,7 +25,7 @@ const WishListItem = ({ item }: Props) => {
   const { slug, thumbnail, description, title, price } = item;
 
   return (
-    <div className={'space-y-2 border-b border-gray-400 pb-3 text-xs sm:gap-5'}>
+    <div className={'space-y-2 border-b border-gray-400 pb-3 text-sm sm:gap-5'}>
       <div className={'mt-5 flex flex-row items-start gap-4'}>
         <div className={' border border-gray-300'}>
           <div>
@@ -53,10 +53,10 @@ const WishListItem = ({ item }: Props) => {
           </Button>
         </div>
         <div className={' flex items-center gap-4'}>
-          <span className={'border-r-2 border-gray-700 px-2 pr-3 text-sm uppercase text-black/80 lg:text-md'}>
+          <span className={'border-r-2 border-gray-700 px-2 pr-3 text-sm uppercase text-black/80 lg:text-sm'}>
             {getAmount(price as number, cart?.currencyCode as string, locale)}
           </span>
-          {/* <span className={'border-r-2 border-gray-700 px-2 pr-3 text-sm uppercase text-black/80 lg:text-md'}>
+          {/* <span className={'border-r-2 border-gray-700 px-2 pr-3 text-sm uppercase text-black/80 lg:text-sm'}>
             {getAmount(item.salePrice!, cart?.currencyCode ?? '', locale)}
           </span> */}
           <Link className={'font-medium uppercase text-black underline hover:text-black'} href={slug}>

@@ -144,7 +144,7 @@ const MainMenu = ({ newHeaderMenu, followUsItems }: MainMenuProps) => {
             <div className={'m-0 flex flex-col gap-y-3 '}>
               {smallerNavigations?.map((menuItem) => (
                 <div key={menuItem.id} className={''}>
-                  <Link href={menuItem.url.toLowerCase()} className={' font-sans text-md font-medium uppercase'}>
+                  <Link href={menuItem.url.toLowerCase()} className={' font-sans text-sm font-medium uppercase'}>
                     {menuItem.label}
                   </Link>
                 </div>
@@ -160,7 +160,7 @@ const MainMenu = ({ newHeaderMenu, followUsItems }: MainMenuProps) => {
                 <NavigationMenuItem key={menuItem.id} className={'text-black '}>
                   <Link
                     href={menuItem?.url?.toLowerCase()}
-                    className={'block cursor-pointer text-md font-light uppercase'}
+                    className={'block cursor-pointer text-sm font-light uppercase'}
                   >
                     {menuItem.label}
                   </Link>
@@ -173,17 +173,17 @@ const MainMenu = ({ newHeaderMenu, followUsItems }: MainMenuProps) => {
           <hr className={'w-full border-gray-300 pt-3 lg:hidden'} />
 
           <div className={'m-0 flex flex-col gap-y-5 lg:relative lg:top-0 lg:flex lg:p-0'}>
-            <Link href={'/'} className={'flex items-center text-xs font-light uppercase'}>
+            <Link href={'/'} className={'flex items-center text-sm font-light uppercase'}>
               <Home strokeWidth={0.5} size={17} className={' mr-1 inline-block '} />
               Home
             </Link>
-            <Link href={'/search'} className={' flex cursor-pointer items-center  text-xs font-light uppercase'}>
+            <Link href={'/search'} className={' flex cursor-pointer items-center  text-sm font-light uppercase'}>
               <Search strokeWidth={0.5} size={18} className={' mr-1 inline-block'} />
               Search
             </Link>
             <Sheet open={openCartSheet} onOpenChange={setOpenCartSheet}>
               <SheetTrigger asChild className={' my-0 flex flex-row justify-start py-0 text-left'}>
-                <div className={' flex cursor-pointer items-center  text-xs font-light uppercase'}>
+                <div className={' flex cursor-pointer items-center  text-sm font-light uppercase'}>
                   <Gift strokeWidth={0.5} size={18} className={' mr-1 inline-block'} />
                   <p className={' flex items-center'}>
                     Cart<span className={`ml-1 ${!numberOfCartItems ? 'hidden' : 'block'}`}>({numberOfCartItems})</span>
@@ -194,7 +194,7 @@ const MainMenu = ({ newHeaderMenu, followUsItems }: MainMenuProps) => {
                 <CartSheet />
               </SheetComponent>
             </Sheet>
-            <Link href={'/wishlist'} className={' flex cursor-pointer items-center  text-xs font-light uppercase'}>
+            <Link href={'/wishlist'} className={' flex cursor-pointer items-center  text-sm font-light uppercase'}>
               <Heart strokeWidth={0.5} size={18} className={' mr-1 inline-block'} />
               <p className={' flex items-center'}>
                 Wishlist<span className={`ml-1 ${!wishlistCount ? 'hidden' : 'block'}`}>({wishlistCount})</span>
@@ -247,7 +247,7 @@ const MainMenu = ({ newHeaderMenu, followUsItems }: MainMenuProps) => {
             <div className={'m-0 flex flex-col gap-y-3 '}>
               {smallerNavigations?.map((menuItem) => (
                 <div key={menuItem.id} className={''}>
-                  <Link href={menuItem?.url?.toLowerCase()} className={' font-sans text-md font-medium uppercase'}>
+                  <Link href={menuItem?.url?.toLowerCase()} className={' font-sans text-sm font-medium uppercase'}>
                     {menuItem.label}
                   </Link>
                 </div>
@@ -263,7 +263,7 @@ const MainMenu = ({ newHeaderMenu, followUsItems }: MainMenuProps) => {
                 <NavigationMenuItem key={menuItem.id} className={'text-black '}>
                   <Link
                     href={menuItem?.url?.toLowerCase()}
-                    className={'block cursor-pointer text-md font-light uppercase'}
+                    className={'block cursor-pointer text-sm font-light uppercase'}
                   >
                     {menuItem.label}
                   </Link>

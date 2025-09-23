@@ -67,7 +67,7 @@ export const ProductInfo: React.FC<IProductInfoProps> = ({ children, className }
             </button>
             {isOpen && (
               <div className={'pb-4 pt-2'}>
-                <div className={'text-md'}>{props.children(props.data)}</div>
+                <div className={'text-sm'}>{props.children(props.data)}</div>
               </div>
             )}
           </div>

@@ -21,7 +21,7 @@ const ColorLabel: React.FC<ColorLabelProps> = ({ product }) => {
 
   return (
     <>
-      <div className={'mb-3 flex items-center text-xs uppercase'}>
+      <div className={'mb-3 flex items-center text-sm uppercase'}>
         {t('product-page.color')}: <span className={'ml-2 text-gray'}>{product.baseColorCode?.title}</span>
       </div>
 

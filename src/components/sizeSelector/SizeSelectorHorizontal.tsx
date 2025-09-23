@@ -60,7 +60,7 @@ export const SizeSelectorHorizontal: React.FC<ISizeSelectorHorizontalProps> = (p
     <div className={'order-9 md:order-6 '}>
       <div className={'mt-4 hidden flex-row gap-2 md:flex'}>
         <div className={'flex flex-row gap-3'}>
-          {withTitle && <span className={'mt-1 text-xs uppercase'}>{t('product-page.size')}:</span>}
+          {withTitle && <span className={'mt-1 text-sm uppercase'}>{t('product-page.size')}:</span>}
           <div className={'flex flex-col items-center gap-y-3'}>
             <div className={classNames('flex flex-row flex-wrap items-center gap-x-3 gap-y-3', className)}>
               {sortedVariants.map((variant, index) => {
@@ -78,7 +78,7 @@ export const SizeSelectorHorizontal: React.FC<ISizeSelectorHorizontalProps> = (p
                       lowStockNumber={false}
                       onClick={() => handleVariantClick(variant.sku, stockResult)}
                       className={classNames(
-                        'relative !min-w-12 border border-black bg-white !px-2.5 text-center text-xs font-normal !text-black',
+                        'relative !min-w-12 border border-black bg-white !px-2.5 text-center text-sm font-normal !text-black',
                         {
                           '!bg-creme !bg-opacity-30':
                             variant.sku === selectedVariantSku && variant.sku === selectedVariantByUser,
@@ -110,8 +110,8 @@ export const SizeSelectorHorizontal: React.FC<ISizeSelectorHorizontalProps> = (p
             {/* {lowStock && selectedVariantByUser && (
               <>
                 {(hasLowStock || (hasLowStockNumber && !hasLowStock)) && (
-                  <div className={'flex h-4 flex-row items-center gap-x-1 text-xs text-gray'}>
-                    <div className={'flex flex-row items-center gap-x-1 text-xs text-gray'}>
+                  <div className={'flex h-4 flex-row items-center gap-x-1 text-sm text-gray'}>
+                    <div className={'flex flex-row items-center gap-x-1 text-sm text-gray'}>
                       <div className={`lex h-3 w-3 rounded-full ${hasLowStock ? 'bg-orange-600' : 'bg-red-600'}`}></div>
                       <span>=</span>
                       {hasLowStock

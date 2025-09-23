@@ -23,7 +23,7 @@ const getPlatformIcon = (platform: string) => {
     case 'linkedin':
       return <LinkedInIcon className={'fill-current h-5 w-5'} />;
     default:
-      return <span className={'text-xs font-bold'}>{platform.substring(0, 2).toUpperCase()}</span>;
+      return <span className={'text-sm font-bold'}>{platform.substring(0, 2).toUpperCase()}</span>;
   }
 };
 
@@ -39,7 +39,7 @@ export const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({ socialMediaL
           target={'_blank'}
           rel={'noopener noreferrer'}
           className={
-            'flex items-center justify-center text-xs font-bold uppercase text-white transition-opacity hover:bg-opacity-30'
+            'flex items-center justify-center text-sm font-bold uppercase text-white transition-opacity hover:bg-opacity-30'
           }
           aria-label={`Visit us on ${socialMedia.platform}`}
         >

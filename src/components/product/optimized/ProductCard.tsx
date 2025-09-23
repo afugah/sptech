@@ -226,7 +226,7 @@ const ProductCard: React.FC<ICardProps> = React.memo(({ product, priority = fals
 
           {/* Discount Badge */}
           {formattedPrice?.hasDiscount && (
-            <div className={'bg-red-500 absolute right-2 top-2 rounded px-2 py-1 text-xs text-white'}>
+            <div className={'bg-red-500 absolute right-2 top-2 rounded px-2 py-1 text-sm text-white'}>
               -{formattedPrice.discountPercentage}%
             </div>
           )}

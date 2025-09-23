@@ -85,7 +85,7 @@ export const ProductCardBase: React.FC<ProductCardBaseProps> = ({
         <div className={contentClassName}>
           <div className={'flex flex-col'}>
             {showDate && created_at && (
-              <span className={'mb-1 text-xs text-gray-500'}>
+              <span className={'mb-1 text-sm text-gray-500'}>
                 {format.dateTime(new Date(created_at), {
                   year: 'numeric',
                   month: 'short',

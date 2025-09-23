@@ -9,7 +9,7 @@ const SeoTitleComponent: IStoryblok.FC<SeoTitle> = ({ blok, ...props }) => {
   const { title } = blok;
   return (
     <div {...storyblokEditable(blok)} {...props}>
-      <h6 className={`font-sans text-sm uppercase md:text-md`}>{title}</h6>
+      <h6 className={`font-sans text-sm uppercase md:text-sm`}>{title}</h6>
     </div>
   );
 };

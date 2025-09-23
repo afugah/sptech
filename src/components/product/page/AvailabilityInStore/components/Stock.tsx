@@ -16,7 +16,7 @@ export const AvailableStock: React.FC<IAvailableStock> = ({ stocks, search, sele
   const locale = useLocale();
 
   if (!stocks.length) {
-    return <div className={'text-center text-xs text-gray'}>No stock available for this product</div>;
+    return <div className={'text-center text-sm text-gray'}>No stock available for this product</div>;
   }
 
   const displayedStock =
@@ -46,7 +46,7 @@ export const AvailableStock: React.FC<IAvailableStock> = ({ stocks, search, sele
             <div key={v.name} className={'flex flex-col gap-y-2 border-b border-creme px-5 py-6'}>
               <div className={'flex justify-between text-base'}>
                 <div>{v.warehouseInfo?.title}</div>
-                <div className={'text-xs text-gray'}>{v.warehouseInfo?.city}</div>
+                <div className={'text-sm text-gray'}>{v.warehouseInfo?.city}</div>
               </div>
 
               {stockAvailability.map((props, index) => (

@@ -58,11 +58,11 @@ const SwedishYellowGoldPage: React.FC<SwedishYellowGoldPageProps> = ({ story }) 
         <PageHeader component={'config'} hasHeaderFixed={false} />
         <div className={'space-y-6 px-4 pb-10 pt-40 sm:pt-44 md:space-y-10 md:pb-0 lg:pt-48'}>
           <p className={'text-center font-serif text-3xl tracking-tight md:text-5xl'}>{title}</p>
-          <p className={'mx-auto max-w-2xl text-center text-xs uppercase leading-6 md:text-sm md:leading-8'}>
+          <p className={'mx-auto max-w-2xl text-center text-sm uppercase leading-6 md:text-sm md:leading-8'}>
             {description as string}
           </p>
           <Breadcrumbs
-            className={'mb-6 flex items-center justify-center text-center text-xs font-bold uppercase md:mb-10'}
+            className={'mb-6 flex items-center justify-center text-center text-sm font-bold uppercase md:mb-10'}
           >
             <li>
               <a href={'/'} className={'uppercase hover:underline'}>
@@ -269,7 +269,7 @@ const SwedishYellowGoldPage: React.FC<SwedishYellowGoldPageProps> = ({ story }) 
               </div>
               <div className={'px-8 py-12 text-center'}>
                 <h3 className={'mt-2 text-2xl font-light  md:text-4xl'}>{silverBlock.title}</h3>
-                <p className={'mb-8 text-xs font-light leading-relaxed md:text-lg'}>{silverBlock.description}</p>
+                <p className={'mb-8 text-sm font-light leading-relaxed md:text-lg'}>{silverBlock.description}</p>
                 <div className={'mx-auto flex w-fit flex-col gap-4'}>
                   <Button asChild className={'bg-gray-900 py-4 uppercase'} size={'xl'}>
                     <Link href={silverBlock.slug || ''}>{t('common.read-more-about-silver')}</Link>

@@ -197,7 +197,7 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
           />
           <div className={'mb-2 flex flex-col tracking-wide'}>
             {showDates && (
-              <span className={'mb-1 text-xs text-secondary opacity-50'}>
+              <span className={'mb-1 text-sm text-secondary opacity-50'}>
                 {format.dateTime(created_at, {
                   year: 'numeric',
                   month: 'short',
@@ -205,7 +205,7 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
                 })}
               </span>
             )}
-            <h2 className={'mb-1 truncate px-1 font-sans text-xs font-bold  uppercase lg:mb-3 lg:px-3 lg:text-md'}>
+            <h2 className={'mb-1 truncate px-1 font-sans text-sm font-bold  uppercase lg:mb-3 lg:px-3 lg:text-sm'}>
               {title}
             </h2>
 
@@ -221,7 +221,7 @@ const InitialSearchProductCard: React.FC<ICardProps> = (props) => {
               </div>
             )}
 
-            <span className={'text-sans flex h-5 flex-col text-xs uppercase tracking-wide lg:text-sm'}>
+            <span className={'text-sans flex h-5 flex-col text-sm uppercase tracking-wide lg:text-sm'}>
               <span className={isSale.sale_price !== null ? 'text-red' : 'text-black'}>
                 {getAmount(
                   isSale.sale_price !== null ? isSale.sale_price * 100 : isSale.price * 100,

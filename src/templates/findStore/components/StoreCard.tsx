@@ -61,7 +61,7 @@ export const StoreCard: React.FC<StoreCardProps> = ({ store, index, setMapCenter
         </div>
 
         <div className={'bg-white p-6 sm:p-8'}>
-          <p className={'mb-2 text-xs font-bold uppercase'}>{location}</p>
+          <p className={'mb-2 text-sm font-bold uppercase'}>{location}</p>
           <h2 className={'mb-3 font-serif text-2xl font-light leading-tight text-black sm:text-3xl'}>{name}</h2>
           <div className={'mb-4 border-b border-gray-300'}></div>
 
@@ -77,8 +77,8 @@ export const StoreCard: React.FC<StoreCardProps> = ({ store, index, setMapCenter
             <div className={'grid grid-cols-2 gap-x-6 gap-y-1.5'}>
               {structuredHours.map((hour, idx) => (
                 <React.Fragment key={idx}>
-                  <div className={'text-xs uppercase text-gray-800'}>{hour.label}</div>
-                  <div className={'text-right text-xs text-gray-800'}>{hour.time}</div>
+                  <div className={'text-sm uppercase text-gray-800'}>{hour.label}</div>
+                  <div className={'text-right text-sm text-gray-800'}>{hour.time}</div>
                 </React.Fragment>
               ))}
             </div>
@@ -117,7 +117,7 @@ export const StoreCard: React.FC<StoreCardProps> = ({ store, index, setMapCenter
               }}
             >
               <Location className={'h-4 w-4'} />
-              <span className={'text-xs uppercase tracking-wide'}>{t('findstore.get-directions')}</span>
+              <span className={'text-sm uppercase tracking-wide'}>{t('findstore.get-directions')}</span>
             </button>
           </div>
         </div>
@@ -142,7 +142,7 @@ export const StoreCard: React.FC<StoreCardProps> = ({ store, index, setMapCenter
           <div
             className={`pt-12 xl:pt-16 ${imageOnLeft ? 'pl-80 xl:pl-[450px]' : 'pl-8 pr-80 xl:pl-12 xl:pr-[450px]'}`}
           >
-            <p className={'mb-2 text-xs font-bold uppercase'}>{location}</p>
+            <p className={'mb-2 text-sm font-bold uppercase'}>{location}</p>
             <h2 className={'mb-3 font-serif text-3xl font-light leading-tight text-black xl:text-4xl'}>{name}</h2>
             <div className={'mb-4 border-b border-gray-300'}></div>
 
@@ -158,8 +158,8 @@ export const StoreCard: React.FC<StoreCardProps> = ({ store, index, setMapCenter
               <div className={'grid grid-cols-2 gap-x-8 gap-y-1.5 xl:gap-x-10'}>
                 {structuredHours.map((hour, idx) => (
                   <React.Fragment key={idx}>
-                    <div className={'text-xs uppercase text-gray-800'}>{hour.label}</div>
-                    <div className={'text-right text-xs text-gray-800'}>{hour.time}</div>
+                    <div className={'text-sm uppercase text-gray-800'}>{hour.label}</div>
+                    <div className={'text-right text-sm text-gray-800'}>{hour.time}</div>
                   </React.Fragment>
                 ))}
               </div>
@@ -198,7 +198,7 @@ export const StoreCard: React.FC<StoreCardProps> = ({ store, index, setMapCenter
                 }}
               >
                 <Location className={'h-4 w-4'} />
-                <span className={'text-xs uppercase tracking-wide'}>{t('findstore.get-directions')}</span>
+                <span className={'text-sm uppercase tracking-wide'}>{t('findstore.get-directions')}</span>
               </button>
             </div>
           </div>

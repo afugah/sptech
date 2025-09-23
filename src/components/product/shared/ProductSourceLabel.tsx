@@ -28,7 +28,7 @@ export const ProductSourceLabel: React.FC<ProductSourceLabelProps> = ({ source, 
 
   return (
     <span
-      className={`absolute bottom-1 left-1 inline-flex hidden items-center rounded-md border px-2 py-1 text-xs font-medium opacity-10 ${color} ${className}`}
+      className={`absolute bottom-1 left-1 inline-flex hidden items-center rounded-md border px-2 py-1 text-sm font-medium opacity-10 ${color} ${className}`}
       title={`Product data sourced from ${text}`}
     >
       {text}

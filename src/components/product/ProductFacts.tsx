@@ -22,7 +22,7 @@ export const ProductFacts: React.FC<IProductFactsProps> = (props) => {
       <div className={'cursor-pointer [&>div]:my-2'} onClick={() => setShowModal(true)}>
         <div className={'my-4 w-full border-b border-gray-400'} />
         <div className={'flex items-center justify-between'}>
-          <span className={'text-xs font-medium uppercase'}>{t('product-page.info.diamond-facts')}</span>
+          <span className={'text-sm font-medium uppercase'}>{t('product-page.info.diamond-facts')}</span>
           <ChevronRight className={'h-3 w-3 md:hidden'} />
         </div>
         <div className={'my-4 w-full border-b border-gray-400'} />

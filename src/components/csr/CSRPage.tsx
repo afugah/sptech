@@ -66,13 +66,13 @@ const CSRPage: React.FC<CSRPageProps> = ({ story }) => {
         <div className={'space-y-6 px-4 pb-10 pt-40 sm:pt-44 md:space-y-10 md:pb-0 lg:pt-48'}>
           <p className={'text-center font-serif text-3xl tracking-tight md:text-5xl'}>{title}</p>
           {typeof description === 'string' && description && (
-            <p className={'mx-auto max-w-2xl text-center text-xs uppercase leading-6 md:text-sm md:leading-8'}>
+            <p className={'mx-auto max-w-2xl text-center text-sm uppercase leading-6 md:text-sm md:leading-8'}>
               {description}
             </p>
           )}
           <Breadcrumbs
             className={
-              'mb-6 flex flex-wrap items-center justify-center text-center text-xs font-bold uppercase md:mb-10'
+              'mb-6 flex flex-wrap items-center justify-center text-center text-sm font-bold uppercase md:mb-10'
             }
           >
             <li>

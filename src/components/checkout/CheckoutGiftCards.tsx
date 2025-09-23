@@ -56,7 +56,7 @@ const CheckoutGiftCards: React.FC = () => {
     <CollapseRounded
       title={t('cart.add-gift-card')}
       buttonClassName={'!justify-start'}
-      titleClassName={'uppercase text-xs'}
+      titleClassName={'uppercase text-sm'}
     >
       <form onSubmit={handleSubmit(onSubmit)} className={'mt-4 flex gap-x-5'}>
         <Input
@@ -75,7 +75,7 @@ const CheckoutGiftCards: React.FC = () => {
           type={'text'}
           className={'max-w-96'}
           suffix={
-            <button className={'ml-4 text-xs uppercase'} disabled={!isValid || isLoading} type={'submit'}>
+            <button className={'ml-4 text-sm uppercase'} disabled={!isValid || isLoading} type={'submit'}>
               {t('cart.apply')}
             </button>
           }
@@ -100,7 +100,7 @@ const CheckoutGiftCards: React.FC = () => {
               <div className={'flex items-center gap-4'}>
                 <GiftCardIcon className={'h-5 w-5'} />{' '}
                 <span className={''}>{getAmount(giftCard.amount, cart?.currencyCode ?? '')}</span>
-                <span className={'text-xs text-gray-500'}>( {giftCard.id} )</span>
+                <span className={'text-sm text-gray-500'}>( {giftCard.id} )</span>
               </div>
               <CloseIcon className={'h-5 w-5 cursor-pointer'} onClick={() => onClickRemove(giftCard.id)} />
             </li>

@@ -59,9 +59,9 @@ const StoryblokProductCardComponent: React.FC<ICardProps> = ({ product }) => {
         <div className={'bg-red-50 border-red-200 flex h-full flex-col items-center justify-center rounded border p-4'}>
           <div className={'text-red-700 text-center'}>
             <h3 className={'text-sm font-bold'}>Product Not Found</h3>
-            <p className={'mt-2 text-xs'}>Product ID: {id}</p>
-            <p className={'mt-2 text-xs text-gray-600'}>Product: {name}</p>
-            <p className={'mt-1 text-xs text-red-600'}>
+            <p className={'mt-2 text-sm'}>Product ID: {id}</p>
+            <p className={'mt-2 text-sm text-gray-600'}>Product: {name}</p>
+            <p className={'mt-1 text-sm text-red-600'}>
               No product found in {useTypesense ? 'Typesense' : 'Elastic'} search
             </p>
           </div>

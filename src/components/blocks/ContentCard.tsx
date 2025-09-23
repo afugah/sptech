@@ -89,9 +89,9 @@ const ContentCard: React.FC<Props> = ({ blok }) => {
           />
         </div>
         <div className={'px-8 py-4 text-center'}>
-          {subtitle && <p className={'mb-2 text-xs uppercase text-gray-900'}>{subtitle}</p>}
+          {subtitle && <p className={'mb-2 text-sm uppercase text-gray-900'}>{subtitle}</p>}
           <h3 className={'mb-2 text-3xl font-light tracking-tight text-gray-900'}>{title}</h3>
-          <div className={'mb-2 text-xs font-light leading-relaxed'}>{renderContent(content)}</div>
+          <div className={'mb-2 text-sm font-light leading-relaxed'}>{renderContent(content)}</div>
           <div className={'flex items-center justify-center gap-4'}>
             {blok.ctaButtons?.map((block) => <StoryblokComponent blok={block} key={block._uid} />)}
           </div>
@@ -112,7 +112,7 @@ const ContentCard: React.FC<Props> = ({ blok }) => {
           alt={image?.alt || title || ''}
         />
         <div className={'flex w-full max-w-lg flex-col'}>
-          {subtitle && <p className={'mb-2 text-xs uppercase text-gray-900'}>{subtitle}</p>}
+          {subtitle && <p className={'mb-2 text-sm uppercase text-gray-900'}>{subtitle}</p>}
           <h3 className={'mb-4 text-5xl font-light'}>{title}</h3>
           <div className={'mb-2 font-light'}>{renderContent(content)}</div>
           <div className={'flex gap-x-4'}>
