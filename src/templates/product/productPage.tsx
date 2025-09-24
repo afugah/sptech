@@ -10,6 +10,7 @@ import { MaterialSelector } from '@/src/components/product/MaterialSelector';
 import { AddToCart } from '@/src/components/product/page/AddToCart';
 import AvailabilityInStore from '@/src/components/product/page/AvailabilityInStore/AvailabilityInStore';
 import Breadcrumbs from '@/src/components/product/page/Breadcrumbs';
+import { ColorVariantSelector } from '@/src/components/product/page/ColorVariantSelector';
 import { ImageGallery, ImageGalleryTypeEnum } from '@/src/components/product/page/ImageGallery/ImageGallery';
 import NotifyMe from '@/src/components/product/page/NotifyMe/NotifyMe';
 import SizeGuideModal from '@/src/components/product/page/SizeGuideModal';
@@ -47,6 +48,7 @@ import { getLocalizedString } from '@/src/lib/utils/localization';
 import { type CmsPage, type SizeGuide } from '@/src/types/framework/storyblok-components';
 import { type LocalizedValue } from '@/src/types/product';
 import { evaluateStockRules } from '@/src/util/stockRulesSimplified';
+import { hasColorVariants } from '@/src/utils/colorVariantUtils';
 
 interface IProductPageProps {
   product: IProduct;
@@ -180,11 +182,12 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
   //   variants.length === 1 && currentVariant?.stock?.quantity && currentVariant?.stock?.quantity < 5;
   const anyVariantStock = variants.some((variant) => variant.stock?.quantity);
 
-  // const hasMultipleSizes = variants.length > 1 && variants.some((variant) => variant.size);
-  // const shouldShowSizeSelector = hasMultipleSizes; // Show size selectors for all products with multiple sizes
+  const hasAnySizes = variants.some((variant) => variant.size);
 
-  // Show size selectors for all products
-  const shouldShowSizeSelector = true;
+  // Show size selectors:
+  // - Always on desktop if product has any sizes
+  // - On mobile only if multiple sizes are available
+  const shouldShowSizeSelector = hasAnySizes;
 
   const isComingSoon = comingSoonPublishDate && new Date(comingSoonPublishDate) > new Date();
 
@@ -395,6 +398,22 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
                 </div>
               )}
 
+              {/* Color Variant Selector - Show for products with multiple colors */}
+              {product.productGroupProducts && hasColorVariants(product.productGroupProducts) && (
+                <div className={'order-1 mt-4'}>
+                  <ColorVariantSelector
+                    currentProduct={{
+                      id: product.id,
+                      sku: product.sku,
+                      title: product.title,
+                    }}
+                    productGroupProducts={product.productGroupProducts}
+                    locale={locale as keyof LocalizedValue}
+                    className={''}
+                  />
+                </div>
+              )}
+
               {shouldShowSizeSelector && (
                 <>
                   <div className={'order-5 mt-4 flex'}>
@@ -429,7 +448,7 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
                   />
                 </>
               )}
-              <div className={'order-7 mt-4 flex flex-col md:flex-row md:items-start md:justify-between'}>
+              <div className={'order-7 mt-4 flex hidden flex-col md:flex-row md:items-start md:justify-between'}>
                 {/* Stock Status Display - Only show after user selects a size */}
                 {currentVariant && selectedVariantByUser && (
                   <StockStatus
@@ -453,7 +472,7 @@ const ProductPage: React.FC<IProductPageProps> = (props) => {
 
               <div
                 className={
-                  'relative mb-2 mt-4 flex flex-row flex-wrap items-center gap-x-10 gap-y-4 text-center md:order-8'
+                  'relative order-2 mb-2 mt-4 flex flex-row flex-wrap items-center gap-x-10 gap-y-4 text-center md:order-8'
                 }
               >
                 <AddToCart

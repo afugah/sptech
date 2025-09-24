@@ -22,15 +22,22 @@ const SizeSelectorLabel: React.FC<ISizeSelectorLabelProps> = (props) => {
   const t = useTranslations('product-page');
   const [showModal, setShowModal] = useState<boolean>(false);
 
-  // Find the selected variant to get its size
+  // Find the selected variant to get its size (must be called before early return)
   const selectedVariant = useMemo(() => {
     if (!props.selectedVariantByUser) return null;
     return props.variants.find((v) => v.sku === props.selectedVariantByUser);
   }, [props.selectedVariantByUser, props.variants]);
 
-  // Determine the appropriate default text based on template configuration
+  // Determine the appropriate default text based on template configuration (must be called before early return)
   const defaultTextKey = useMemo(() => getVariantSelectionKey(props.elasticData, 'choose-your'), [props.elasticData]);
   const defaultText = t(defaultTextKey);
+
+  // Check if there are multiple sizes
+  const hasMultipleSizes = props.variants.length > 1 && props.variants.some((variant) => variant.size);
+  const hasAnySizes = props.variants.some((variant) => variant.size);
+
+  // Don't render if no sizes or only one size (mobile behavior)
+  if (!hasAnySizes || !hasMultipleSizes) return null;
 
   return (
     <div className={'order-5 mb-3 md:hidden'}>

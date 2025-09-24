@@ -40,8 +40,12 @@ export const SizeSelectorHorizontal: React.FC<ISizeSelectorHorizontalProps> = (p
   const t = useTranslations('product-page');
   const sortedVariants = useMemo(() => sortVariantsBySize(variants), [variants]);
 
-  // Show size selector even with 1 variant to display the available size
-  // if (variants.length <= 1) return null;
+  // Check if there are multiple sizes
+  const hasMultipleSizes = variants.length > 1 && variants.some((variant) => variant.size);
+  const hasAnySizes = variants.some((variant) => variant.size);
+
+  // Don't render if no sizes at all
+  if (!hasAnySizes) return null;
 
   // const selectedVariant = variants.find((variant) => variant.sku === selectedVariantSku);
   // const selectedStockQuantity = selectedVariant?.stock?.quantity ?? 0;
@@ -57,8 +61,13 @@ export const SizeSelectorHorizontal: React.FC<ISizeSelectorHorizontalProps> = (p
   };
 
   return (
-    <div className={'order-9 md:order-6 '}>
-      <div className={'mt-4 hidden flex-row gap-2 md:flex'}>
+    <div className={'order-9 md:order-6'}>
+      <div
+        className={classNames('mt-4 flex-row gap-2', {
+          'hidden md:flex': !hasMultipleSizes, // Hide on mobile if only one size
+          flex: hasMultipleSizes, // Show on all devices if multiple sizes
+        })}
+      >
         <div className={'flex flex-row gap-3'}>
           {withTitle && <span className={'mt-1 text-sm uppercase'}>{t('product-page.size')}:</span>}
           <div className={'flex flex-col items-center gap-y-3'}>
@@ -110,8 +119,8 @@ export const SizeSelectorHorizontal: React.FC<ISizeSelectorHorizontalProps> = (p
             {/* {lowStock && selectedVariantByUser && (
               <>
                 {(hasLowStock || (hasLowStockNumber && !hasLowStock)) && (
-                  <div className={'flex h-4 flex-row items-center gap-x-1 text-sm text-gray'}>
-                    <div className={'flex flex-row items-center gap-x-1 text-sm text-gray'}>
+                  <div className={'flex flex-row gap-x-1 items-center h-4 text-sm text-gray'}>
+                    <div className={'flex flex-row gap-x-1 items-center text-sm text-gray'}>
                       <div className={`lex h-3 w-3 rounded-full ${hasLowStock ? 'bg-orange-600' : 'bg-red-600'}`}></div>
                       <span>=</span>
                       {hasLowStock

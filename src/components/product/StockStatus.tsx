@@ -1,7 +1,5 @@
 import { useTranslations } from 'next-intl';
 import React from 'react';
-import { StockDot } from '@/src/components/product/StockDot';
-import { isStockRulesEnabled } from '@/src/lib/features';
 import { type IProduct } from '@/src/lib/framework/Product/domain/entities/IProduct';
 import { type IProductVariant } from '@/src/lib/framework/Product/domain/entities/IProductVariant';
 import { type IElasticSearch } from '@/src/lib/framework/Product/types/IElasticSearch';
@@ -17,7 +15,12 @@ interface StockStatusProps {
   className?: string;
 }
 
-export const StockStatus: React.FC<StockStatusProps> = ({ selectedVariant, product, elasticData, className = '' }) => {
+export const StockStatus: React.FC<StockStatusProps> = ({
+  selectedVariant,
+  product,
+  elasticData,
+  className: _className = '',
+}) => {
   const t = useTranslations('product-page');
 
   const elasticVariant =
@@ -75,18 +78,18 @@ export const StockStatus: React.FC<StockStatusProps> = ({ selectedVariant, produ
     return null;
   }
 
-  return (
-    <div className={className}>
-      <div className={'mt-2 flex items-center gap-1.5 text-sm md:mt-0'}>
-        <StockDot dotColor={stockResult.dotColor} />
-        {stockResult.status}
-      </div>
-      {/* Debug info showing which rule was applied */}
-      {isStockRulesEnabled() && stockResult.ruleName && (
-        <div className={'mt-1 text-xxs italic text-gray-300'}>[{stockResult.ruleName}]</div>
-      )}
-    </div>
-  );
+  // return (
+  //   <div className={className}>
+  //     <div className={'mt-2 flex items-center gap-1.5 text-sm md:mt-0'}>
+  //       <StockDot dotColor={stockResult.dotColor} />
+  //       {stockResult.status}
+  //     </div>
+  //     {/* Debug info showing which rule was applied */}
+  //     {isStockRulesEnabled() && stockResult.ruleName && (
+  //       <div className={'mt-1 italic text-gray-300 text-xxs'}>[{stockResult.ruleName}]</div>
+  //     )}
+  //   </div>
+  // );
 };
 
 export default StockStatus;
