@@ -3,13 +3,12 @@
 import { StoryblokComponent } from '@storyblok/react';
 import React from 'react';
 import { useWindowWidth } from '@/src/hooks/useWindowWidth';
-import { SMALL } from '@/src/styles/theme';
 import { type IStoryblok } from '@/src/types/framework/storyblok';
 import { type MemberBenefits } from '@/src/types/framework/storyblok-components';
 
 const MemberBenefitsComponent: IStoryblok.FC<MemberBenefits> = ({ blok }) => {
   const width = useWindowWidth();
-  const isMobile = width < SMALL;
+  const isMobile = width < 768; // md breakpoint
 
   return (
     <div className={'w-full bg-seashell p-10'}>

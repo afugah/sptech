@@ -7,7 +7,6 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import React, { useMemo } from 'react';
 import { useWindowWidth } from '@/src/hooks/useWindowWidth';
-import { SMALL } from '@/src/styles/theme';
 
 type IDotButtonPropType = {
   selected: boolean;
@@ -61,7 +60,7 @@ export const FullScreenImageGallery = ({ slides, initialIndex, onClose }: IFullS
     emblaApi.on('select', onSelect);
   }, [emblaApi, onInit, onSelect]);
   const width = useWindowWidth();
-  const isMobile = useMemo(() => width && width < SMALL, [width]);
+  const isMobile = useMemo(() => width && width < 768, [width]); // md breakpoint
   return (
     <div className={'fixed inset-0 z-50 flex flex-col bg-white p-6'}>
       <div

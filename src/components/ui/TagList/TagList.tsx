@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useResizeObserver, useWindowSize } from 'usehooks-ts';
-import { MEDIUM } from '@/src/styles/theme';
 import { type ITagListProps, Tag } from './';
 
 /**
@@ -31,7 +30,7 @@ export const TagListImpl: React.FC<ITagListProps> = (props) => {
 
   const { width } = useResizeObserver({ ref: containerRef as React.RefObject<HTMLElement> });
   const { width: windowWidth } = useWindowSize();
-  const isMobile = useMemo(() => windowWidth < MEDIUM, [windowWidth]);
+  const isMobile = useMemo(() => windowWidth < 1024, [windowWidth]); // lg breakpoint
 
   const GAP_SIZE = 20;
 

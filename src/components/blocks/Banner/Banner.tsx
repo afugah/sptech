@@ -15,7 +15,6 @@ import {
   mobileBannerWidthConst,
   placementConst,
 } from '@/src/lib/constants/storyblok';
-import { SMALL } from '@/src/styles/theme';
 import { type Banner } from '@/src/types/framework/storyblok-components';
 import { displayForMember } from '@/src/util/displayForMemeber';
 
@@ -56,7 +55,7 @@ const BannerComponent: React.FC<BannerProps> = ({ blok, numberOfBlocks, format }
 
   const { getTokenPayload } = useIdentification();
   const width = useWindowWidth();
-  const isMobile = width < SMALL;
+  const isMobile = width < 768; // md breakpoint
   const customerMemberLevel = getTokenPayload()?.memberLevel;
   const shouldDisplayBlock = memberLevel ? displayForMember(memberLevel, customerMemberLevel ?? '') : true;
   const overlayRef = useRef<HTMLDivElement>(null);

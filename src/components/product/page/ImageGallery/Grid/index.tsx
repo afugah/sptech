@@ -5,7 +5,6 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { ImageGalleryHorizontal } from '@/src/components/product/page/ImageGallery/Horizontal';
 import { ImageZoomGallery } from '@/src/components/product/page/ImageGallery/ZoomGallery';
-import { MEDIUM } from '@/src/styles/theme';
 
 interface IImageGalleryGridProps {
   images: string[] | undefined;
@@ -25,7 +24,7 @@ export const ImageGalleryGrid: React.FC<IImageGalleryGridProps> = (props) => {
   useEffect(() => {
     // Only run on client side
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < MEDIUM);
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
     };
 
     // Initial check

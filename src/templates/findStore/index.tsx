@@ -12,7 +12,6 @@ import Loader from '@/src/components/ui/Loader';
 import { useWindowWidth } from '@/src/hooks/useWindowWidth';
 import { useRouter } from '@/src/i18n/navigation';
 import { type CountryCode, type IStore } from '@/src/lib/framework/Store/domain/entities/IStore';
-import { MEDIUM } from '@/src/styles/theme';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/shadcn/select';
 import CityFilter from './components/CityFilter';
 import CountryFilter from './components/CountryFilter';
@@ -49,7 +48,7 @@ const FindStore: React.FC<Props> = ({ stores, initialFilters }) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<number | null>(1);
   const width = useWindowWidth();
-  const isMobile = useMemo(() => width && width < MEDIUM, [width]);
+  const isMobile = useMemo(() => width && width < 1024, [width]); // lg breakpoint
   const [center, setCenter] = useState({ lat: 59.3293, lng: 18.0686 });
   const [expandedStore, setExpandedStore] = useState<number | null>(null);
   const [_mapZoom, _setMapZoom] = useState(8);

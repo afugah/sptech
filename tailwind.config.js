@@ -210,6 +210,10 @@ module.exports = {
       variants: ['lg'],
     },
     'overflow-hidden',
+    'fill-white',
+    'fill-black',
+    'stroke-white',
+    'stroke-black',
   ],
   corePlugins: {
     container: false,

@@ -14,6 +14,7 @@ import { Sheet, SheetTrigger } from '@/src/components/shadcn/sheet-custom';
 import { useCart } from '@/src/context/cartContext';
 import { useWishlist } from '@/src/hooks/useWishlist';
 import { Link, usePathname } from '@/src/i18n/navigation';
+import { isWishlistEnabled } from '@/src/lib/features';
 import { type MenuLink } from '@/src/types/framework/storyblok-components';
 import Newsletters from '../blocks/newsletters';
 import NewsletterModal from '../ui/NewsletterModal';
@@ -42,6 +43,7 @@ const HeaderInlineComponent = ({ header_menu, hasHeaderFixed = true }: IProps) =
   const [navHide, setNavHide] = React.useState(false);
   const pathname = usePathname();
   const isCheckoutPage = pathname.includes('/checkout');
+  const isHomePage = pathname === '/' || /^\/[a-z]{2}(-[a-z]{2})?$/i.test(pathname);
 
   const searchParams = useSearchParams().get('q');
   const { wishlistCount } = useWishlist();
@@ -128,7 +130,11 @@ const HeaderInlineComponent = ({ header_menu, hasHeaderFixed = true }: IProps) =
           {/* Logo - Left aligned */}
           <div className={'flex items-center lg:basis-1/4'}>
             <Link href={'/'} aria-label={'Home'} className={'flex items-center'}>
-              <StoreLogo className={`h-8 w-auto fill-black xs:h-10 sm:h-12 lg:h-14`} />
+              <StoreLogo
+                className={`h-8 w-auto xs:h-10 sm:h-12 lg:h-14 ${
+                  isHomePage && hasHeaderFixed && bgColor ? 'fill-white' : 'fill-black'
+                }`}
+              />
             </Link>
           </div>
 
@@ -157,28 +163,38 @@ const HeaderInlineComponent = ({ header_menu, hasHeaderFixed = true }: IProps) =
                   setOpenSearchForm((prev) => !prev);
                 }}
               >
-                <Search size={24} strokeWidth={1.5} className={'h-5 w-5 stroke-black sm:h-6 sm:w-6'} />
+                <Search
+                  size={24}
+                  strokeWidth={1.5}
+                  className={`h-5 w-5 sm:h-6 sm:w-6 ${
+                    isHomePage && hasHeaderFixed && bgColor ? 'stroke-white' : 'stroke-black'
+                  }`}
+                />
               </Button>
 
               {/* Wishlist */}
-              <div className={'relative flex cursor-pointer items-center'}>
-                <Sheet open={openWishListSheet} onOpenChange={setOpenWishListSheet}>
-                  <SheetTrigger asChild>
-                    <Button variant={'custom'} className={'hidden px-0 py-0 sm:block [&_svg]:size-6'}>
-                      <Heart
-                        size={24}
-                        aria-label={'Toggle Wishlist'}
-                        strokeWidth={1.5}
-                        className={'h-5 w-5 stroke-black sm:h-6 sm:w-6'}
-                      />
-                      <WishListCount numberOfCartItems={wishlistCount ?? 0} style={'round'} />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetComponent setOpenSheet={setOpenWishListSheet} title={t('wishlist.headerTitle')}>
-                    <WishListHeader />
-                  </SheetComponent>
-                </Sheet>
-              </div>
+              {isWishlistEnabled() && (
+                <div className={'relative flex cursor-pointer items-center'}>
+                  <Sheet open={openWishListSheet} onOpenChange={setOpenWishListSheet}>
+                    <SheetTrigger asChild>
+                      <Button variant={'custom'} className={'hidden px-0 py-0 sm:block [&_svg]:size-6'}>
+                        <Heart
+                          size={24}
+                          aria-label={'Toggle Wishlist'}
+                          strokeWidth={1.5}
+                          className={`h-5 w-5 sm:h-6 sm:w-6 ${
+                            isHomePage && hasHeaderFixed && bgColor ? 'stroke-white' : 'stroke-black'
+                          }`}
+                        />
+                        <WishListCount numberOfCartItems={wishlistCount ?? 0} style={'round'} />
+                      </Button>
+                    </SheetTrigger>
+                    <SheetComponent setOpenSheet={setOpenWishListSheet} title={t('wishlist.headerTitle')}>
+                      <WishListHeader />
+                    </SheetComponent>
+                  </Sheet>
+                </div>
+              )}
 
               {/* Cart */}
               {!isCheckoutPage && (
@@ -191,7 +207,13 @@ const HeaderInlineComponent = ({ header_menu, hasHeaderFixed = true }: IProps) =
                         className={'px-0 py-0 [&_svg]:size-6'}
                         tabIndex={0}
                       >
-                        <Gift size={24} strokeWidth={1.5} className={'h-5 w-5 stroke-black sm:h-6 sm:w-6'} />
+                        <Gift
+                          size={24}
+                          strokeWidth={1.5}
+                          className={`h-5 w-5 sm:h-6 sm:w-6 ${
+                            isHomePage && hasHeaderFixed && bgColor ? 'stroke-white' : 'stroke-black'
+                          }`}
+                        />
                         <CartItems numberOfCartItems={numberOfCartItems ?? 0} style={'round'} />
                       </Button>
                     </SheetTrigger>
